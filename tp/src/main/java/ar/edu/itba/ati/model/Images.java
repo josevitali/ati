@@ -1,4 +1,4 @@
-package ar.edu.itba.ati.io;
+package ar.edu.itba.ati.model;
 
 import ar.edu.itba.ati.model.GreyImage;
 import ar.edu.itba.ati.model.Image;
@@ -10,15 +10,15 @@ import java.io.IOException;
 
 public class Images {
 
-    public static Image newImage(String direction) throws IOException {
-        File file = new File(direction);
+    public static Image getImage(File file) throws IOException {
         BufferedImage bufferedImage = ImageIO.read(file);
 
-//        TODO: add different types images
+//        TODO: agregar diferentes tipos de imagenes
         if(bufferedImage.getType() == BufferedImage.TYPE_BYTE_GRAY){
             return new GreyImage(bufferedImage);
         }
 
-        return null;
+//        TODO: esta bien que tire excepcion?
+        throw new IllegalStateException("Image type not supported.");
     }
 }

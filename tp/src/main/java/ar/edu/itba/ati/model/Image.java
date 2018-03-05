@@ -4,10 +4,10 @@ import java.awt.image.BufferedImage;
 
 public abstract class Image <T> {
 
-    private final int type;
-    private T[][] matrix;
-    private final int height;
-    private final int width;
+    protected final int type;
+    protected T[][] matrix;
+    protected final int height;
+    protected final int width;
 
     public Image(int type, T[][] matrix, int height, int width) {
         this.type = type;
@@ -31,4 +31,6 @@ public abstract class Image <T> {
     public int getWidth() {
         return width;
     }
+
+    public abstract BufferedImage toBufferedImage();
 }

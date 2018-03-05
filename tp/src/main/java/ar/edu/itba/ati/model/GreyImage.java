@@ -17,12 +17,11 @@ public class GreyImage extends Image<Integer> {
     private static Integer[][] createMatrix(BufferedImage bufferedImage) {
         Integer[][] matrix = new Integer[bufferedImage.getHeight()][bufferedImage.getWidth()];
         byte[] pixels = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
-        int cols = bufferedImage.getWidth();
 
-        for(int pixel = 0; pixel < pixels.length; pixel++){
-            int row = pixel / matrix.length;
-            int col = pixel % cols;
-            matrix[row][col] = (int) pixels[pixel] & 0xff;
+        for(int row = 0, pixel = 0; row < bufferedImage.getHeight(); row++){
+            for(int col = 0; col < bufferedImage.getWidth(); col++){
+                matrix[row][col] = (int) pixels[pixel++] & 0xff;
+            }
         }
 
         return matrix;

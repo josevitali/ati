@@ -16,9 +16,11 @@ public class Images {
 //        TODO: agregar diferentes tipos de imagenes
         if(bufferedImage.getType() == BufferedImage.TYPE_BYTE_GRAY){
             return new GreyImage(bufferedImage);
+        } else if(bufferedImage.getType() == BufferedImage.TYPE_3BYTE_BGR){
+            return new ColorImage(bufferedImage);
         }
 
 //        TODO: esta bien que tire excepcion?
-        throw new IllegalStateException("Image type not supported.");
+        throw new IllegalStateException("Image type (" + bufferedImage.getType() + ") not supported.");
     }
 }

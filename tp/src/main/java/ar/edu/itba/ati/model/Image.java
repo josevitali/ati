@@ -1,6 +1,8 @@
 package ar.edu.itba.ati.model;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 public abstract class Image <T> {
 
@@ -8,12 +10,14 @@ public abstract class Image <T> {
     protected T[][] matrix;
     protected final int height;
     protected final int width;
+    protected File file;
 
-    public Image(int type, T[][] matrix, int height, int width) {
+    public Image(int type, T[][] matrix, int height, int width, File file) {
         this.type = type;
         this.matrix = matrix;
         this.height = height;
         this.width = width;
+        this.file = file;
     }
 
     public T getPixel(int row, int column){
@@ -35,4 +39,8 @@ public abstract class Image <T> {
     }
 
     public abstract BufferedImage toBufferedImage();
+
+    public File getFile() {
+        return file;
+    }
 }

@@ -6,11 +6,13 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
 import java.awt.image.WritableRaster;
+import java.io.File;
 
 public class GreyImage extends Image<Double> {
 
-    public GreyImage(BufferedImage bufferedImage) {
-        super(bufferedImage.getType(), createMatrix(bufferedImage), bufferedImage.getHeight(), bufferedImage.getWidth());
+    public GreyImage(BufferedImage bufferedImage, File file) {
+        super(bufferedImage.getType(), createMatrix(bufferedImage), bufferedImage.getHeight(),
+                bufferedImage.getWidth(), file);
     }
 
     private static Double[][] createMatrix(BufferedImage bufferedImage) {

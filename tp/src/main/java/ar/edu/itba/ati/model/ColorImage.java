@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
+import java.io.File;
 
 public class ColorImage extends Image<Double[]> {
 
@@ -11,8 +12,9 @@ public class ColorImage extends Image<Double[]> {
     private static final int GREEN = 1;
     private static final int RED = 2;
 
-    public ColorImage(BufferedImage bufferedImage) {
-        super(bufferedImage.getType(), createMatrix(bufferedImage), bufferedImage.getHeight(), bufferedImage.getWidth());
+    public ColorImage(BufferedImage bufferedImage, File file) {
+        super(bufferedImage.getType(), createMatrix(bufferedImage), bufferedImage.getHeight(),
+                bufferedImage.getWidth(), file);
     }
 
     private static Double[][][] createMatrix(BufferedImage bufferedImage) {

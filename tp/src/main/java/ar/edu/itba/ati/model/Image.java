@@ -24,6 +24,8 @@ public abstract class Image <T> {
         matrix[row][column] = pixel;
     }
 
+    public abstract T getAverageColor(int row1, int col1, int row2, int col2);
+
     public int getHeight() {
         return height;
     }

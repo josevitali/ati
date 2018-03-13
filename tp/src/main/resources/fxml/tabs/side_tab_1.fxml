@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import ar.edu.itba.ati.views.tabs.SideTab1View?>
+
+<fx:root type="SideTab1View" xmlns:fx="http://javafx.com/fxml"
+         fx:controller="ar.edu.itba.ati.controller.tabs.SideTab1Controller" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="331.0" prefWidth="163.0">
+        <children>
+            <Button alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Add" />
+            <Button alignment="TOP_CENTER" layoutX="14.0" layoutY="51.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Substract" />
+            <TextField layoutX="60.0" layoutY="124.0" prefHeight="27.0" prefWidth="43.0" />
+            <Label layoutX="8.0" layoutY="129.0" prefHeight="17.0" prefWidth="50.0" text="Multiply" />
+            <Button layoutX="108.0" layoutY="124.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" />
+            <Button alignment="TOP_CENTER" layoutX="14.0" layoutY="88.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Product" />
+        </children>
+    </AnchorPane>
+</fx:root>

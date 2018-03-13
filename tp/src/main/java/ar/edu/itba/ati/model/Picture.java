@@ -4,20 +4,18 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public abstract class Image <T> {
+public abstract class Picture<T> {
 
     protected final int type;
     protected T[][] matrix;
     protected final int height;
     protected final int width;
-    protected File file;
 
-    public Image(int type, T[][] matrix, int height, int width, File file) {
+    public Picture(int type, T[][] matrix, int height, int width) {
         this.type = type;
         this.matrix = matrix;
         this.height = height;
         this.width = width;
-        this.file = file;
     }
 
     public T getPixel(int row, int column){
@@ -39,8 +37,4 @@ public abstract class Image <T> {
     }
 
     public abstract BufferedImage toBufferedImage();
-
-    public File getFile() {
-        return file;
-    }
 }

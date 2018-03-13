@@ -1,20 +1,18 @@
 package ar.edu.itba.ati.model;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
-import java.io.File;
 
-public class ColorImage extends Image<Double[]> {
+public class ColorPicture extends Picture<Double[]> {
 
     private static final int BLUE = 0;
     private static final int GREEN = 1;
     private static final int RED = 2;
 
-    public ColorImage(BufferedImage bufferedImage, File file) {
+    public ColorPicture(BufferedImage bufferedImage) {
         super(bufferedImage.getType(), createMatrix(bufferedImage), bufferedImage.getHeight(),
-                bufferedImage.getWidth(), file);
+                bufferedImage.getWidth());
     }
 
     private static Double[][][] createMatrix(BufferedImage bufferedImage) {

@@ -1,18 +1,14 @@
 package ar.edu.itba.ati.model;
 
-import javafx.scene.paint.Color;
-
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
 import java.awt.image.WritableRaster;
-import java.io.File;
 
-public class GreyImage extends Image<Double> {
+public class GreyPicture extends Picture<Double> {
 
-    public GreyImage(BufferedImage bufferedImage, File file) {
+    public GreyPicture(BufferedImage bufferedImage) {
         super(bufferedImage.getType(), createMatrix(bufferedImage), bufferedImage.getHeight(),
-                bufferedImage.getWidth(), file);
+                bufferedImage.getWidth());
     }
 
     private static Double[][] createMatrix(BufferedImage bufferedImage) {

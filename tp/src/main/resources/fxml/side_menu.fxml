@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.image.ImageView?>
+<?import ar.edu.itba.ati.views.SideMenuView?>
+
+<?import ar.edu.itba.ati.views.tabs.SideTab1View?>
+<fx:root type="SideMenuView" xmlns:fx="http://javafx.com/fxml"
+         fx:controller="ar.edu.itba.ati.controller.SideMenuController"
+         fx:id="sideMenu" visible="false">
+
+    <TabPane layoutX="7.0" prefHeight="371.0" prefWidth="168.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+
+            <Tab text="TP 1">
+                <content>
+                    <SideTab1View fx:id="sideTab1View"/>
+                </content>
+            </Tab>
+            <!--TODO para los proximos TPs-->
+            <!--<Tab text="TP 2">-->
+                <!--<content>-->
+                    <!--<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />-->
+                <!--</content>-->
+            <!--</Tab>-->
+            <!--<Tab text="TP 3">-->
+                <!--<content>-->
+                    <!--<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />-->
+                <!--</content>-->
+            <!--</Tab>-->
+            <!--<Tab text="TP 4">-->
+                <!--<content>-->
+                    <!--<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />-->
+                <!--</content>-->
+            <!--</Tab>-->
+        </tabs>
+    </TabPane>
+
+</fx:root>

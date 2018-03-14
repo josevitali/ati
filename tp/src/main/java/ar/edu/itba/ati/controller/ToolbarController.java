@@ -40,21 +40,18 @@ public class ToolbarController {
         toolbar.setVisible(true);
         cropMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
-                System.out.println("posteo el crop event");
                 eventBus.post(new CropEvent());
             }
         });
         switchButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("switcheo las fotos");
                 pictureService.switchPictures();
             }
         });
         newWindow.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("open new window");
 
                 ImageView iv = new ImageView();
                 iv.setImage(SwingFXUtils.toFXImage(pictureService.getAuxPicture().toBufferedImage(), null));

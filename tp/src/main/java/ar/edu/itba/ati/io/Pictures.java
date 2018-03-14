@@ -4,6 +4,7 @@ import ar.edu.itba.ati.model.ColorPicture;
 import ar.edu.itba.ati.model.GreyPicture;
 import ar.edu.itba.ati.model.Picture;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.opencv.core.Mat;
 import org.opencv.highgui.Highgui;
 
@@ -44,11 +45,17 @@ public class Pictures {
             case "bmp":
                 bufferedImage = ImageIO.read(file);
                 break;
-//                TODO
-//            case "RAW":
-//            case "raw":
-//
-//                break;
+            case "RAW":
+            case "raw":
+                String fileName = FilenameUtils.getFullPath(file.getPath()) + FilenameUtils.getBaseName(file.getName());
+                BufferedReader reader = new BufferedReader(new FileReader(fileName + ".data"));
+                int width = Integer.parseInt(reader.readLine());
+                int height = Integer.parseInt(reader.readLine());
+                int imageType = Integer.parseInt(reader.readLine());
+                bufferedImage = new BufferedImage(width, height, imageType);
+                byte[] array = IOUtils.toByteArray(new FileInputStream(file));
+                bufferedImage.getRaster().setDataElements(0,0,width,height,array);
+                break;
             default:
                 throw new IllegalStateException("Extension " + extension + " not supported.");
         }

@@ -46,8 +46,6 @@ public class PictureController {
 
         imageView.setImage(image);
 
-        Group imageLayer = new Group();
-
         rubberBandSelection = new RubberBandSelection(imageLayer);
 
 
@@ -66,8 +64,6 @@ public class PictureController {
 
         // rubberband selection
 
-        // add button for crop
-//        eventBus.post(new AddCropFunctionalityEvent());
 
     }
 
@@ -100,13 +96,12 @@ public class PictureController {
         parameters.setFill(Color.TRANSPARENT);
         parameters.setViewport(new Rectangle2D( bounds.getMinX(), bounds.getMinY(), width, height));
 
-        System.out.println("parametros " + parameters);
-
         WritableImage wi = new WritableImage( width, height);
         imageView.snapshot(parameters, wi);
 
         //TODO descomentar para que se vea la foto croppeada cuando ande esto
-//        newImageView.setImage(wi);
+        
+        imageView.setImage(wi);
 
     }
 
@@ -118,7 +113,7 @@ public class PictureController {
     public static class RubberBandSelection {
 
         final DragContext dragContext = new DragContext();
-        javafx.scene.shape.Rectangle rect = new javafx.scene.shape.Rectangle();
+        Rectangle rect = new Rectangle();
 
         Group group;
 
@@ -147,6 +142,7 @@ public class PictureController {
 
             @Override
             public void handle(MouseEvent event) {
+                System.out.println("se hizo click");
 
                 if(event.isSecondaryButtonDown())
                     return;
@@ -178,6 +174,7 @@ public class PictureController {
 
             @Override
             public void handle(MouseEvent event) {
+                System.out.println("se draggeo");
 
                 if( event.isSecondaryButtonDown())
                     return;
@@ -215,7 +212,7 @@ public class PictureController {
             rect.setWidth(0);
             rect.setHeight(0);
 
-            group.getChildren().remove( rect);
+            group.getChildren().remove(rect);
         }
     }
 

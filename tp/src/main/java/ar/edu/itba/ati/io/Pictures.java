@@ -5,6 +5,7 @@ import ar.edu.itba.ati.model.GreyPicture;
 import ar.edu.itba.ati.model.Picture;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.highgui.Highgui;
 
@@ -30,31 +31,19 @@ public class Pictures {
     }
 
     public static Picture getPicture(File file) throws IOException {
-        final String extension = FilenameUtils.getExtension(file.getName());
+        final String extension = FilenameUtils.getExtension(file.getName()).toLowerCase();
         BufferedImage bufferedImage = null;
 
         switch(extension){
-            case "PGM":
             case "pgm":
-            case "PPM":
             case "ppm":
-                Mat mat = Highgui.imread(file.getAbsolutePath());
-                bufferedImage = matToBufferedImage(mat);
+                bufferedImage = ppmPgmToBufferedImage(file);
                 break;
-            case "BMP":
             case "bmp":
-                bufferedImage = ImageIO.read(file);
+                bufferedImage = bmpToBufferedImage(file);
                 break;
-            case "RAW":
             case "raw":
-                String fileName = FilenameUtils.getFullPath(file.getPath()) + FilenameUtils.getBaseName(file.getName());
-                BufferedReader reader = new BufferedReader(new FileReader(fileName + ".data"));
-                int width = Integer.parseInt(reader.readLine());
-                int height = Integer.parseInt(reader.readLine());
-                int imageType = Integer.parseInt(reader.readLine());
-                bufferedImage = new BufferedImage(width, height, imageType);
-                byte[] array = IOUtils.toByteArray(new FileInputStream(file));
-                bufferedImage.getRaster().setDataElements(0,0,width,height,array);
+                bufferedImage = rawToBufferedImage(file);
                 break;
             default:
                 throw new IllegalStateException("Extension " + extension + " not supported.");
@@ -68,17 +57,28 @@ public class Pictures {
             return new ColorPicture(bufferedImage);
         }
 
-        // TODO: esta bien que tire excepcion?
         throw new IllegalStateException("Picture type (" + bufferedImage.getType() + ") not supported.");
     }
 
-    public static void save(Picture picture, File file){
-        String formatName = FilenameUtils.getExtension(file.getAbsolutePath());
-        try {
-            ImageIO.write(picture.toBufferedImage(), formatName, file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private static BufferedImage ppmPgmToBufferedImage(File file){
+        Mat mat = Highgui.imread(file.getAbsolutePath());
+        return matToBufferedImage(mat);
+    }
+
+    private static BufferedImage bmpToBufferedImage(File file) throws IOException {
+        return ImageIO.read(file);
+    }
+
+    private static BufferedImage rawToBufferedImage(File file) throws IOException {
+        String fileName = FilenameUtils.getFullPath(file.getPath()) + FilenameUtils.getBaseName(file.getName());
+        BufferedReader reader = new BufferedReader(new FileReader(fileName + ".data"));
+        int width = Integer.parseInt(reader.readLine());
+        int height = Integer.parseInt(reader.readLine());
+        int imageType = Integer.parseInt(reader.readLine());
+        BufferedImage bufferedImage = new BufferedImage(width, height, imageType);
+        byte[] array = IOUtils.toByteArray(new FileInputStream(file));
+        bufferedImage.getRaster().setDataElements(0,0,width,height,array);
+        return bufferedImage;
     }
 
     private static BufferedImage matToBufferedImage(Mat mat) {
@@ -93,4 +93,46 @@ public class Pictures {
         return bufferedImage;
 
     }
+
+    public static void save(Picture picture, File file) throws IOException {
+
+        String extension = FilenameUtils.getExtension(file.getAbsolutePath());
+
+        switch (extension.toLowerCase()){
+            case "pgm":
+            case "ppm":
+                savePgmAndPpm(picture, file);
+                break;
+            case "bmp":
+                saveBmp(picture, file);
+                break;
+//                TODO guardar imagen raw
+//            case "raw":
+//                saveRaw(picture, file);
+//                break;
+            default:
+                throw new IllegalStateException("Extension " + extension + " not supported.");
+        }
+    }
+
+    private static void saveBmp(Picture picture, File file) {
+        try {
+            ImageIO.write(picture.toBufferedImage(), "bmp", file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void savePgmAndPpm(Picture picture, File file) {
+        BufferedImage bufferedImage = picture.toBufferedImage();
+        byte[] data = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
+        Mat mat = new Mat(bufferedImage.getHeight(),bufferedImage.getWidth(), CvType.CV_8UC3);
+        mat.put(0, 0, data);
+        try {
+            Highgui.imwrite(file.getCanonicalPath(), mat);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

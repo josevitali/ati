@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,10 +62,11 @@ public class MenuBarController {
     protected void handleSaveAsAction(ActionEvent event) {
         FileChooser fc = new FileChooser();
         fc.setTitle("Save Text");
+        String extension = FilenameUtils.getExtension(pictureService.getFile().getAbsolutePath());
         fc.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter(
-                        "Bmp files",
-                        "*.bmp"));
+                        extension + " files",
+                        "*." + extension));
         File file =
                 fc.showSaveDialog(
                         menuBar.getScene().getWindow());

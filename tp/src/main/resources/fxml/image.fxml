@@ -22,7 +22,6 @@
                     <ImageView fx:id="imageView" fitHeight="325.0" fitWidth="510.0" pickOnBounds="true" preserveRatio="true" />
                 </children>
             </Group>
-            <ImageView fx:id="auxImageView" fitHeight="325.0" fitWidth="510.0" pickOnBounds="true" preserveRatio="true" />
         </children>
     </HBox>
 

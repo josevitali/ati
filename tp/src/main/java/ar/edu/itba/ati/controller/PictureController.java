@@ -43,11 +43,8 @@ public class PictureController {
     protected void showPicture(ShowPictureEvent event){
 
         Image image = SwingFXUtils.toFXImage(pictureService.getPicture().toBufferedImage(), null);
-        Image auxImage = SwingFXUtils.toFXImage(pictureService.getAuxPicture().toBufferedImage(), null);
 
         imageView.setImage(image);
-
-        auxImageView.setImage(auxImage);
 
         Group imageLayer = new Group();
 

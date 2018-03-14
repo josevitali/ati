@@ -17,8 +17,6 @@
         <!--<Image url="https://cdn2.iconfinder.com/data/icons/interface-part-1/32/crop-512.png" backgroundLoading="true"></Image>-->
         <!--</ImageView>-->
     </Button>
-    <Button fx:id="switchButton" text="switch">
-    </Button>
 
     <Button fx:id="newWindow" text="open in new window"></Button>
 </fx:root>

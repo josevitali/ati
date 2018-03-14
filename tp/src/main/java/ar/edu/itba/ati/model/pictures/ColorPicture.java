@@ -1,8 +1,11 @@
-package ar.edu.itba.ati.model;
+package ar.edu.itba.ati.model.pictures;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
+import java.security.acl.Group;
+import java.util.Arrays;
+import java.util.function.Function;
 
 public class ColorPicture extends Picture<Double[]> {
 
@@ -61,5 +64,13 @@ public class ColorPicture extends Picture<Double[]> {
             }
         }
         return bufferedImage;
+    }
+
+    @Override
+    protected Double[] mapElement(Function<Double, Double> f, Double[] element) {
+        element[BLUE] = f.apply(element[BLUE]);
+        element[GREEN] = f.apply(element[GREEN]);
+        element[RED] = f.apply(element[RED]);
+        return element;
     }
 }

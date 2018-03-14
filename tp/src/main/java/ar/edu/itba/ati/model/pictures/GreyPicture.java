@@ -1,8 +1,9 @@
-package ar.edu.itba.ati.model;
+package ar.edu.itba.ati.model.pictures;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
+import java.util.function.Function;
 
 public class GreyPicture extends Picture<Double> {
 
@@ -46,5 +47,10 @@ public class GreyPicture extends Picture<Double> {
             }
         }
         return bufferedImage;
+    }
+
+    @Override
+    protected Double mapElement(Function<Double, Double> f, Double element) {
+        return f.apply(element);
     }
 }

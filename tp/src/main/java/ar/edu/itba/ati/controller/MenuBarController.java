@@ -4,7 +4,7 @@ import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ShowSideMenuEvent;
 import ar.edu.itba.ati.events.toolbar.ShowToolbarEvent;
 import ar.edu.itba.ati.io.Pictures;
-import ar.edu.itba.ati.model.Picture;
+import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
@@ -50,7 +50,6 @@ public class MenuBarController {
         }
 
         pictureService.setPicture(picture);
-        pictureService.setAuxPicture(auxPicture);
         pictureService.setFile(file);
 
         eventBus.post(new ShowPictureEvent());

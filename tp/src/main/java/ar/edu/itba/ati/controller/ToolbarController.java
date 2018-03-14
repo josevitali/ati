@@ -43,18 +43,12 @@ public class ToolbarController {
                 eventBus.post(new CropEvent());
             }
         });
-        switchButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                pictureService.switchPictures();
-            }
-        });
         newWindow.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
                 ImageView iv = new ImageView();
-                iv.setImage(SwingFXUtils.toFXImage(pictureService.getAuxPicture().toBufferedImage(), null));
+                iv.setImage(SwingFXUtils.toFXImage(pictureService.getPicture().toBufferedImage(), null));
                 StackPane secondaryLayout = new StackPane();
                 secondaryLayout.getChildren().add(iv);
 

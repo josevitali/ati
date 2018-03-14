@@ -18,6 +18,7 @@
             <Label layoutX="8.0" layoutY="129.0" prefHeight="17.0" prefWidth="50.0" text="Multiply" />
             <Button layoutX="108.0" layoutY="124.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" />
             <Button alignment="TOP_CENTER" layoutX="14.0" layoutY="88.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Product" />
+            <ToggleButton layoutX="14.0" layoutY="160.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Negative" onAction="#negative"/>
         </children>
     </AnchorPane>
 </fx:root>

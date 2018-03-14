@@ -1,8 +1,9 @@
-package ar.edu.itba.ati.model;
+package ar.edu.itba.ati.model.pictures;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.function.Function;
 
 public abstract class Picture<T> {
 
@@ -37,4 +38,15 @@ public abstract class Picture<T> {
     }
 
     public abstract BufferedImage toBufferedImage();
+
+    public void mapElementByElement(Function<Double,Double> f){
+        for(int row = 0; row < height; row++){
+            for(int col = 0; col < width; col++){
+                matrix[row][col] = mapElement(f, matrix[row][col]);
+            }
+        }
+    }
+
+    protected abstract T mapElement(Function<Double,Double>f, T element);
+
 }

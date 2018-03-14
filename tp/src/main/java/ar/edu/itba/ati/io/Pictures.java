@@ -1,8 +1,8 @@
 package ar.edu.itba.ati.io;
 
-import ar.edu.itba.ati.model.ColorPicture;
-import ar.edu.itba.ati.model.GreyPicture;
-import ar.edu.itba.ati.model.Picture;
+import ar.edu.itba.ati.model.pictures.ColorPicture;
+import ar.edu.itba.ati.model.pictures.GreyPicture;
+import ar.edu.itba.ati.model.pictures.Picture;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.opencv.core.CvType;

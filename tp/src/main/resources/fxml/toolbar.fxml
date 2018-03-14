@@ -19,4 +19,6 @@
     </Button>
     <Button fx:id="switchButton" text="switch">
     </Button>
+
+    <Button fx:id="newWindow" text="open in new window"></Button>
 </fx:root>

@@ -63,8 +63,6 @@ public abstract class Picture<T> {
 
     public abstract void normalize();
 
-
-
     public abstract void crop(int x0, int x1, int y0, int y1);
 
 }

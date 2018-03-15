@@ -10,12 +10,9 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -74,22 +71,20 @@ public class PictureController {
 
     private void crop(Bounds bounds){
 
-        int width = (int) bounds.getWidth();
-        int height = (int) bounds.getHeight();
-
-        if(width == 0 || height == 0)
+        if((int) bounds.getWidth() == 0 || (int) bounds.getHeight() == 0)
             return;
 
-        SnapshotParameters parameters = new SnapshotParameters();
-        parameters.setFill(Color.TRANSPARENT);
-        parameters.setViewport(new Rectangle2D(bounds.getMinX(), bounds.getMinY(), width, height));
-
-        WritableImage wi = new WritableImage(width, height);
-        imageView.snapshot(parameters, wi);
-
-        //TODO setearla desde el picture service
-        imageView.setImage(wi);
         pictureService.cropPicture((int)bounds.getMinY(), (int)bounds.getMaxY(), (int)bounds.getMinX(), (int)bounds.getMaxX());
+        imageView.setImage(SwingFXUtils.toFXImage(pictureService.getPicture().toBufferedImage(), null));
+
+//        SnapshotParameters parameters = new SnapshotParameters();
+//        parameters.setFill(Color.TRANSPARENT);
+//        parameters.setViewport(new Rectangle2D(bounds.getMinX(), bounds.getMinY(), width, height));
+
+//        WritableImage wi = new WritableImage(width, height);
+//        imageView.snapshot(parameters, wi);
+//
+//        imageView.setImage(wi);
 
     }
 

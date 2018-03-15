@@ -33,7 +33,6 @@ public class PictureController {
         this.pictureService = pictureService;
     }
 
-
     @FXML
     @Subscribe
     protected void showPicture(ShowPictureEvent event){
@@ -44,23 +43,17 @@ public class PictureController {
 
         if(rubberBandSelection != null){
             rubberBandSelection.removeBounds();
-        }else{
-            rubberBandSelection = new RubberBandSelection(imageLayer);
         }
+        rubberBandSelection = new RubberBandSelection(imageLayer);
+
     }
 
     @FXML
     @Subscribe
     public void cropListener(CropEvent cropEvent){
 
-
-        System.out.println("se llama al crop listener");
-
         // get bounds for image crop
         Bounds selectionBounds = rubberBandSelection.getBounds();
-
-        // show bounds info
-        System.out.println( "Selected area: " + selectionBounds);
 
         // crop the image
         crop(selectionBounds);
@@ -71,20 +64,11 @@ public class PictureController {
 
     private void crop(Bounds bounds){
 
-        if((int) bounds.getWidth() == 0 || (int) bounds.getHeight() == 0)
+        if((int) bounds.getWidth() <= 0 || (int) bounds.getHeight() <= 0)
             return;
 
         pictureService.cropPicture((int)bounds.getMinY(), (int)bounds.getMaxY(), (int)bounds.getMinX(), (int)bounds.getMaxX());
         imageView.setImage(SwingFXUtils.toFXImage(pictureService.getPicture().toBufferedImage(), null));
-
-//        SnapshotParameters parameters = new SnapshotParameters();
-//        parameters.setFill(Color.TRANSPARENT);
-//        parameters.setViewport(new Rectangle2D(bounds.getMinX(), bounds.getMinY(), width, height));
-
-//        WritableImage wi = new WritableImage(width, height);
-//        imageView.snapshot(parameters, wi);
-//
-//        imageView.setImage(wi);
 
     }
 
@@ -99,6 +83,9 @@ public class PictureController {
         Group group;
 
 
+        /**
+         * @return bounds, x refers to columns and y to rows
+         */
         public Bounds getBounds() {
             return rect.getBoundsInParent();
         }
@@ -135,7 +122,6 @@ public class PictureController {
 
                 group.getChildren().remove(rect);
 
-
                 // prepare new drag operation
                 dragContext.mouseAnchorX = event.getX();
                 dragContext.mouseAnchorY = event.getY();
@@ -155,20 +141,20 @@ public class PictureController {
             @Override
             public void handle(MouseEvent event) {
 
-                if( event.isSecondaryButtonDown())
+                if(event.isSecondaryButtonDown())
                     return;
 
                 double offsetX = event.getX() - dragContext.mouseAnchorX;
                 double offsetY = event.getY() - dragContext.mouseAnchorY;
 
-                if( offsetX > 0)
+                if(offsetX > 0)
                     rect.setWidth(offsetX);
                 else {
                     rect.setX(event.getX());
                     rect.setWidth(dragContext.mouseAnchorX - rect.getX());
                 }
 
-                if( offsetY > 0) {
+                if(offsetY > 0) {
                     rect.setHeight( offsetY);
                 } else {
                     rect.setY(event.getY());
@@ -181,7 +167,6 @@ public class PictureController {
 
             public double mouseAnchorX;
             public double mouseAnchorY;
-
 
         }
 

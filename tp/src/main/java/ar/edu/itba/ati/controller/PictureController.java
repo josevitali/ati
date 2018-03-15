@@ -89,7 +89,7 @@ public class PictureController {
 
         //TODO setearla desde el picture service
         imageView.setImage(wi);
-        pictureService.cropPicture((int)bounds.getMinX(), (int)bounds.getMaxX(), (int)bounds.getMinY(), (int)bounds.getMaxY());
+        pictureService.cropPicture((int)bounds.getMinY(), (int)bounds.getMaxY(), (int)bounds.getMinX(), (int)bounds.getMaxX());
 
     }
 
@@ -167,7 +167,7 @@ public class PictureController {
                 double offsetY = event.getY() - dragContext.mouseAnchorY;
 
                 if( offsetX > 0)
-                    rect.setWidth( offsetX);
+                    rect.setWidth(offsetX);
                 else {
                     rect.setX(event.getX());
                     rect.setWidth(dragContext.mouseAnchorX - rect.getX());

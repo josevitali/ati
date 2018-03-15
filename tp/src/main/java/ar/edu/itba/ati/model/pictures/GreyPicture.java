@@ -65,8 +65,8 @@ public class GreyPicture extends Picture<Double> {
             }
         }
         this.matrix = newpic;
-        this.height = y1-y0-1;
-        this.width = x1-x0-1;
+        this.width = y1-y0-1;
+        this.height = x1-x0-1;
     }
 
     @Override

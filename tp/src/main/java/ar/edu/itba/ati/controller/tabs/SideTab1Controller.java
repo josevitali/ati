@@ -76,6 +76,13 @@ public class SideTab1Controller {
         eventBus.post(new ShowPictureEvent());
     }
 
+    @FXML
+    private void dynamicRange(){
+        pictureService.getPicture().mapPixelByPixel(p -> (255.0 - 1) / Math.log(1 + 255.0) * Math.log(1 + (double) p));
+        pictureService.getPicture().normalize();
+        eventBus.post(new ShowPictureEvent());
+    }
+
     private Picture choosePicture(){
         FileChooser fc = new FileChooser();
         fc.setTitle("Choose picture");

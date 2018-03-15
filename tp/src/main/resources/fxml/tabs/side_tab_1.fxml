@@ -19,6 +19,7 @@
             <Button layoutX="108.0" layoutY="124.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#dotProduct"/>
             <Button alignment="TOP_CENTER" layoutX="14.0" layoutY="88.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Product" onAction="#productPicture"/>
             <ToggleButton layoutX="14.0" layoutY="160.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Negative" onAction="#negative"/>
+            <Button layoutX="14.0" layoutY="198.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Dynamic Range" onAction="#dynamicRange"/>
         </children>
     </AnchorPane>
 </fx:root>

@@ -37,14 +37,12 @@ public class MenuBarController {
 
         File file = fileChooser.showOpenDialog(menuBar.getScene().getWindow());
         if(file == null){
-            throw new IllegalStateException("Could not find file.");
+            return;
         }
 
         Picture picture = null;
-        Picture auxPicture = null;
         try {
             picture = Pictures.getPicture(file);
-            auxPicture = Pictures.getPicture(file);
         } catch (IOException e) {
             e.printStackTrace();
         }

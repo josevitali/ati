@@ -1,8 +1,7 @@
 package ar.edu.itba.ati.model.pictures;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public abstract class Picture<T> {
@@ -39,14 +38,31 @@ public abstract class Picture<T> {
 
     public abstract BufferedImage toBufferedImage();
 
-    public void mapElementByElement(Function<Double,Double> f){
+    public void mapPixelByPixel(Function<Double,Double> f){
         for(int row = 0; row < height; row++){
             for(int col = 0; col < width; col++){
-                matrix[row][col] = mapElement(f, matrix[row][col]);
+                matrix[row][col] = mapPixel(f, matrix[row][col]);
             }
         }
     }
 
-    protected abstract T mapElement(Function<Double,Double>f, T element);
+    protected abstract T mapPixel(Function<Double,Double>f, T pixel);
+
+    public void mapPixelByPixel(BiFunction<Double,Double,Double> bf, Picture otherPicture){
+        final int minHeight = height <= otherPicture.getHeight() ? height : otherPicture.getHeight();
+        final int minWidth = width <= otherPicture.getWidth() ? width : otherPicture.getWidth();
+
+        for(int row = 0; row < minHeight; row++){
+            for(int col = 0; col < minWidth; col++){
+                matrix[row][col] = mapPixel(bf, matrix[row][col], (T) otherPicture.getPixel(row,col));
+            }
+        }
+    }
+
+    protected abstract T mapPixel(BiFunction<Double, Double, Double> bf, T myPixel, T otherPixel);
+
+    public abstract void normalize();
+
+
 
 }

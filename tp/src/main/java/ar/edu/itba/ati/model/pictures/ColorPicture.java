@@ -5,6 +5,7 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.security.acl.Group;
 import java.util.Arrays;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class ColorPicture extends Picture<Double[]> {
@@ -67,10 +68,59 @@ public class ColorPicture extends Picture<Double[]> {
     }
 
     @Override
-    protected Double[] mapElement(Function<Double, Double> f, Double[] element) {
-        element[BLUE] = f.apply(element[BLUE]);
-        element[GREEN] = f.apply(element[GREEN]);
-        element[RED] = f.apply(element[RED]);
-        return element;
+    protected Double[] mapPixel(Function<Double, Double> f, Double[] pixel) {
+        pixel[BLUE] = f.apply(pixel[BLUE]);
+        pixel[GREEN] = f.apply(pixel[GREEN]);
+        pixel[RED] = f.apply(pixel[RED]);
+        return pixel;
+    }
+
+    @Override
+    protected Double[] mapPixel(BiFunction<Double, Double, Double> bf, Double[] myPixel, Double[] otherPixel) {
+        myPixel[BLUE] = bf.apply(myPixel[BLUE], otherPixel[BLUE]);
+        myPixel[GREEN] = bf.apply(myPixel[GREEN], otherPixel[GREEN]);
+        myPixel[RED] = bf.apply(myPixel[RED], otherPixel[RED]);
+        return myPixel;
+    }
+
+    @Override
+    public void normalize() {
+        normalizeBand(BLUE);
+        normalizeBand(GREEN);
+        normalizeBand(RED);
+    }
+
+    private void normalizeBand(int band) {
+        final double max = maxPixel(band);
+        final double min = minPixel(band);
+        final double m = 255 / (max - min);
+        final double b = - min * m;
+        for(Double[][] row : matrix){
+            for(Double[] pixel : row){
+                pixel[band] = m * pixel[band] + b;
+            }
+        }
+    }
+
+    private double maxPixel(int band) {
+        double max = matrix[0][0][band];
+        for(Double[][] row : matrix){
+            for(Double[] pixel : row){
+                if(pixel[band] > max)
+                    max = pixel[band];
+            }
+        }
+        return max;
+    }
+
+    private double minPixel(int band) {
+        double min = matrix[0][0][band];
+        for(Double[][] row : matrix){
+            for(Double[] pixel : row){
+                if(pixel[band] < min)
+                    min = pixel[band];
+            }
+        }
+        return min;
     }
 }

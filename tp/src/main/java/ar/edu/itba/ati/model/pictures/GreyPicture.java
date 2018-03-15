@@ -3,6 +3,7 @@ package ar.edu.itba.ati.model.pictures;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class GreyPicture extends Picture<Double> {
@@ -50,7 +51,44 @@ public class GreyPicture extends Picture<Double> {
     }
 
     @Override
-    protected Double mapElement(Function<Double, Double> f, Double element) {
-        return f.apply(element);
+    protected Double mapPixel(Function<Double, Double> f, Double pixel) {
+        return f.apply(pixel);
     }
+
+    @Override
+    protected Double mapPixel(BiFunction<Double, Double, Double> bf, Double myPixel, Double otherPixel) {
+        return bf.apply(myPixel, otherPixel);
+    }
+
+    @Override
+    public void normalize() {
+        final double max = maxPixel();
+        final double min = minPixel();
+        final double m = 255 / (max - min);
+        final double b = - min * m;
+        mapPixelByPixel(p -> m * p + b);
+    }
+
+    private double maxPixel() {
+        double max = matrix[0][0];
+        for(Double[] row : matrix){
+            for(Double pixel : row){
+                if(pixel > max)
+                    max = pixel;
+            }
+        }
+        return max;
+    }
+
+    private double minPixel() {
+        double min = matrix[0][0];
+        for(Double[] row : matrix){
+            for(Double pixel : row){
+                if(pixel < min)
+                    min = pixel;
+            }
+        }
+        return min;
+    }
+
 }

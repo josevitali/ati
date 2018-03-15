@@ -24,4 +24,8 @@ public class PictureService {
     public void setFile(File file) {
         this.file = file;
     }
+
+    public void cropPicture(){
+
+    }
 }

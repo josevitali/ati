@@ -27,7 +27,6 @@ public class PictureController {
     private PictureService pictureService;
 
     public ImageView imageView;
-    public ImageView auxImageView;
     public Group imageLayer;
     private RubberBandSelection rubberBandSelection;
 
@@ -47,23 +46,6 @@ public class PictureController {
         imageView.setImage(image);
 
         rubberBandSelection = new RubberBandSelection(imageLayer);
-
-
-//        BorderPane root = new BorderPane();
-
-//        // container for image layers
-//        ScrollPane scrollPane = new ScrollPane();
-
-        // image layer: a group of images
-
-//        // use scrollpane for image view in case the image is large
-//        scrollPane.setContent(imageLayer);
-//
-//        // put scrollpane in scene
-//        root.setCenter(scrollPane);
-
-        // rubberband selection
-
 
     }
 
@@ -92,6 +74,9 @@ public class PictureController {
         int width = (int) bounds.getWidth();
         int height = (int) bounds.getHeight();
 
+        if(width == 0 || height == 0)
+            return;
+
         SnapshotParameters parameters = new SnapshotParameters();
         parameters.setFill(Color.TRANSPARENT);
         parameters.setViewport(new Rectangle2D( bounds.getMinX(), bounds.getMinY(), width, height));
@@ -99,13 +84,13 @@ public class PictureController {
         WritableImage wi = new WritableImage( width, height);
         imageView.snapshot(parameters, wi);
 
-        //TODO descomentar para que se vea la foto croppeada cuando ande esto
-        
+        //TODO ver si setear wi o si volver a generarla a partir de imagen del picture service una vez
+        // que se haya cropeado la posta
+
         imageView.setImage(wi);
+        pictureService.cropPicture();
 
     }
-
-
 
     /**
      * Drag rectangle with mouse cursor in order to get selection bounds
@@ -142,7 +127,6 @@ public class PictureController {
 
             @Override
             public void handle(MouseEvent event) {
-                System.out.println("se hizo click");
 
                 if(event.isSecondaryButtonDown())
                     return;
@@ -174,7 +158,6 @@ public class PictureController {
 
             @Override
             public void handle(MouseEvent event) {
-                System.out.println("se draggeo");
 
                 if( event.isSecondaryButtonDown())
                     return;

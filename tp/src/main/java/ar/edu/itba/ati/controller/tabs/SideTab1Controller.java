@@ -1,11 +1,12 @@
 package ar.edu.itba.ati.controller.tabs;
 
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
-import ar.edu.itba.ati.model.functions.Negative;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+
+import java.util.function.Function;
 
 public class SideTab1Controller {
 
@@ -20,7 +21,12 @@ public class SideTab1Controller {
 
     @FXML
     protected void negative(){
-        pictureService.getPicture().mapElementByElement(new Negative());
+        pictureService.getPicture().mapElementByElement(new Function<Double, Double>() {
+            @Override
+            public Double apply(Double aDouble) {
+                return 255 - aDouble;
+            }
+        });
         eventBus.post(new ShowPictureEvent());
     }
 }

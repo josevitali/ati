@@ -32,7 +32,6 @@ public class App extends Application{
         final Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml/app.fxml"));
         primaryStage.setTitle("ATI Image Editor");
         primaryStage.setScene(new Scene(root));
-        primaryStage.setFullScreen(true);
         primaryStage.show();
         this.primaryStage = primaryStage;
 

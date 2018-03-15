@@ -13,6 +13,12 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 public class Pictures {
 
@@ -106,10 +112,9 @@ public class Pictures {
             case "bmp":
                 saveBmp(picture, file);
                 break;
-//                TODO guardar imagen raw
-//            case "raw":
-//                saveRaw(picture, file);
-//                break;
+            case "raw":
+                saveRaw(picture, file);
+                break;
             default:
                 throw new IllegalStateException("Extension " + extension + " not supported.");
         }
@@ -133,6 +138,32 @@ public class Pictures {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void saveRaw(Picture picture, File file) {
+        BufferedImage bufferedImage = picture.toBufferedImage();
+        String fileName = FilenameUtils.getFullPath(file.getPath()) + FilenameUtils.getBaseName(file.getName());
+        String dataFileName = fileName + ".data";
+        String rawFileName = fileName + ".RAW";
+        String width = String.valueOf(bufferedImage.getWidth());
+        String height = String.valueOf(bufferedImage.getHeight());
+        String type = String.valueOf(bufferedImage.getType());
+
+        List<String> lines = Arrays.asList(width, height, type);
+        Path dataFile = Paths.get(dataFileName);
+
+        byte[] data = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
+        Path rawFile = Paths.get(rawFileName);
+
+        try {
+            Files.write(dataFile, lines, Charset.forName("UTF-8"));
+            Files.write(rawFile, data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
 }

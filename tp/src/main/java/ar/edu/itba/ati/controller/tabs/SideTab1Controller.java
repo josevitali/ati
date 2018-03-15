@@ -7,14 +7,13 @@ import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import org.apache.commons.io.FilenameUtils;
 
+import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 public class SideTab1Controller {
 
@@ -22,6 +21,8 @@ public class SideTab1Controller {
     private final PictureService pictureService;
     @FXML
     private AnchorPane anchorPane;
+    @FXML
+    public TextField dotProductVal;
 
     @Inject
     public SideTab1Controller(final EventBus eventBus, final PictureService pictureService){
@@ -31,36 +32,40 @@ public class SideTab1Controller {
 
     @FXML
     private void addPicture(){
-        Picture otherPicture = choosePicture();
-
-        if(otherPicture == null){
-            return;
-        }
-
-        pictureService.getPicture().mapPixelByPixel(new BiFunction<Double, Double, Double>() {
-            @Override
-            public Double apply(Double aDouble, Double aDouble2) {
-                return aDouble + aDouble2;
-            }
-        }, otherPicture);
-        pictureService.getPicture().normalize();
-        eventBus.post(new ShowPictureEvent());
+        twoPictureOperation((px1,px2) -> px1 + px2);
     }
 
     @FXML
     private void subtractPicture(){
+        twoPictureOperation((px1,px2) -> px1 - px2);
+    }
+
+    @FXML
+    private void productPicture(){
+        twoPictureOperation((px1,px2) -> px1 * px2);
+    }
+
+    @FXML
+    private void dotProduct(){
+        try {
+            Double value = Double.valueOf(dotProductVal.getText());
+            pictureService.getPicture().mapPixelByPixel(px -> value * (double) px);
+//            TODO: debería normalizar?
+//            pictureService.getPicture().normalize();
+            eventBus.post(new ShowPictureEvent());
+        } catch (NumberFormatException e){
+            return;
+        }
+    }
+
+    private void twoPictureOperation(BiFunction<Double,Double,Double> bf){
         Picture otherPicture = choosePicture();
 
         if(otherPicture == null){
             return;
         }
 
-        pictureService.getPicture().mapPixelByPixel(new BiFunction<Double, Double, Double>() {
-            @Override
-            public Double apply(Double aDouble, Double aDouble2) {
-                return aDouble - aDouble2;
-            }
-        }, otherPicture);
+        pictureService.getPicture().mapPixelByPixel(bf, otherPicture);
         pictureService.getPicture().normalize();
         eventBus.post(new ShowPictureEvent());
     }

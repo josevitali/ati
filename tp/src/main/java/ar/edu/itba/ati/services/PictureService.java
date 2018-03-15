@@ -25,7 +25,6 @@ public class PictureService {
         this.file = file;
     }
 
-    public void cropPicture(){
+    public void cropPicture(int x0, int x1, int y0, int y1){picture.crop(x0, x1, y0, y1);}
 
-    }
 }

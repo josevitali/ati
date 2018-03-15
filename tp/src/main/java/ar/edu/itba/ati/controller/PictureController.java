@@ -45,8 +45,11 @@ public class PictureController {
 
         imageView.setImage(image);
 
-        rubberBandSelection = new RubberBandSelection(imageLayer);
-
+        if(rubberBandSelection != null){
+            rubberBandSelection.removeBounds();
+        }else{
+            rubberBandSelection = new RubberBandSelection(imageLayer);
+        }
     }
 
     @FXML
@@ -69,7 +72,7 @@ public class PictureController {
         rubberBandSelection.removeBounds();
     }
 
-    private void crop(Bounds bounds) {
+    private void crop(Bounds bounds){
 
         int width = (int) bounds.getWidth();
         int height = (int) bounds.getHeight();
@@ -79,16 +82,14 @@ public class PictureController {
 
         SnapshotParameters parameters = new SnapshotParameters();
         parameters.setFill(Color.TRANSPARENT);
-        parameters.setViewport(new Rectangle2D( bounds.getMinX(), bounds.getMinY(), width, height));
+        parameters.setViewport(new Rectangle2D(bounds.getMinX(), bounds.getMinY(), width, height));
 
-        WritableImage wi = new WritableImage( width, height);
+        WritableImage wi = new WritableImage(width, height);
         imageView.snapshot(parameters, wi);
 
-        //TODO ver si setear wi o si volver a generarla a partir de imagen del picture service una vez
-        // que se haya cropeado la posta
-
+        //TODO setearla desde el picture service
         imageView.setImage(wi);
-        pictureService.cropPicture();
+        pictureService.cropPicture((int)bounds.getMinX(), (int)bounds.getMaxX(), (int)bounds.getMinY(), (int)bounds.getMaxY());
 
     }
 

@@ -8,8 +8,8 @@ public abstract class Picture<T> {
 
     protected final int type;
     protected T[][] matrix;
-    protected final int height;
-    protected final int width;
+    protected int height;
+    protected int width;
 
     public Picture(int type, T[][] matrix, int height, int width) {
         this.type = type;
@@ -64,5 +64,7 @@ public abstract class Picture<T> {
     public abstract void normalize();
 
 
+
+    public abstract void crop(int x0, int x1, int y0, int y1);
 
 }

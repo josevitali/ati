@@ -55,6 +55,20 @@ public class GreyPicture extends Picture<Double> {
         return f.apply(pixel);
     }
 
+
+    public void crop(int x0, int x1, int y0, int y1){
+        System.out.println("current height and width " + height + " " + width);
+        Double[][] newpic = new Double[x1-x0][y1-y0];
+        for (int i = x0, i2 = 0; i < x1-1; i++, i2++) {
+            for (int j = y0, j2 = 0; j < y1-1; j++, j2++) {
+                newpic[i2][j2] = matrix[i][j];
+            }
+        }
+        this.matrix = newpic;
+        this.height = y1-y0-1;
+        this.width = x1-x0-1;
+    }
+
     @Override
     protected Double mapPixel(BiFunction<Double, Double, Double> bf, Double myPixel, Double otherPixel) {
         return bf.apply(myPixel, otherPixel);

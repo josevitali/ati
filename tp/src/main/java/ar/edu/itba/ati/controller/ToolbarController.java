@@ -25,7 +25,6 @@ public class ToolbarController {
     public ToolBar toolbar;
 
     public Button cropMenuItem;
-    public Button switchButton;
     public Button newWindow;
 
     @Inject

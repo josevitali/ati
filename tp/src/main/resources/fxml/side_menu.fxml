@@ -16,7 +16,7 @@
          fx:controller="ar.edu.itba.ati.controller.SideMenuController"
          fx:id="sideMenu" visible="false">
 
-    <TabPane layoutX="7.0" prefHeight="371.0" prefWidth="168.0" tabClosingPolicy="UNAVAILABLE">
+    <TabPane layoutX="7.0" prefWidth="168.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
 
             <Tab text="TP 1">

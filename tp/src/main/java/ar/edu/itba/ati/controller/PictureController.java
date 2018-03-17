@@ -4,6 +4,7 @@ import ar.edu.itba.ati.events.pictures.CropEvent;
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.services.PictureService;
+import ar.edu.itba.ati.views.PictureView;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
@@ -15,6 +16,7 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineCap;
@@ -41,7 +43,7 @@ public class PictureController {
         if(picture == null){
             picture = pictureService.getPicture();
         }
-        
+
         Image image = SwingFXUtils.toFXImage(picture.toBufferedImage(), null);
 
         imageView.setImage(image);
@@ -50,7 +52,6 @@ public class PictureController {
             rubberBandSelection.removeBounds();
         }
         rubberBandSelection = new RubberBandSelection(imageLayer);
-
     }
 
     @FXML

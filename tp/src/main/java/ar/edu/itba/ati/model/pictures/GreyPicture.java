@@ -1,8 +1,14 @@
 package ar.edu.itba.ati.model.pictures;
 
+import ar.edu.itba.ati.model.histograms.Histogram;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -94,6 +100,29 @@ public class GreyPicture extends Picture<Double> {
         Picture picture = new GreyPicture(type, duplicateMatrix(), height, width);
         picture.normalize();
         return picture;
+    }
+
+    @Override
+    public Histogram getHistogram() {
+        final int min = (int) Math.floor(minPixel());
+        final int max = (int) Math.floor(maxPixel());
+        int[] greyValues = new int[max - min + 1];
+
+        for(Double[] row : matrix){
+            for(Double pixel : row){
+                int n = ((int) Math.floor(pixel)) - min;
+                greyValues[n]++;
+            }
+        }
+
+        String[] categories = new String[greyValues.length];
+        for(int i = min; i <= max; i++){
+            categories[i - min] = new Integer(i).toString();
+        }
+        Map<String,int[]> series = new HashMap<>();
+        series.put("Grey", greyValues);
+
+        return new Histogram(categories, series);
     }
 
     private double maxPixel() {

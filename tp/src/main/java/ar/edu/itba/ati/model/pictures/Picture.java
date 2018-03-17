@@ -1,6 +1,7 @@
 package ar.edu.itba.ati.model.pictures;
 
 import ar.edu.itba.ati.io.Pictures;
+import ar.edu.itba.ati.model.histograms.Histogram;
 
 import java.awt.image.BufferedImage;
 import java.util.function.BiFunction;
@@ -66,6 +67,8 @@ public abstract class Picture<T>{
     public abstract void normalize();
 
     public abstract Picture getNormalizedClone();
+
+    public abstract Histogram getHistogram();
 
     public abstract void crop(int x0, int x1, int y0, int y1);
 

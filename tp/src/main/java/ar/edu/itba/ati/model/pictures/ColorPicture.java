@@ -1,8 +1,12 @@
 package ar.edu.itba.ati.model.pictures;
 
+import ar.edu.itba.ati.model.histograms.Histogram;
+
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -112,6 +116,42 @@ public class ColorPicture extends Picture<Double[]> {
         Picture picture = new ColorPicture(type, duplicateMatrix(), height, width);
         picture.normalize();
         return picture;
+    }
+
+    @Override
+    public Histogram getHistogram() {
+        final int minBlue = (int) Math.floor(minPixel(BLUE));
+        final int maxBlue = (int) Math.floor(maxPixel(BLUE));
+        final int minGreen = (int) Math.floor(minPixel(GREEN));
+        final int maxGreen = (int) Math.floor(maxPixel(GREEN));
+        final int minRed = (int) Math.floor(minPixel(RED));
+        final int maxRed = (int) Math.floor(maxPixel(RED));
+        final int min = minBlue < minGreen && minBlue < minRed ? minBlue :
+                (minGreen < minRed ? minGreen : minRed);
+        final int max = maxBlue > maxGreen && maxBlue > maxRed ? maxBlue :
+                (maxGreen > maxRed ? maxGreen : maxRed);
+        int[] blueValues = new int[max - min + 1];
+        int[] redValues = new int[max - min + 1];
+        int[] greenValues = new int[max - min + 1];
+
+        for(Double[][] row : matrix){
+            for(Double[] pixel : row){
+                blueValues[((int) Math.floor(pixel[BLUE])) - min]++;
+                greenValues[((int) Math.floor(pixel[GREEN])) - min]++;
+                redValues[((int) Math.floor(pixel[RED])) - min]++;
+            }
+        }
+
+        String[] categories = new String[blueValues.length];
+        for(int i = min; i <= max; i++){
+            categories[i - min] = new Integer(i).toString();
+        }
+        Map<String,int[]> series = new HashMap<>();
+        series.put("Blue", blueValues);
+        series.put("Green", greenValues);
+        series.put("Red", redValues);
+
+        return new Histogram(categories, series);
     }
 
     private void normalizeBand(int band) {

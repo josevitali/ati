@@ -1,10 +1,12 @@
 package ar.edu.itba.ati.model.pictures;
 
+import ar.edu.itba.ati.io.Pictures;
+
 import java.awt.image.BufferedImage;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public abstract class Picture<T> {
+public abstract class Picture<T>{
 
     protected final int type;
     protected T[][] matrix;
@@ -62,6 +64,8 @@ public abstract class Picture<T> {
     protected abstract T mapPixel(BiFunction<Double, Double, Double> bf, T myPixel, T otherPixel);
 
     public abstract void normalize();
+
+    public abstract Picture getNormalizedClone();
 
     public abstract void crop(int x0, int x1, int y0, int y1);
 

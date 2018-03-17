@@ -50,15 +50,13 @@ public class SideTab1Controller {
         try {
             Double value = Double.valueOf(dotProductVal.getText());
             pictureService.getPicture().mapPixelByPixel(px -> value * (double) px);
-//            TODO: debería normalizar?
-//            pictureService.getPicture().normalize();
             eventBus.post(new ShowPictureEvent());
         } catch (NumberFormatException e){
             return;
         }
     }
 
-    private void twoPictureOperation(BiFunction<Double,Double,Double> bf){
+    private void twoPictureOperation(BiFunction<Double,Double,Double> bf) {
         Picture otherPicture = choosePicture();
 
         if(otherPicture == null){
@@ -66,21 +64,20 @@ public class SideTab1Controller {
         }
 
         pictureService.getPicture().mapPixelByPixel(bf, otherPicture);
-        pictureService.getPicture().normalize();
-        eventBus.post(new ShowPictureEvent());
+        eventBus.post(new ShowPictureEvent(pictureService.getPicture().getNormalizedClone()));
     }
 
     @FXML
-    private void negative(){
+    private void negative() {
         pictureService.getPicture().mapPixelByPixel(p -> 255.0 - (double) p);
-        eventBus.post(new ShowPictureEvent());
+        eventBus.post(new ShowPictureEvent(pictureService.getPicture().getNormalizedClone()));
     }
 
     @FXML
-    private void dynamicRange(){
+    private void dynamicRange() {
         pictureService.getPicture().mapPixelByPixel(p -> (255.0 - 1) / Math.log(1 + 255.0) * Math.log(1 + (double) p));
         pictureService.getPicture().normalize();
-        eventBus.post(new ShowPictureEvent());
+        eventBus.post(new ShowPictureEvent(pictureService.getPicture().getNormalizedClone()));
     }
 
     private Picture choosePicture(){

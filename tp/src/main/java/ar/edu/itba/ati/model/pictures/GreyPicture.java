@@ -13,6 +13,13 @@ public class GreyPicture extends Picture<Double> {
                 bufferedImage.getWidth());
     }
 
+    public GreyPicture(int type, Double[][] matrix, int height, int width){
+        super(type, matrix, height, width);
+        if(matrix.length != height || matrix[0].length != width){
+            throw new IllegalArgumentException("Dimensions of the matrix don't match with the specified height or width");
+        }
+    }
+
     private static Double[][] createMatrix(BufferedImage bufferedImage) {
         Double[][] matrix = new Double[bufferedImage.getHeight()][bufferedImage.getWidth()];
         byte[] pixels = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
@@ -82,6 +89,13 @@ public class GreyPicture extends Picture<Double> {
         mapPixelByPixel(p -> m * p + b);
     }
 
+    @Override
+    public Picture getNormalizedClone() {
+        Picture picture = new GreyPicture(type, duplicateMatrix(), height, width);
+        picture.normalize();
+        return picture;
+    }
+
     private double maxPixel() {
         double max = matrix[0][0];
         for(Double[] row : matrix){
@@ -102,6 +116,17 @@ public class GreyPicture extends Picture<Double> {
             }
         }
         return min;
+    }
+
+    private Double[][] duplicateMatrix(){
+        Double[][] otherMatrix = new Double[height][width];
+        for(int row = 0; row < height; row++){
+            for(int col = 0; col < width; col ++){
+                Double pixel = matrix[row][col].doubleValue();
+                otherMatrix[row][col] = pixel;
+            }
+        }
+        return otherMatrix;
     }
 
 }

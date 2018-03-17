@@ -17,6 +17,13 @@ public class ColorPicture extends Picture<Double[]> {
                 bufferedImage.getWidth());
     }
 
+    public ColorPicture(int type, Double[][][] matrix, int height, int width){
+        super(type, matrix, height, width);
+        if(matrix.length != height || matrix[0].length != width){
+            throw new IllegalArgumentException("Dimensions of the matrix don't match with the specified height or width");
+        }
+    }
+
     private static Double[][][] createMatrix(BufferedImage bufferedImage) {
         Double[][][] matrix = new Double[bufferedImage.getHeight()][bufferedImage.getWidth()][3];
         byte[] pixels = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
@@ -100,6 +107,13 @@ public class ColorPicture extends Picture<Double[]> {
         normalizeBand(RED);
     }
 
+    @Override
+    public Picture getNormalizedClone() {
+        Picture picture = new ColorPicture(type, duplicateMatrix(), height, width);
+        picture.normalize();
+        return picture;
+    }
+
     private void normalizeBand(int band) {
         final double max = maxPixel(band);
         final double min = minPixel(band);
@@ -132,6 +146,20 @@ public class ColorPicture extends Picture<Double[]> {
             }
         }
         return min;
+    }
+
+    private Double[][][] duplicateMatrix(){
+        Double[][][] otherMatrix = new Double[height][width][3];
+        for(int row = 0; row < height; row++){
+            for(int col = 0; col < width; col ++){
+                Double[] pixel = new Double[3];
+                pixel[BLUE] = matrix[row][col][BLUE].doubleValue();
+                pixel[GREEN] = matrix[row][col][GREEN].doubleValue();
+                pixel[RED] = matrix[row][col][RED].doubleValue();
+                otherMatrix[row][col] = pixel;
+            }
+        }
+        return otherMatrix;
     }
 
 }

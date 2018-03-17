@@ -2,6 +2,7 @@ package ar.edu.itba.ati.controller;
 
 import ar.edu.itba.ati.events.pictures.CropEvent;
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
+import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -35,9 +36,13 @@ public class PictureController {
 
     @FXML
     @Subscribe
-    protected void showPicture(ShowPictureEvent event){
-
-        Image image = SwingFXUtils.toFXImage(pictureService.getPicture().toBufferedImage(), null);
+    protected void showPicture(ShowPictureEvent event) {
+        Picture picture = event.getPicture();
+        if(picture == null){
+            picture = pictureService.getPicture();
+        }
+        
+        Image image = SwingFXUtils.toFXImage(picture.toBufferedImage(), null);
 
         imageView.setImage(image);
 

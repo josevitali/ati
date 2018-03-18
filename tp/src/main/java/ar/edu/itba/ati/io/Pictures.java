@@ -122,14 +122,14 @@ public class Pictures {
 
     private static void saveBmp(Picture picture, File file) {
         try {
-            ImageIO.write(picture.toBufferedImage(), "bmp", file);
+            ImageIO.write(picture.getNormalizedClone().toBufferedImage(), "bmp", file);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private static void savePgmAndPpm(Picture picture, File file) {
-        BufferedImage bufferedImage = picture.toBufferedImage();
+        BufferedImage bufferedImage = picture.getNormalizedClone().toBufferedImage();
         byte[] data = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
         Mat mat = new Mat(bufferedImage.getHeight(),bufferedImage.getWidth(), CvType.CV_8UC3);
         mat.put(0, 0, data);
@@ -141,7 +141,7 @@ public class Pictures {
     }
 
     private static void saveRaw(Picture picture, File file) {
-        BufferedImage bufferedImage = picture.toBufferedImage();
+        BufferedImage bufferedImage = picture.getNormalizedClone().toBufferedImage();
         String fileName = FilenameUtils.getFullPath(file.getPath()) + FilenameUtils.getBaseName(file.getName());
         String dataFileName = fileName + ".data";
         String rawFileName = fileName + ".RAW";

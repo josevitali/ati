@@ -10,16 +10,19 @@
 
 <fx:root type="SideTab1View" xmlns:fx="http://javafx.com/fxml"
          fx:controller="ar.edu.itba.ati.controller.tabs.SideTab1Controller" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="331.0" prefWidth="163.0" fx:id="anchorPane">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="331.0" prefWidth="183.0" fx:id="anchorPane">
         <children>
-            <Button alignment="TOP_CENTER" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Add" onAction="#addPicture"/>
-            <Button alignment="TOP_CENTER" layoutX="14.0" layoutY="51.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Subtract" onAction="#subtractPicture"/>
-            <TextField layoutX="60.0" layoutY="124.0" prefHeight="27.0" prefWidth="43.0" fx:id="dotProductVal"/>
-            <Label layoutX="8.0" layoutY="129.0" prefHeight="17.0" prefWidth="50.0" text="Multiply" />
-            <Button layoutX="108.0" layoutY="124.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#dotProduct"/>
-            <Button alignment="TOP_CENTER" layoutX="14.0" layoutY="88.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Product" onAction="#productPicture"/>
-            <ToggleButton layoutX="14.0" layoutY="160.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Negative" onAction="#negative"/>
-            <Button layoutX="14.0" layoutY="198.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Dynamic Range" onAction="#dynamicRange"/>
+            <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="14.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Add" onAction="#addPicture"/>
+            <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="51.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Subtract" onAction="#subtractPicture"/>
+            <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="88.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Product" onAction="#productPicture"/>
+            <TextField layoutX="70.0" layoutY="124.0" prefHeight="27.0" prefWidth="43.0" fx:id="dotProductVal"/>
+            <Label layoutX="8.0" layoutY="129.0" prefHeight="17.0" prefWidth="70.0" text="Multiply" />
+            <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="124.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#dotProduct"/>
+            <ToggleButton layoutX="24.0" layoutY="160.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Negative" onAction="#negative"/>
+            <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="198.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Dynamic Range" onAction="#dynamicRange"/>
+            <TextField layoutX="70.0" layoutY="235.0" prefHeight="27.0" prefWidth="43.0" fx:id="thresholdVal"/>
+            <Label layoutX="8.0" layoutY="235.0" prefHeight="17.0" prefWidth="70.0" text="Threshold" />
+            <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="235.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#threshold"/>
         </children>
     </AnchorPane>
 </fx:root>

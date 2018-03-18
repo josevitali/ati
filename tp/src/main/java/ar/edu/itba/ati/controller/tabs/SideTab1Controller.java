@@ -23,6 +23,8 @@ public class SideTab1Controller {
     private AnchorPane anchorPane;
     @FXML
     public TextField dotProductVal;
+    @FXML
+    public TextField thresholdVal;
 
     @Inject
     public SideTab1Controller(final EventBus eventBus, final PictureService pictureService){
@@ -50,6 +52,20 @@ public class SideTab1Controller {
         try {
             Double value = Double.valueOf(dotProductVal.getText());
             pictureService.getPicture().mapPixelByPixel(px -> value * (double) px);
+            eventBus.post(new ShowPictureEvent());
+        } catch (NumberFormatException e){
+            return;
+        }
+    }
+
+    @FXML
+    private void threshold() {
+        try {
+            Double value = Double.valueOf(thresholdVal.getText());
+            if(value > 255 || value < 0) {
+                return;
+            }
+            pictureService.getPicture().mapPixelByPixel(p -> (double) p > value ? 255.0 : 0.0);
             eventBus.post(new ShowPictureEvent());
         } catch (NumberFormatException e){
             return;

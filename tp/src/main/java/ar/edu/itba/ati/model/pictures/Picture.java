@@ -49,7 +49,11 @@ public abstract class Picture<T>{
         }
     }
 
-    protected abstract T mapPixel(Function<Double,Double>f, T pixel);
+    protected abstract T mapPixel(Function<Double,Double> f, T pixel);
+
+    public void mapPixel(int row, int col, Function<Double,Double> f){
+        matrix[row][col] = mapPixel(f, matrix[row][col]);
+    }
 
     public void mapPixelByPixel(BiFunction<Double,Double,Double> bf, Picture otherPicture){
         final int minHeight = height <= otherPicture.getHeight() ? height : otherPicture.getHeight();
@@ -63,6 +67,10 @@ public abstract class Picture<T>{
     }
 
     protected abstract T mapPixel(BiFunction<Double, Double, Double> bf, T myPixel, T otherPixel);
+
+    public void mapPixel(int row, int col, BiFunction<Double,Double,Double> bf, T otherPixel){
+        matrix[row][col] = mapPixel(bf, matrix[row][col], otherPixel);
+    }
 
     public abstract void normalize();
 

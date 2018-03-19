@@ -130,9 +130,9 @@ public class ColorPicture extends Picture<Double[]> {
                 (minGreen < minRed ? minGreen : minRed);
         final int max = maxBlue > maxGreen && maxBlue > maxRed ? maxBlue :
                 (maxGreen > maxRed ? maxGreen : maxRed);
-        int[] blueValues = new int[max - min + 1];
-        int[] redValues = new int[max - min + 1];
-        int[] greenValues = new int[max - min + 1];
+        double[] blueValues = new double[max - min + 1];
+        double[] redValues = new double[max - min + 1];
+        double[] greenValues = new double[max - min + 1];
 
         for(Double[][] row : matrix){
             for(Double[] pixel : row){
@@ -142,11 +142,17 @@ public class ColorPicture extends Picture<Double[]> {
             }
         }
 
+        for(int i = 0; i < blueValues.length; i++) {
+            blueValues[i] /= (matrix.length * matrix[0].length);
+            greenValues[i] /= (matrix.length * matrix[0].length);
+            redValues[i] /= (matrix.length * matrix[0].length);
+        }
+
         String[] categories = new String[blueValues.length];
         for(int i = min; i <= max; i++){
             categories[i - min] = new Integer(i).toString();
         }
-        Map<String,int[]> series = new HashMap<>();
+        Map<String,double[]> series = new HashMap<>();
         series.put("Blue", blueValues);
         series.put("Green", greenValues);
         series.put("Red", redValues);

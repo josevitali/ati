@@ -82,8 +82,8 @@ public class ToolbarController {
         newWindow(chart, "Histogram", stylesheets);
     }
 
-    private void addSeries(ObservableList<BarChart.Series> barChartData, String[] categories, Map<String,int[]> series){
-        for(Map.Entry<String,int[]> entry : series.entrySet()){
+    private void addSeries(ObservableList<BarChart.Series> barChartData, String[] categories, Map<String,double[]> series){
+        for(Map.Entry<String,double[]> entry : series.entrySet()){
             ObservableList<BarChart.Data> data = FXCollections.observableArrayList();
             for(int i = 0; i < categories.length; i++){
                 data.add(new BarChart.Data<>(categories[i],entry.getValue()[i]));

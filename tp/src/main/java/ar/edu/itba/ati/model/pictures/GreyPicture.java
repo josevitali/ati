@@ -106,7 +106,7 @@ public class GreyPicture extends Picture<Double> {
     public Histogram getHistogram() {
         final int min = (int) Math.floor(minPixel());
         final int max = (int) Math.floor(maxPixel());
-        int[] greyValues = new int[max - min + 1];
+        double[] greyValues = new double[max - min + 1];
 
         for(Double[] row : matrix){
             for(Double pixel : row){
@@ -115,11 +115,15 @@ public class GreyPicture extends Picture<Double> {
             }
         }
 
+        for(int i = 0; i < greyValues.length; i++) {
+            greyValues[i] /= (matrix.length * matrix[0].length);
+        }
+
         String[] categories = new String[greyValues.length];
         for(int i = min; i <= max; i++){
             categories[i - min] = new Integer(i).toString();
         }
-        Map<String,int[]> series = new HashMap<>();
+        Map<String,double[]> series = new HashMap<>();
         series.put("Grey", greyValues);
 
         return new Histogram(categories, series);

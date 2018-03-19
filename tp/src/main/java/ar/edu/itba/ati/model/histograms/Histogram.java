@@ -6,9 +6,9 @@ import java.util.Map;
 public class Histogram {
 
     private String[] categories;
-    private Map<String,int[]> series;
+    private Map<String,double[]> series;
 
-    public Histogram(String[] categories, Map<String,int[]> series) {
+    public Histogram(String[] categories, Map<String,double[]> series) {
         this.categories = categories;
         this.series = series;
     }
@@ -17,7 +17,7 @@ public class Histogram {
         return categories;
     }
 
-    public Map<String,int[]> getSeries() {
+    public Map<String,double[]> getSeries() {
         return series;
     }
 }

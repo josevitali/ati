@@ -3,6 +3,9 @@ package ar.edu.itba.ati.controller;
 import ar.edu.itba.ati.events.pictures.CropEvent;
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.model.pictures.Picture;
+import ar.edu.itba.ati.model.transformations.PictureTransformer;
+import ar.edu.itba.ati.model.transformations.noise.ExponentialNoise;
+import ar.edu.itba.ati.model.transformations.noise.GaussianNoise;
 import ar.edu.itba.ati.services.PictureService;
 import ar.edu.itba.ati.views.PictureView;
 import com.google.common.eventbus.EventBus;
@@ -43,6 +46,9 @@ public class PictureController {
         if(picture == null){
             picture = pictureService.getPicture();
         }
+
+        PictureTransformer gaussianNoise = new GaussianNoise();
+        gaussianNoise.transform(picture);
 
         Image image = SwingFXUtils.toFXImage(picture.toBufferedImage(), null);
 

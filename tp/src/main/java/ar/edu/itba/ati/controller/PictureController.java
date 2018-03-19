@@ -47,9 +47,6 @@ public class PictureController {
             picture = pictureService.getPicture();
         }
 
-        PictureTransformer gaussianNoise = new GaussianNoise();
-        gaussianNoise.transform(picture);
-
         Image image = SwingFXUtils.toFXImage(picture.toBufferedImage(), null);
 
         imageView.setImage(image);

@@ -44,7 +44,7 @@ public class ColorPicture extends Picture<Double[]> {
         return matrix;
     }
 
-    public Double[] getAverageColor(int row1, int col1, int row2, int col2) {
+    public String getAverageColor(int row1, int col1, int row2, int col2) {
         int amount = (1 + row2 - row1) * (1 + col2 - col1);
         Double[] avg = new Double[]{new Double(0), new Double(0), new Double(0)};
 
@@ -59,8 +59,7 @@ public class ColorPicture extends Picture<Double[]> {
         avg[BLUE] /= amount;
         avg[GREEN] /= amount;
         avg[RED] /= amount;
-
-        return avg;
+        return avg[BLUE] + " " + avg[GREEN] + " " + avg[RED];
     }
 
     public BufferedImage toBufferedImage() {

@@ -39,7 +39,7 @@ public class GreyPicture extends Picture<Double> {
         return matrix;
     }
 
-    public Double getAverageColor(int row1, int col1, int row2, int col2) {
+    public String getAverageColor(int row1, int col1, int row2, int col2) {
         int amount = (1 + row2 - row1) * (1 + col2 - col1);
         double avg = 0;
 
@@ -49,7 +49,7 @@ public class GreyPicture extends Picture<Double> {
             }
         }
 
-        return avg / amount;
+        return Double.toString(avg/amount);
     }
 
     public BufferedImage toBufferedImage() {

@@ -27,4 +27,7 @@ public class PictureService {
 
     public void cropPicture(int x0, int x1, int y0, int y1){picture.crop(x0, x1, y0, y1);}
 
+    public void average(int x0, int x1, int y0, int y1){
+        System.out.println(picture.getAverageColor(x0, x1, y0, y1));}
+
 }

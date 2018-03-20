@@ -1,5 +1,6 @@
 package ar.edu.itba.ati.controller;
 
+import ar.edu.itba.ati.events.pictures.AverageEvent;
 import ar.edu.itba.ati.events.pictures.CropEvent;
 import ar.edu.itba.ati.events.toolbar.ShowToolbarEvent;
 import ar.edu.itba.ati.model.histograms.Histogram;
@@ -35,6 +36,10 @@ public class ToolbarController {
     public EventBus eventBus;
     private PictureService pictureService;
     public ToolBar toolbar;
+
+    public Button cropMenuItem;
+    public Button newWindow;
+    public Button averagePixel;
 
     @Inject
     public ToolbarController(final EventBus eventBus, PictureService pictureService){
@@ -88,6 +93,12 @@ public class ToolbarController {
             for(int i = 0; i < categories.length; i++){
                 data.add(new BarChart.Data<>(categories[i],entry.getValue()[i]));
             }
+        });
+        averagePixel.setOnAction(new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent event) {
+                eventBus.post(new AverageEvent());
+            }
+        });
             BarChart.Series aSeries = new BarChart.Series(entry.getKey(),data);
             barChartData.add(aSeries);
         }

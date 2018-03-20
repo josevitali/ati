@@ -1,5 +1,6 @@
 package ar.edu.itba.ati.controller;
 
+import ar.edu.itba.ati.events.pictures.AverageEvent;
 import ar.edu.itba.ati.events.pictures.CropEvent;
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.model.pictures.Picture;
@@ -74,6 +75,21 @@ public class PictureController {
         pictureService.cropPicture((int)bounds.getMinY(), (int)bounds.getMaxY(), (int)bounds.getMinX(), (int)bounds.getMaxX());
         imageView.setImage(SwingFXUtils.toFXImage(pictureService.getPicture().toBufferedImage(), null));
 
+    }
+
+
+    @FXML
+    @Subscribe
+    private void averageListener(AverageEvent averageEvent){
+        Bounds selectionBounds = rubberBandSelection.getBounds();
+        average(selectionBounds);
+        rubberBandSelection.removeBounds();
+
+    }
+    private void average(Bounds bounds){
+        if((int) bounds.getWidth() <= 0 || (int) bounds.getHeight() <= 0)
+            return;
+        pictureService.average((int)bounds.getMinY(), (int)bounds.getMaxY(), (int)bounds.getMinX(), (int)bounds.getMaxX());
     }
 
     /**

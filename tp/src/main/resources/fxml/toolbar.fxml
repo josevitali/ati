@@ -18,6 +18,8 @@
         <!--</ImageView>-->
     </Button>
 
+    <Button fx:id="newWindow" text="open in new window"></Button>
+    <Button fx:id="averagePixel" text="average"></Button>
     <Button fx:id="newWindow" text="Open in new window" onAction="#openPictureInNewWindow"/>
     <Button fx:id="histogram" text="Histogram" onAction="#showHistogram"/>
 </fx:root>

@@ -3,6 +3,10 @@ package ar.edu.itba.ati.controller.tabs;
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.io.Pictures;
 import ar.edu.itba.ati.model.pictures.Picture;
+import ar.edu.itba.ati.model.transformations.PictureTransformer;
+import ar.edu.itba.ati.model.transformations.noise.ExponentialNoise;
+import ar.edu.itba.ati.model.transformations.noise.GaussianNoise;
+import ar.edu.itba.ati.model.transformations.noise.RayleighNoise;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
@@ -22,7 +26,11 @@ public class SideTab1Controller {
     @FXML
     private AnchorPane anchorPane;
     @FXML
-    public TextField dotProductVal;
+    public TextField gaussVal;
+    @FXML
+    public TextField exponentialVal;
+    @FXML
+    public TextField rayleighVal;
     @FXML
     public TextField thresholdVal;
 
@@ -48,17 +56,6 @@ public class SideTab1Controller {
     }
 
     @FXML
-    private void dotProduct(){
-        try {
-            Double value = Double.valueOf(dotProductVal.getText());
-            pictureService.getPicture().mapPixelByPixel(px -> value * (double) px);
-            eventBus.post(new ShowPictureEvent());
-        } catch (NumberFormatException e){
-            return;
-        }
-    }
-
-    @FXML
     private void threshold() {
         try {
             Double value = Double.valueOf(thresholdVal.getText());
@@ -66,6 +63,51 @@ public class SideTab1Controller {
                 return;
             }
             pictureService.getPicture().mapPixelByPixel(p -> (double) p > value ? 255.0 : 0.0);
+            eventBus.post(new ShowPictureEvent());
+        } catch (NumberFormatException e){
+            return;
+        }
+    }
+
+    @FXML
+    private void gaussNoise() {
+        try {
+            Double value = Double.valueOf(gaussVal.getText());
+            if(value < 0) {
+                return;
+            }
+            PictureTransformer gaussianNoise = new GaussianNoise(0.0, value);
+            gaussianNoise.transform(pictureService.getPicture());
+            eventBus.post(new ShowPictureEvent());
+        } catch (NumberFormatException e){
+            return;
+        }
+    }
+
+    @FXML
+    private void exponentialNoise() {
+        try {
+            Double value = Double.valueOf(exponentialVal.getText());
+            if(value < 0) {
+                return;
+            }
+            PictureTransformer exponentialNoise = new ExponentialNoise(value);
+            exponentialNoise.transform(pictureService.getPicture());
+            eventBus.post(new ShowPictureEvent());
+        } catch (NumberFormatException e){
+            return;
+        }
+    }
+
+    @FXML
+    private void rayleighNoise() {
+        try {
+            Double value = Double.valueOf(rayleighVal.getText());
+            if(value < 0) {
+                return;
+            }
+            PictureTransformer rayleighNoise = new RayleighNoise(value);
+            rayleighNoise.transform(pictureService.getPicture());
             eventBus.post(new ShowPictureEvent());
         } catch (NumberFormatException e){
             return;
@@ -80,20 +122,22 @@ public class SideTab1Controller {
         }
 
         pictureService.getPicture().mapPixelByPixel(bf, otherPicture);
-        eventBus.post(new ShowPictureEvent(pictureService.getPicture().getNormalizedClone()));
+        eventBus.post(new ShowPictureEvent(pictureService.getPicture()));
     }
 
     @FXML
     private void negative() {
         pictureService.getPicture().mapPixelByPixel(p -> 255.0 - (double) p);
-        eventBus.post(new ShowPictureEvent(pictureService.getPicture().getNormalizedClone()));
+        eventBus.post(new ShowPictureEvent(pictureService.getPicture()));
     }
 
     @FXML
     private void dynamicRange() {
+        double productScalar = 5.0;
+        pictureService.getPicture().mapPixelByPixel(px -> productScalar * (double) px);
         pictureService.getPicture().mapPixelByPixel(p -> (255.0 - 1) / Math.log(1 + 255.0) * Math.log(1 + (double) p));
         pictureService.getPicture().normalize();
-        eventBus.post(new ShowPictureEvent(pictureService.getPicture().getNormalizedClone()));
+        eventBus.post(new ShowPictureEvent(pictureService.getPicture()));
     }
 
     private Picture choosePicture(){

@@ -5,26 +5,24 @@ import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 
 import java.util.Random;
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class ExponentialNoise implements PictureTransformer{
 
-    //TODO: check this parameter
-    private final double lambda = 0.95;
-    private final Random random = new Random();
+    private final double lambda;
+    private final Random random;
 
-//    public ExponentialNoise(double lambda) {
-//        this.lambda = lambda;
-//    }
+    public ExponentialNoise(double lambda) {
+        this.lambda = lambda;
+        this.random = new Random();
+    }
 
     @Override
     public void transform(Picture picture) {
         for (int i = 0; i < picture.getHeight(); i++) {
             for (int j = 0; j < picture.getHeight(); j++) {
-                double value = random.nextDouble();
-                value = (-1 / lambda) * Math.log(value);
-                BiFunction<Double,Double,Double> function = (px, noise) -> px * noise;
-                picture.mapPixel(i, j, function, value);
+                Function<Double,Double> function = px -> px * ((-1 / lambda) * Math.log(random.nextDouble()));
+                picture.mapPixel(i, j, function);
             }
         }
 

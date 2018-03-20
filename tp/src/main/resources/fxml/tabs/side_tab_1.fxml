@@ -15,14 +15,24 @@
             <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="14.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Add" onAction="#addPicture"/>
             <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="51.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Subtract" onAction="#subtractPicture"/>
             <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="88.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Product" onAction="#productPicture"/>
-            <TextField layoutX="70.0" layoutY="124.0" prefHeight="27.0" prefWidth="43.0" fx:id="dotProductVal"/>
-            <Label layoutX="8.0" layoutY="129.0" prefHeight="17.0" prefWidth="70.0" text="Multiply" />
-            <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="124.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#dotProduct"/>
-            <ToggleButton layoutX="24.0" layoutY="160.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Negative" onAction="#negative"/>
-            <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="198.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Dynamic Range" onAction="#dynamicRange"/>
-            <TextField layoutX="70.0" layoutY="235.0" prefHeight="27.0" prefWidth="43.0" fx:id="thresholdVal"/>
-            <Label layoutX="8.0" layoutY="235.0" prefHeight="17.0" prefWidth="70.0" text="Threshold" />
-            <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="235.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#threshold"/>
+            <ToggleButton layoutX="24.0" layoutY="124.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Negative" onAction="#negative"/>
+            <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="160.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Dynamic Range" onAction="#dynamicRange"/>
+            <Label layoutX="8.0" layoutY="198.0" prefHeight="17.0" prefWidth="70.0" text="Threshold" />
+            <TextField layoutX="70.0" layoutY="198.0" prefHeight="27.0" prefWidth="43.0" fx:id="thresholdVal"/>
+            <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="198.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#threshold"/>
+            <Label layoutX="8.0" layoutY="235.0" prefHeight="17.0" prefWidth="70.0" text="Gauss" />
+            <TextField layoutX="70.0" layoutY="235.0" prefHeight="27.0" prefWidth="43.0" fx:id="gaussVal"/>
+            <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="235.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#gaussNoise"/>
+            <Label layoutX="8.0" layoutY="272.0" prefHeight="17.0" prefWidth="70.0" text="Exp" />
+            <TextField layoutX="70.0" layoutY="272.0" prefHeight="27.0" prefWidth="43.0" fx:id="exponentialVal"/>
+            <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="272.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#exponentialNoise"/>
+            <Label layoutX="8.0" layoutY="309.0" prefHeight="17.0" prefWidth="70.0" text="Rayleigh" />
+            <TextField layoutX="70.0" layoutY="309.0" prefHeight="27.0" prefWidth="43.0" fx:id="rayleighVal"/>
+            <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="309.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#rayleighNoise"/>
+
         </children>
     </AnchorPane>
 </fx:root>
+<!--160-->
+<!--198-->
+<!--235-->

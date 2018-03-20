@@ -12,14 +12,8 @@
 <?import javafx.scene.image.Image?>
 <fx:root type="ToolbarView" visible="false" xmlns:fx="http://javafx.com/fxml"
          fx:controller="ar.edu.itba.ati.controller.ToolbarController" fx:id="toolbar">
-    <Button fx:id="cropMenuItem" text="Crop" onAction="#crop">
-        <!--<ImageView fitHeight="100" fitWidth="100">-->
-        <!--<Image url="https://cdn2.iconfinder.com/data/icons/interface-part-1/32/crop-512.png" backgroundLoading="true"></Image>-->
-        <!--</ImageView>-->
-    </Button>
-
-    <Button fx:id="newWindow" text="open in new window"></Button>
-    <Button fx:id="averagePixel" text="average"></Button>
+    <Button fx:id="cropMenuItem" text="Crop" onAction="#crop"></Button>
+    <Button fx:id="averagePixel" text="average" onAction="#average"></Button>
     <Button fx:id="newWindow" text="Open in new window" onAction="#openPictureInNewWindow"/>
     <Button fx:id="histogram" text="Histogram" onAction="#showHistogram"/>
 </fx:root>

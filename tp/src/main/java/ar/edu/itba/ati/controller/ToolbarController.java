@@ -11,8 +11,6 @@ import com.google.inject.Inject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -20,7 +18,6 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -59,6 +56,11 @@ public class ToolbarController {
     }
 
     @FXML
+    private void average(){
+       eventBus.post(new AverageEvent());
+    }
+
+    @FXML
     private void openPictureInNewWindow(){
         ImageView iv = new ImageView();
         iv.setImage(SwingFXUtils.toFXImage(pictureService.getPicture().getNormalizedClone().toBufferedImage(), null));
@@ -93,12 +95,6 @@ public class ToolbarController {
             for(int i = 0; i < categories.length; i++){
                 data.add(new BarChart.Data<>(categories[i],entry.getValue()[i]));
             }
-        });
-        averagePixel.setOnAction(new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent event) {
-                eventBus.post(new AverageEvent());
-            }
-        });
             BarChart.Series aSeries = new BarChart.Series(entry.getKey(),data);
             barChartData.add(aSeries);
         }

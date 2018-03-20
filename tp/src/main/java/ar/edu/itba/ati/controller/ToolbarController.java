@@ -56,7 +56,7 @@ public class ToolbarController {
     @FXML
     private void openPictureInNewWindow(){
         ImageView iv = new ImageView();
-        iv.setImage(SwingFXUtils.toFXImage(pictureService.getPicture().toBufferedImage(), null));
+        iv.setImage(SwingFXUtils.toFXImage(pictureService.getPicture().getNormalizedClone().toBufferedImage(), null));
         StackPane secondaryLayout = new StackPane();
         secondaryLayout.getChildren().add(iv);
 

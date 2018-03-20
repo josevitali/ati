@@ -1,6 +1,5 @@
 package ar.edu.itba.ati.model.pictures;
 
-import ar.edu.itba.ati.io.Pictures;
 import ar.edu.itba.ati.model.histograms.Histogram;
 
 import java.awt.image.BufferedImage;

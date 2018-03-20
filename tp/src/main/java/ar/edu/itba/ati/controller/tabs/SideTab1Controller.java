@@ -7,6 +7,7 @@ import ar.edu.itba.ati.model.transformations.PictureTransformer;
 import ar.edu.itba.ati.model.transformations.noise.ExponentialNoise;
 import ar.edu.itba.ati.model.transformations.noise.GaussianNoise;
 import ar.edu.itba.ati.model.transformations.noise.RayleighNoise;
+import ar.edu.itba.ati.model.transformations.noise.SaltAndPepperNoise;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
@@ -15,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 
-import java.awt.*;
 import java.io.File;
 import java.util.function.BiFunction;
 
@@ -33,6 +33,8 @@ public class SideTab1Controller {
     public TextField rayleighVal;
     @FXML
     public TextField thresholdVal;
+    @FXML
+    public TextField saltAndPepperVal;
 
     @Inject
     public SideTab1Controller(final EventBus eventBus, final PictureService pictureService){
@@ -112,6 +114,17 @@ public class SideTab1Controller {
         } catch (NumberFormatException e){
             return;
         }
+    }
+
+    @FXML
+    private void saltAndPepperNoise(){
+
+        Double value = Double.valueOf(saltAndPepperVal.getText());
+        if(value < 0 || value >= 0.5)
+            return;
+        PictureTransformer saltAndPepperNoise = new SaltAndPepperNoise(value);
+        saltAndPepperNoise.transform(pictureService.getPicture());
+        eventBus.post(new ShowPictureEvent());
     }
 
     private void twoPictureOperation(BiFunction<Double,Double,Double> bf) {

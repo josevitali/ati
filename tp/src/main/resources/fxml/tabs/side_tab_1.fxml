@@ -10,7 +10,7 @@
 
 <fx:root type="SideTab1View" xmlns:fx="http://javafx.com/fxml"
          fx:controller="ar.edu.itba.ati.controller.tabs.SideTab1Controller" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="331.0" prefWidth="183.0" fx:id="anchorPane">
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="368.0" prefWidth="183.0" fx:id="anchorPane">
         <children>
             <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="14.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Add" onAction="#addPicture"/>
             <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="51.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Subtract" onAction="#subtractPicture"/>
@@ -29,6 +29,10 @@
             <Label layoutX="8.0" layoutY="309.0" prefHeight="17.0" prefWidth="70.0" text="Rayleigh" />
             <TextField layoutX="70.0" layoutY="309.0" prefHeight="27.0" prefWidth="43.0" fx:id="rayleighVal"/>
             <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="309.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#rayleighNoise"/>
+
+            <Label layoutX="8.0" layoutY="346.0" prefHeight="17.0" prefWidth="70.0" text="Salt and pepper" />
+            <TextField layoutX="70.0" layoutY="346.0" prefHeight="27.0" prefWidth="43.0" fx:id="saltAndPepperVal"/>
+            <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="346.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#saltAndPepperNoise"/>
 
         </children>
     </AnchorPane>

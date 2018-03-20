@@ -5,6 +5,7 @@ import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 
 import java.util.Random;
+import java.util.function.Function;
 
 public class SaltAndPepperNoise implements PictureTransformer{
 
@@ -20,14 +21,16 @@ public class SaltAndPepperNoise implements PictureTransformer{
 
     @Override
     public void transform(Picture picture) {
+        Function<Double,Double> blackFunction = px -> px * 0;
+        Function<Double,Double> whiteFunction = px -> px * 255;
         for (int i = 0; i < picture.getHeight(); i++) {
             for (int j = 0; j < picture.getHeight(); j++) {
                 double value = random.nextDouble();
                 if(value <= p0) {
-                    picture.putPixel(0.0, i, j);
+                    picture.mapPixel(i, j, blackFunction);
                 }
                 else if(value >= p1) {
-                    picture.putPixel(255.0, i, j);
+                    picture.mapPixel(i, j, whiteFunction);
                 }
             }
         }

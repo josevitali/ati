@@ -64,7 +64,9 @@ public class SideTab1Controller {
             if(value > 255 || value < 0) {
                 return;
             }
-            pictureService.getPicture().mapPixelByPixel(p -> (double) p > value ? 255.0 : 0.0);
+            Picture picture = pictureService.getPicture();
+            picture.normalize();
+            picture.mapPixelByPixel(p -> (double) p > value ? 255.0 : 0.0);
             eventBus.post(new ShowPictureEvent());
         } catch (NumberFormatException e){
             return;

@@ -21,8 +21,9 @@ public class SaltAndPepperNoise implements PictureTransformer{
 
     @Override
     public void transform(Picture picture) {
-        Function<Double,Double> blackFunction = px -> px * 0;
-        Function<Double,Double> whiteFunction = px -> px * 255;
+        picture.normalize();
+        Function<Double,Double> blackFunction = px -> 0.0;
+        Function<Double,Double> whiteFunction = px -> 255.0;
         for (int i = 0; i < picture.getHeight(); i++) {
             for (int j = 0; j < picture.getHeight(); j++) {
                 double value = random.nextDouble();

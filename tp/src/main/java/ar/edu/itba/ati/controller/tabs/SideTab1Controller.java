@@ -35,6 +35,8 @@ public class SideTab1Controller {
     public TextField thresholdVal;
     @FXML
     public TextField saltAndPepperVal;
+    @FXML
+    public TextField gammaVal;
 
     @Inject
     public SideTab1Controller(final EventBus eventBus, final PictureService pictureService){
@@ -153,6 +155,19 @@ public class SideTab1Controller {
         pictureService.getPicture().mapPixelByPixel(p -> (255.0 - 1) / Math.log(1 + 255.0) * Math.log(1 + (double) p));
         pictureService.getPicture().normalize();
         eventBus.post(new ShowPictureEvent(pictureService.getPicture()));
+    }
+
+    @FXML
+    private void gamma() {
+        try {
+            Double value = Double.valueOf(gammaVal.getText());
+            if(value < 0) {
+                return;
+            }
+            pictureService.getPicture().mapPixelByPixel(px -> Math.pow(255.0 -1, 1 - value) * Math.pow((double)px, value));
+        } catch (NumberFormatException e){
+            return;
+        }
     }
 
     private Picture choosePicture(){

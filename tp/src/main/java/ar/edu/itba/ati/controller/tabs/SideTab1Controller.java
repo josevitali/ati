@@ -1,6 +1,7 @@
 package ar.edu.itba.ati.controller.tabs;
 
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
+import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
 import ar.edu.itba.ati.io.Pictures;
 import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
@@ -21,7 +22,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.util.function.BiFunction;
 
-public class SideTab1Controller {
+public class SideTab1Controller implements SideTabController{
 
     private final EventBus eventBus;
     private final PictureService pictureService;
@@ -270,4 +271,17 @@ public class SideTab1Controller {
         eventBus.post(new ShowPictureEvent());
     }
 
+    @Override
+    public void reset(ResetParametersEvent event) {
+        gammaVal.setText("");
+        gaussVal.setText("");
+        exponentialVal.setText("");
+        rayleighVal.setText("");
+        thresholdVal.setText("");
+        saltAndPepperVal.setText("");
+        meanSize.setText("");
+        medianSize.setText("");
+        highPassSize.setText("");
+        gaussSigma.setText("");
+    }
 }

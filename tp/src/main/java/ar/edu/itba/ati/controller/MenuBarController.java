@@ -1,6 +1,7 @@
 package ar.edu.itba.ati.controller;
 
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
+import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
 import ar.edu.itba.ati.events.side_menu.ShowSideMenuEvent;
 import ar.edu.itba.ati.events.toolbar.ShowToolbarEvent;
 import ar.edu.itba.ati.io.Pictures;
@@ -53,6 +54,7 @@ public class MenuBarController {
         eventBus.post(new ShowPictureEvent());
         eventBus.post(new ShowToolbarEvent());
         eventBus.post(new ShowSideMenuEvent());
+        eventBus.post(new ResetParametersEvent());
     }
 
     @FXML

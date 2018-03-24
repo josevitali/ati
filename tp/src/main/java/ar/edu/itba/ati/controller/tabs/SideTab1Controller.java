@@ -115,6 +115,7 @@ public class SideTab1Controller {
                 return;
             }
             pictureService.getPicture().mapPixelByPixel(px -> Math.pow(255.0 -1, 1 - value) * Math.pow((double)px, value));
+            eventBus.post(new ShowPictureEvent(pictureService.getPicture()));
         } catch (NumberFormatException e){
             return;
         }

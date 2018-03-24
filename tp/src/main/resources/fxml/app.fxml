@@ -9,7 +9,7 @@
     <children>
     <MenuBarView fx:id="menuBarView"/>
     <ToolbarView fx:id="toolBarView"/>
-    <HBox xmlns:fx="http://javafx.com/fxml">
+    <HBox xmlns:fx="http://javafx.com/fxml" VBox.vgrow="ALWAYS">
         <children>
             <SideMenuView fx:id="sideMenuView"/>
             <PictureView fx:id="pictureView"/>

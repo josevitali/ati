@@ -5,6 +5,7 @@ import ar.edu.itba.ati.model.histograms.Histogram;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -93,6 +94,24 @@ public class ColorPicture extends Picture<Double[]> {
         this.matrix = newpic;
         this.width = y1-y0-1;
         this.height = x1-x0-1;
+    }
+
+    @Override
+    public Double[] subMatrixOperation(int firstRow, int firstCol, int height, int width, Function<Double[][], Double> f) {
+        final Double[][][] subMatrix = getSubMatrix(firstRow, firstCol, height, width);
+        final Double[][] blueSubMatrix = Arrays.stream(subMatrix).map(row -> Arrays.stream(row).map(px -> px[BLUE]).toArray(size -> new Double[size])).toArray(size -> new Double[size][]);
+        final Double[][] greenSubMatrix = Arrays.stream(subMatrix).map(row -> Arrays.stream(row).map(px -> px[GREEN]).toArray(size -> new Double[size])).toArray(size -> new Double[size][]);
+        final Double[][] redSubMatrix = Arrays.stream(subMatrix).map(row -> Arrays.stream(row).map(px -> px[RED]).toArray(size -> new Double[size])).toArray(size -> new Double[size][]);
+        Double[] ret = new Double[3];
+        ret[BLUE] = f.apply(blueSubMatrix);
+        ret[GREEN] = f.apply(greenSubMatrix);
+        ret[RED] = f.apply(redSubMatrix);
+        return ret;
+    }
+
+    @Override
+    protected Double[][][] tMatrix(int height, int width) {
+        return new Double[height][width][3];
     }
 
     @Override

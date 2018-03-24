@@ -79,4 +79,21 @@ public abstract class Picture<T>{
 
     public abstract void crop(int x0, int x1, int y0, int y1);
 
+    public abstract T subMatrixOperation(int firstRow, int firstCol, int height, int width,
+                                             Function<Double[][],Double> f);
+
+    public T[][] getSubMatrix(int firstRow, int firstCol, int height, int width){
+        T[][] subMatrix = tMatrix(height, width);
+
+        for(int row = 0; row < height; row++){
+            for(int col = 0; col < width; col ++){
+                subMatrix[row][col] = matrix[row + firstRow][col + firstCol];
+            }
+        }
+//        TODO: debería ser una copia?
+        return subMatrix;
+    }
+
+    protected abstract T[][] tMatrix(int height, int width);
+
 }

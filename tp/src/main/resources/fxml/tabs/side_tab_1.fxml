@@ -8,34 +8,202 @@
 
 <?import ar.edu.itba.ati.views.tabs.SideTab1View?>
 
+<?import javafx.geometry.Insets?>
 <fx:root type="SideTab1View" xmlns:fx="http://javafx.com/fxml"
-         fx:controller="ar.edu.itba.ati.controller.tabs.SideTab1Controller" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="368.0" prefWidth="183.0" fx:id="anchorPane">
-        <children>
-            <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="14.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Add" onAction="#addPicture"/>
-            <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="51.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Subtract" onAction="#subtractPicture"/>
-            <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="88.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Product" onAction="#productPicture"/>
-            <ToggleButton layoutX="24.0" layoutY="124.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Negative" onAction="#negative"/>
-            <Button alignment="TOP_CENTER" layoutX="24.0" layoutY="160.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="124.0" text="Dynamic Range" onAction="#dynamicRange"/>
-            <Label layoutX="8.0" layoutY="198.0" prefHeight="17.0" prefWidth="70.0" text="Threshold" />
-            <TextField layoutX="70.0" layoutY="198.0" prefHeight="27.0" prefWidth="43.0" fx:id="thresholdVal"/>
-            <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="198.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#threshold"/>
-            <Label layoutX="8.0" layoutY="235.0" prefHeight="17.0" prefWidth="70.0" text="Gauss" />
-            <TextField layoutX="70.0" layoutY="235.0" prefHeight="27.0" prefWidth="43.0" fx:id="gaussVal"/>
-            <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="235.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#gaussNoise"/>
-            <Label layoutX="8.0" layoutY="272.0" prefHeight="17.0" prefWidth="70.0" text="Exp" />
-            <TextField layoutX="70.0" layoutY="272.0" prefHeight="27.0" prefWidth="43.0" fx:id="exponentialVal"/>
-            <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="272.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#exponentialNoise"/>
-            <Label layoutX="8.0" layoutY="309.0" prefHeight="17.0" prefWidth="70.0" text="Rayleigh" />
-            <TextField layoutX="70.0" layoutY="309.0" prefHeight="27.0" prefWidth="43.0" fx:id="rayleighVal"/>
-            <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="309.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#rayleighNoise"/>
-
-            <Label layoutX="8.0" layoutY="346.0" prefHeight="17.0" prefWidth="70.0" text="Salt and pepper" />
-            <TextField layoutX="70.0" layoutY="346.0" prefHeight="27.0" prefWidth="43.0" fx:id="saltAndPepperVal"/>
-            <Button alignment="TOP_CENTER" layoutX="118.0" layoutY="346.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="37.0" text="OK" onAction="#saltAndPepperNoise"/>
-
-        </children>
-    </AnchorPane>
+         fx:controller="ar.edu.itba.ati.controller.tabs.SideTab1Controller" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+         fitToHeight="true" fitToWidth="true" prefHeight="639.0" prefWidth="241.0" fx:id="sideTabView1">
+    <content>
+        <VBox accessibleRole="BUTTON" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+              style="-fx-spacing: 10;">
+            <children>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Add" onAction="#addPicture"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Subtract" onAction="#subtractPicture"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Product" onAction="#productPicture"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Negative" onAction="#negative"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Dynamic Range" onAction="#dynamicRange"/>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Gamma Power">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="43.0" promptText="γ" fx:id="gammaVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#gamma">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="46.0" text="Noise" underline="true" />
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Threshold">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="43.0" fx:id="thresholdVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#threshold">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Gauss">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="43.0" promptText="σ" fx:id="gaussVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#gaussNoise">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Exponential">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="43.0" promptText="λ" fx:id="exponentialVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#exponentialNoise">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Rayleigh">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="43.0" promptText="ψ" fx:id="rayleighVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#rayleighNoise">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Salt &amp; Pepper">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="43.0" promptText="p0" fx:id="saltAndPepperVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#saltAndPepperNoise">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="84.0" text="Mask Filters" underline="true" />
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Mean">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField prefHeight="27.0" prefWidth="43.0" promptText="size" fx:id="meanSize"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#meanFilter">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Median">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField prefHeight="27.0" prefWidth="43.0" promptText="size" fx:id="medianSize"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#medianFilter">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="136.0" text="Weighted median">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#weightedMedianFilter">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Gauss">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="43.0" promptText="σ" fx:id="gaussSigma"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#gaussFilter">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="High Pass">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="43.0" promptText="size" fx:id="highPassSize"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#highPassFilter">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </content>
+    <padding>
+        <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+    </padding>
 </fx:root>
 <!--160-->
 <!--198-->

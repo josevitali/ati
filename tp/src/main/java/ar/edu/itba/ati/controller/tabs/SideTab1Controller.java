@@ -8,10 +8,12 @@ import ar.edu.itba.ati.model.transformations.noise.ExponentialNoise;
 import ar.edu.itba.ati.model.transformations.noise.GaussianNoise;
 import ar.edu.itba.ati.model.transformations.noise.RayleighNoise;
 import ar.edu.itba.ati.model.transformations.noise.SaltAndPepperNoise;
+import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.*;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
@@ -24,7 +26,12 @@ public class SideTab1Controller {
     private final EventBus eventBus;
     private final PictureService pictureService;
     @FXML
-    private AnchorPane anchorPane;
+    private ScrollPane sideTabView1;
+
+    @FXML
+    public TextField gammaVal;
+
+    // Noise
     @FXML
     public TextField gaussVal;
     @FXML
@@ -35,8 +42,18 @@ public class SideTab1Controller {
     public TextField thresholdVal;
     @FXML
     public TextField saltAndPepperVal;
+
+
+    // Mask Filters
     @FXML
-    public TextField gammaVal;
+    public TextField meanSize;
+    @FXML
+    public TextField medianSize;
+    @FXML
+    public TextField gaussSigma;
+    @FXML
+    public TextField highPassSize;
+
 
     @Inject
     public SideTab1Controller(final EventBus eventBus, final PictureService pictureService){
@@ -76,76 +93,9 @@ public class SideTab1Controller {
     }
 
     @FXML
-    private void gaussNoise() {
-        try {
-            Double value = Double.valueOf(gaussVal.getText());
-            if(value < 0) {
-                return;
-            }
-            PictureTransformer gaussianNoise = new GaussianNoise(0.0, value);
-            gaussianNoise.transform(pictureService.getPicture());
-            eventBus.post(new ShowPictureEvent());
-        } catch (NumberFormatException e){
-            return;
-        }
-    }
-
-    @FXML
-    private void exponentialNoise() {
-        try {
-            Double value = Double.valueOf(exponentialVal.getText());
-            if(value < 0) {
-                return;
-            }
-            PictureTransformer exponentialNoise = new ExponentialNoise(value);
-            exponentialNoise.transform(pictureService.getPicture());
-            eventBus.post(new ShowPictureEvent());
-        } catch (NumberFormatException e){
-            return;
-        }
-    }
-
-    @FXML
-    private void rayleighNoise() {
-        try {
-            Double value = Double.valueOf(rayleighVal.getText());
-            if(value < 0) {
-                return;
-            }
-            PictureTransformer rayleighNoise = new RayleighNoise(value);
-            rayleighNoise.transform(pictureService.getPicture());
-            eventBus.post(new ShowPictureEvent());
-        } catch (NumberFormatException e){
-            return;
-        }
-    }
-
-    @FXML
-    private void saltAndPepperNoise(){
-
-        Double value = Double.valueOf(saltAndPepperVal.getText());
-        if(value < 0 || value >= 0.5)
-            return;
-        PictureTransformer saltAndPepperNoise = new SaltAndPepperNoise(value);
-        saltAndPepperNoise.transform(pictureService.getPicture());
-        eventBus.post(new ShowPictureEvent());
-    }
-
-    private void twoPictureOperation(BiFunction<Double,Double,Double> bf) {
-        Picture otherPicture = choosePicture();
-
-        if(otherPicture == null){
-            return;
-        }
-
-        pictureService.getPicture().mapPixelByPixel(bf, otherPicture);
-        eventBus.post(new ShowPictureEvent(pictureService.getPicture()));
-    }
-
-    @FXML
     private void negative() {
         pictureService.getPicture().mapPixelByPixel(p -> 255.0 - (double) p);
-        eventBus.post(new ShowPictureEvent(pictureService.getPicture()));
+        eventBus.post(new ShowPictureEvent(pictureService.getPicture().getNormalizedClone()));
     }
 
     @FXML
@@ -170,10 +120,73 @@ public class SideTab1Controller {
         }
     }
 
+    @FXML
+    private void gaussNoise() {
+        try {
+            Double value = Double.valueOf(gaussVal.getText());
+            if(value < 0) {
+                return;
+            }
+            applyTransformation(new GaussianNoise(0.0, value));
+        } catch (NumberFormatException e){
+            return;
+        }
+    }
+
+    @FXML
+    private void exponentialNoise() {
+        try {
+            Double value = Double.valueOf(exponentialVal.getText());
+            if(value < 0) {
+                return;
+            }
+            applyTransformation(new ExponentialNoise(value));
+        } catch (NumberFormatException e){
+            return;
+        }
+    }
+
+    @FXML
+    private void rayleighNoise() {
+        try {
+            Double value = Double.valueOf(rayleighVal.getText());
+            if(value < 0) {
+                return;
+            }
+            applyTransformation(new RayleighNoise(value));
+        } catch (NumberFormatException e){
+            return;
+        }
+    }
+
+    @FXML
+    private void saltAndPepperNoise(){
+        try {
+            Double value = Double.valueOf(saltAndPepperVal.getText());
+            if(value < 0 || value >= 0.5){
+                return;
+            }
+            applyTransformation(new SaltAndPepperNoise(value));
+        } catch (NumberFormatException e){
+            return;
+        }
+    }
+
+    private void twoPictureOperation(BiFunction<Double,Double,Double> bf) {
+        Picture otherPicture = choosePicture();
+
+        if(otherPicture == null){
+            return;
+        }
+
+        pictureService.getPicture().mapPixelByPixel(bf, otherPicture);
+        eventBus.post(new ShowPictureEvent(pictureService.getPicture()));
+    }
+
     private Picture choosePicture(){
         FileChooser fc = new FileChooser();
         fc.setTitle("Choose picture");
-        File file = fc.showOpenDialog(anchorPane.getScene().getWindow());
+        File file = fc.showOpenDialog(sideTabView1.getScene().getWindow());
 
         if(file == null){
             return null;
@@ -186,4 +199,74 @@ public class SideTab1Controller {
         }
         return null;
     }
+
+    @FXML
+    private void meanFilter(){
+        try {
+            Integer size = Integer.parseInt(meanSize.getText());
+            if(size < 0){
+                return;
+            }
+            applyTransformation(new MeanSmoothing(size));
+        } catch (NumberFormatException e){
+            return;
+        }
+    }
+
+    @FXML
+    private void medianFilter(){
+        try {
+            Integer size = Integer.parseInt(medianSize.getText());
+            if(size < 0){
+                return;
+            }
+
+            Integer[][] matrix = new Integer[size][size];
+            for(int row = 0; row < size; row++){
+                for(int col = 0; col < size; col++){
+                    matrix[row][col] = 1;
+                }
+            }
+
+            applyTransformation(new MedianSmoothing(new Mask(matrix)));
+        } catch (NumberFormatException e){
+            return;
+        }
+    }
+
+    @FXML
+    private void weightedMedianFilter(){
+        Integer[][] mask = new Integer[][]{{1,2,1},{2,4,2},{1,2,1}};
+        applyTransformation(new MedianSmoothing(new Mask(mask)));
+    }
+
+    @FXML
+    private void gaussFilter(){
+        try {
+            Double sigma = Double.valueOf(gaussSigma.getText());
+            applyTransformation(new GaussianSmoothing(sigma));
+        } catch (NumberFormatException e){
+            return;
+        }
+    }
+
+    @FXML
+    private void highPassFilter(){
+        try {
+            Integer size = Integer.valueOf(highPassSize.getText());
+            if(size < 0){
+                return;
+            }
+
+            applyTransformation(new HighPassFilter(size));
+        } catch (NumberFormatException e){
+            return;
+        }
+    }
+
+    private void applyTransformation(PictureTransformer transformer){
+        transformer.transform(pictureService.getPicture());
+        eventBus.post(new ShowPictureEvent());
+    }
+
 }

@@ -5,12 +5,13 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.io.Resources;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 
 import static ar.edu.itba.ati.App.INJECTOR;
 
-public class PictureView extends AnchorPane {
+public class PictureView extends Pane {
     public PictureView() {
         FXMLLoader fxmLoader = new FXMLLoader(Resources.getResource("fxml/image.fxml"));
         fxmLoader.setRoot(this);

@@ -5,13 +5,14 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.AnchorPane;
 
 public class SideMenuController {
 
     public EventBus eventBus;
-    public AnchorPane sideMenu;
+    public TabPane sideMenu;
 
     @Inject
     public SideMenuController(final EventBus eventBus){

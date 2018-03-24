@@ -80,6 +80,17 @@ public class GreyPicture extends Picture<Double> {
     }
 
     @Override
+    public Double subMatrixOperation(int firstRow, int firstCol, int height, int width, Function<Double[][], Double> f) {
+        Double[][] subMatrix = getSubMatrix(firstRow, firstCol, height, width);
+        return f.apply(subMatrix);
+    }
+
+    @Override
+    protected Double[][] tMatrix(int height, int width) {
+        return new Double[height][width];
+    }
+
+    @Override
     protected Double mapPixel(BiFunction<Double, Double, Double> bf, Double myPixel, Double otherPixel) {
         return bf.apply(myPixel, otherPixel);
     }

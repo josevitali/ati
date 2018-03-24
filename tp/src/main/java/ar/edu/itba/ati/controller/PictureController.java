@@ -5,6 +5,7 @@ import ar.edu.itba.ati.events.pictures.CropEvent;
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.services.PictureService;
+import ar.edu.itba.ati.views.PictureView;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;

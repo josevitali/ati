@@ -11,7 +11,7 @@
 
 <fx:root type="PictureView" xmlns:fx="http://javafx.com/fxml"
          fx:controller="ar.edu.itba.ati.controller.PictureController"
-         prefHeight="400.0" prefWidth="600.0">
+         prefHeight="400.0" prefWidth="600.0" fx:id="pictureView">
 
     <HBox fx:id="imageBox">
         <children>

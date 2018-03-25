@@ -73,7 +73,13 @@ public abstract class Picture<T>{
 
     public abstract void normalize();
 
-    public abstract Picture getNormalizedClone();
+    public abstract Picture getClone();
+
+    public Picture getNormalizedClone(){
+        Picture picture = getClone();
+        picture.normalize();
+        return picture;
+    }
 
     public abstract Histogram getHistogram();
 

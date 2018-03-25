@@ -105,10 +105,8 @@ public class GreyPicture extends Picture<Double> {
     }
 
     @Override
-    public Picture getNormalizedClone() {
-        Picture picture = new GreyPicture(type, duplicateMatrix(), height, width);
-        picture.normalize();
-        return picture;
+    public Picture getClone() {
+        return new GreyPicture(type, duplicateMatrix(), height, width);
     }
 
     @Override

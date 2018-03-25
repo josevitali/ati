@@ -13,7 +13,7 @@
 <fx:root type="ToolbarView" visible="false" xmlns:fx="http://javafx.com/fxml"
          fx:controller="ar.edu.itba.ati.controller.ToolbarController" fx:id="toolbar">
     <Button fx:id="cropMenuItem" text="Crop" onAction="#crop"></Button>
-    <Button fx:id="averagePixel" text="average" onAction="#average"></Button>
+    <Button fx:id="averagePixel" text="Average" onAction="#average"></Button>
     <Button fx:id="newWindow" text="Open in new window" onAction="#openPictureInNewWindow"/>
     <Button fx:id="histogram" text="Histogram" onAction="#showHistogram"/>
 </fx:root>

@@ -41,7 +41,9 @@ public class PictureController {
     @FXML
     @Subscribe
     protected void showPicture(ShowPictureEvent event) {
-        Image image = SwingFXUtils.toFXImage(pictureService.getPicture().getNormalizedClone().toBufferedImage(), null);
+        Picture picture = pictureService.getPicture();
+        picture.normalize();
+        Image image = SwingFXUtils.toFXImage(picture.toBufferedImage(), null);
 
         imageView.setImage(image);
 
@@ -53,11 +55,11 @@ public class PictureController {
 
     @FXML
     @Subscribe
-    public void cropListener(CropEvent cropEvent){
+    public void crop(CropEvent cropEvent){
         Bounds selectionBounds = rubberBandSelection.getBounds();
         final int[] ends = getEnds(selectionBounds);
         pictureService.cropPicture(ends[0], ends[1], ends[2], ends[3]);
-        imageView.setImage(SwingFXUtils.toFXImage(pictureService.getPicture().toBufferedImage(), null));
+        eventBus.post(new ShowPictureEvent());
         rubberBandSelection.removeBounds();
     }
 

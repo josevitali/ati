@@ -84,9 +84,8 @@ public class SideTab1Controller implements SideTabController{
             if(value > 255 || value < 0) {
                 return;
             }
-            Picture picture = pictureService.getPicture();
-            picture.normalize();
-            picture.mapPixelByPixel(p -> (double) p > value ? 255.0 : 0.0);
+            pictureService.normalize();
+            pictureService.mapPixelByPixel(p -> (double) p > value ? 255.0 : 0.0);
             eventBus.post(new ShowPictureEvent());
         } catch (NumberFormatException e){
             return;
@@ -95,16 +94,16 @@ public class SideTab1Controller implements SideTabController{
 
     @FXML
     private void negative() {
-        pictureService.getPicture().mapPixelByPixel(p -> 255.0 - (double) p);
+        pictureService.mapPixelByPixel(p -> 255.0 - (double) p);
         eventBus.post(new ShowPictureEvent());
     }
 
     @FXML
     private void dynamicRange() {
         double productScalar = 5.0;
-        pictureService.getPicture().mapPixelByPixel(px -> productScalar * (double) px);
-        pictureService.getPicture().mapPixelByPixel(p -> (255.0 - 1) / Math.log(1 + 255.0) * Math.log(1 + (double) p));
-        pictureService.getPicture().normalize();
+        pictureService.mapPixelByPixel(px -> productScalar * (double) px);
+        pictureService.mapPixelByPixel(p -> (255.0 - 1) / Math.log(1 + 255.0) * Math.log(1 + (double) p));
+        pictureService.normalize();
         eventBus.post(new ShowPictureEvent());
     }
 
@@ -115,7 +114,7 @@ public class SideTab1Controller implements SideTabController{
             if(value < 0) {
                 return;
             }
-            pictureService.getPicture().mapPixelByPixel(px -> Math.pow(255.0 -1, 1 - value) * Math.pow((double)px, value));
+            pictureService.mapPixelByPixel(px -> Math.pow(255.0 -1, 1 - value) * Math.pow((double)px, value));
             eventBus.post(new ShowPictureEvent());
         } catch (NumberFormatException e){
             return;
@@ -181,7 +180,7 @@ public class SideTab1Controller implements SideTabController{
             return;
         }
 
-        pictureService.getPicture().mapPixelByPixel(bf, otherPicture);
+        pictureService.mapPixelByPixel(bf, otherPicture);
         eventBus.post(new ShowPictureEvent());
     }
 
@@ -267,7 +266,7 @@ public class SideTab1Controller implements SideTabController{
     }
 
     private void applyTransformation(PictureTransformer transformer){
-        transformer.transform(pictureService.getPicture());
+        pictureService.applyTransformation(transformer);
         eventBus.post(new ShowPictureEvent());
     }
 

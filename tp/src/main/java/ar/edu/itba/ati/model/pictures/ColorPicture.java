@@ -130,10 +130,8 @@ public class ColorPicture extends Picture<Double[]> {
     }
 
     @Override
-    public Picture getNormalizedClone() {
-        Picture picture = new ColorPicture(type, duplicateMatrix(), height, width);
-        picture.normalize();
-        return picture;
+    public Picture getClone() {
+        return new ColorPicture(type, duplicateMatrix(), height, width);
     }
 
     @Override

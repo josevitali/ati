@@ -72,7 +72,9 @@ public class MenuBarController {
                         menuBar.getScene().getWindow());
         if (file != null) {
             try {
-                Pictures.save(pictureService.getPicture(), file);
+                Picture picture = pictureService.getPicture();
+                picture.normalize();
+                Pictures.save(picture, file);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -83,6 +85,7 @@ public class MenuBarController {
     @FXML
     protected void handleSaveAction(ActionEvent actionEvent){
         Picture picture = pictureService.getPicture();
+        picture.normalize();
         File file = pictureService.getFile();
         if (picture != null && file != null) {
             try {

@@ -96,7 +96,7 @@ public class SideTab1Controller implements SideTabController{
     @FXML
     private void negative() {
         pictureService.getPicture().mapPixelByPixel(p -> 255.0 - (double) p);
-        eventBus.post(new ShowPictureEvent(pictureService.getPicture().getNormalizedClone()));
+        eventBus.post(new ShowPictureEvent());
     }
 
     @FXML
@@ -105,7 +105,7 @@ public class SideTab1Controller implements SideTabController{
         pictureService.getPicture().mapPixelByPixel(px -> productScalar * (double) px);
         pictureService.getPicture().mapPixelByPixel(p -> (255.0 - 1) / Math.log(1 + 255.0) * Math.log(1 + (double) p));
         pictureService.getPicture().normalize();
-        eventBus.post(new ShowPictureEvent(pictureService.getPicture()));
+        eventBus.post(new ShowPictureEvent());
     }
 
     @FXML
@@ -116,7 +116,7 @@ public class SideTab1Controller implements SideTabController{
                 return;
             }
             pictureService.getPicture().mapPixelByPixel(px -> Math.pow(255.0 -1, 1 - value) * Math.pow((double)px, value));
-            eventBus.post(new ShowPictureEvent(pictureService.getPicture()));
+            eventBus.post(new ShowPictureEvent());
         } catch (NumberFormatException e){
             return;
         }
@@ -182,7 +182,7 @@ public class SideTab1Controller implements SideTabController{
         }
 
         pictureService.getPicture().mapPixelByPixel(bf, otherPicture);
-        eventBus.post(new ShowPictureEvent(pictureService.getPicture()));
+        eventBus.post(new ShowPictureEvent());
     }
 
     private Picture choosePicture(){

@@ -26,8 +26,10 @@ public class PictureController {
     private EventBus eventBus;
     private PictureService pictureService;
 
-    public ImageView imageView;
-    public Group imageLayer;
+    @FXML
+    private ImageView imageView;
+    @FXML
+    private Group imageLayer;
     private RubberBandSelection rubberBandSelection;
 
     @Inject
@@ -39,12 +41,7 @@ public class PictureController {
     @FXML
     @Subscribe
     protected void showPicture(ShowPictureEvent event) {
-        Picture picture = event.getPicture();
-        if(picture == null){
-            picture = pictureService.getPicture();
-        }
-
-        Image image = SwingFXUtils.toFXImage(picture.getNormalizedClone().toBufferedImage(), null);
+        Image image = SwingFXUtils.toFXImage(pictureService.getPicture().getNormalizedClone().toBufferedImage(), null);
 
         imageView.setImage(image);
 
@@ -57,40 +54,42 @@ public class PictureController {
     @FXML
     @Subscribe
     public void cropListener(CropEvent cropEvent){
-
-        // get bounds for image crop
         Bounds selectionBounds = rubberBandSelection.getBounds();
-
-        // crop the image
-        crop(selectionBounds);
-
-        // remove the blue selected area after cropping
+        final int[] ends = getEnds(selectionBounds);
+        pictureService.cropPicture(ends[0], ends[1], ends[2], ends[3]);
+        imageView.setImage(SwingFXUtils.toFXImage(pictureService.getPicture().toBufferedImage(), null));
         rubberBandSelection.removeBounds();
     }
-
-    private void crop(Bounds bounds){
-
-        if((int) bounds.getWidth() <= 0 || (int) bounds.getHeight() <= 0)
-            return;
-
-        pictureService.cropPicture((int)bounds.getMinY(), (int)bounds.getMaxY(), (int)bounds.getMinX(), (int)bounds.getMaxX());
-        imageView.setImage(SwingFXUtils.toFXImage(pictureService.getPicture().toBufferedImage(), null));
-
-    }
-
 
     @FXML
     @Subscribe
-    private void averageListener(AverageEvent averageEvent){
+    private void average(AverageEvent averageEvent){
         Bounds selectionBounds = rubberBandSelection.getBounds();
-        average(selectionBounds);
+        int[] ends = getEnds(selectionBounds);
+        pictureService.average(ends[0], ends[1], ends[2], ends[3]);
         rubberBandSelection.removeBounds();
 
     }
-    private void average(Bounds bounds){
-        if((int) bounds.getWidth() <= 0 || (int) bounds.getHeight() <= 0)
-            return;
-        pictureService.average((int)bounds.getMinY(), (int)bounds.getMaxY(), (int)bounds.getMinX(), (int)bounds.getMaxX());
+
+    private int[] getEnds(Bounds bounds){
+        if((int) bounds.getWidth() <= 0 || (int) bounds.getHeight() <= 0){
+            return null;
+        }
+
+        int minY = (int) bounds.getMinY();
+        int maxY = (int) bounds.getMaxY();
+        int minX = (int) bounds.getMinX();
+        int maxX = (int) bounds.getMaxX();
+
+        if(maxY > pictureService.getPicture().getHeight()){
+            maxY = pictureService.getPicture().getHeight() - 1;
+        }
+
+        if(maxX > pictureService.getPicture().getWidth()){
+            maxX = pictureService.getPicture().getWidth() - 1;
+        }
+
+        return new int[]{minY, maxY, minX, maxX};
     }
 
     /**

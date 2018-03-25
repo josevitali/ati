@@ -25,9 +25,12 @@ public class PictureService {
         this.file = file;
     }
 
-    public void cropPicture(int x0, int x1, int y0, int y1){picture.crop(x0, x1, y0, y1);}
+    public void cropPicture(final int minRow, final int maxRow, final int minCol, final int maxCol){
+        picture.crop(minRow, maxRow, minCol, maxCol);
+    }
 
-    public void average(int x0, int x1, int y0, int y1){
-        System.out.println(picture.getAverageColor(x0, x1, y0, y1));}
+    public void average(final int minRow, final int maxRow, final int minCol, final int maxCol){
+        System.out.println(picture.getNormalizedClone().getAverageColor(minRow, minCol, maxRow, maxCol));
+    }
 
 }

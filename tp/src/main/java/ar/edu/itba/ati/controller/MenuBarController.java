@@ -22,8 +22,9 @@ public class MenuBarController {
 
     private EventBus eventBus;
     private PictureService pictureService;
+    @FXML
+    private MenuBar menuBar;
 
-    public MenuBar menuBar;
 
     @Inject
     public MenuBarController(final EventBus eventBus, final PictureService pictureService){

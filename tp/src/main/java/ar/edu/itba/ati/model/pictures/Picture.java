@@ -30,6 +30,10 @@ public abstract class Picture<T>{
 
     public abstract String getAverageColor(int row1, int col1, int row2, int col2);
 
+    public String getAverageColor(){
+        return getAverageColor(0, 0, height-1, width-1);
+    }
+
     public int getHeight() {
         return height;
     }
@@ -83,6 +87,8 @@ public abstract class Picture<T>{
 
     public abstract Histogram getHistogram();
 
+//    public abstract void applyHistogramFunction(Function<Double[],Double> f);
+
     public abstract void crop(int x0, int x1, int y0, int y1);
 
     public abstract T subMatrixOperation(int firstRow, int firstCol, int height, int width,
@@ -102,4 +108,11 @@ public abstract class Picture<T>{
 
     protected abstract T[][] tMatrix(int height, int width);
 
+    public int getType() {
+        return type;
+    }
+
+    public abstract T getMaxPixel();
+
+    public abstract T getMinPixel();
 }

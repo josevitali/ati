@@ -13,7 +13,7 @@
          fx:controller="ar.edu.itba.ati.controller.tabs.SideTab1Controller" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
          fitToHeight="true" fitToWidth="true" prefHeight="639.0" prefWidth="241.0" fx:id="sideTabView1">
     <content>
-        <VBox accessibleRole="BUTTON" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
               style="-fx-spacing: 10;">
             <children>
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Add" onAction="#addPicture"/>
@@ -21,6 +21,7 @@
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Product" onAction="#productPicture"/>
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Negative" onAction="#negative"/>
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Dynamic Range" onAction="#dynamicRange"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Contrast" onAction="#contrast"/>
                 <HBox prefWidth="200.0" style="-fx-spacing: 5;">
                     <children>
                         <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Gamma Power">

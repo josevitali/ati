@@ -13,9 +13,9 @@ import java.util.function.Function;
 
 public class ColorPicture extends Picture<Double[]> {
 
-    private static final int BLUE = 0;
-    private static final int GREEN = 1;
-    private static final int RED = 2;
+    public static final int BLUE = 0;
+    public static final int GREEN = 1;
+    public static final int RED = 2;
 
     public ColorPicture(BufferedImage bufferedImage) {
         super(bufferedImage.getType(), createMatrix(bufferedImage), bufferedImage.getHeight(),
@@ -60,7 +60,7 @@ public class ColorPicture extends Picture<Double[]> {
         avg[BLUE] /= amount;
         avg[GREEN] /= amount;
         avg[RED] /= amount;
-        return avg[BLUE] + " " + avg[GREEN] + " " + avg[RED];
+        return "Blue: " + avg[BLUE] + "\tGreen: " + avg[GREEN] + "\tRed: " + avg[RED];
     }
 
     public BufferedImage toBufferedImage() {
@@ -82,6 +82,14 @@ public class ColorPicture extends Picture<Double[]> {
         pixel[GREEN] = f.apply(pixel[GREEN]);
         pixel[RED] = f.apply(pixel[RED]);
         return pixel;
+    }
+
+    public void mapPixelByPixelInSpecificBand(Function<Double, Double> f, int band){
+        for(int row = 0; row < height; row++){
+            for(int col = 0; col < width; col++){
+                matrix[row][col][band] = f.apply(matrix[row][col][band]);
+            }
+        }
     }
 
     public void crop(int x0, int x1, int y0, int y1){
@@ -115,6 +123,24 @@ public class ColorPicture extends Picture<Double[]> {
     }
 
     @Override
+    public Double[] getMaxPixel() {
+        Double[] ret = new Double[3];
+        ret[BLUE] = getMaxPixelByBand(BLUE);
+        ret[GREEN] = getMaxPixelByBand(GREEN);
+        ret[RED] = getMaxPixelByBand(RED);
+        return ret;
+    }
+
+    @Override
+    public Double[] getMinPixel() {
+        Double[] ret = new Double[3];
+        ret[BLUE] = getMinPixelByBand(BLUE);
+        ret[GREEN] = getMinPixelByBand(GREEN);
+        ret[RED] = getMinPixelByBand(RED);
+        return ret;
+    }
+
+    @Override
     protected Double[] mapPixel(BiFunction<Double, Double, Double> bf, Double[] myPixel, Double[] otherPixel) {
         myPixel[BLUE] = bf.apply(myPixel[BLUE], otherPixel[BLUE]);
         myPixel[GREEN] = bf.apply(myPixel[GREEN], otherPixel[GREEN]);
@@ -136,12 +162,12 @@ public class ColorPicture extends Picture<Double[]> {
 
     @Override
     public Histogram getHistogram() {
-        final int minBlue = (int) Math.floor(minPixel(BLUE));
-        final int maxBlue = (int) Math.floor(maxPixel(BLUE));
-        final int minGreen = (int) Math.floor(minPixel(GREEN));
-        final int maxGreen = (int) Math.floor(maxPixel(GREEN));
-        final int minRed = (int) Math.floor(minPixel(RED));
-        final int maxRed = (int) Math.floor(maxPixel(RED));
+        final int minBlue = (int) Math.floor(getMinPixelByBand(BLUE));
+        final int maxBlue = (int) Math.floor(getMaxPixelByBand(BLUE));
+        final int minGreen = (int) Math.floor(getMinPixelByBand(GREEN));
+        final int maxGreen = (int) Math.floor(getMaxPixelByBand(GREEN));
+        final int minRed = (int) Math.floor(getMinPixelByBand(RED));
+        final int maxRed = (int) Math.floor(getMaxPixelByBand(RED));
         final int min = minBlue < minGreen && minBlue < minRed ? minBlue :
                 (minGreen < minRed ? minGreen : minRed);
         final int max = maxBlue > maxGreen && maxBlue > maxRed ? maxBlue :
@@ -150,13 +176,51 @@ public class ColorPicture extends Picture<Double[]> {
         double[] redValues = new double[max - min + 1];
         double[] greenValues = new double[max - min + 1];
 
+        double blueAccum = 0;
+        double greenAccum = 0;
+        double redAccum = 0;
+
         for(Double[][] row : matrix){
             for(Double[] pixel : row){
                 blueValues[((int) Math.floor(pixel[BLUE])) - min]++;
                 greenValues[((int) Math.floor(pixel[GREEN])) - min]++;
                 redValues[((int) Math.floor(pixel[RED])) - min]++;
+
+                blueAccum += pixel [BLUE];
+                redAccum += pixel[RED];
+                greenAccum += pixel[GREEN];
             }
         }
+
+        int size = (matrix.length * matrix[0].length);
+        final double blueAvg = blueAccum / size;
+        final double greenAvg = greenAccum / size;
+        final double redAvg = redAccum / size;
+        double[] average = new double[3];
+        average[BLUE] = blueAvg;
+        average[GREEN] = greenAvg;
+        average[RED] = redAvg;
+
+        double blueAccumSq = 0;
+        double greenAccumSq = 0;
+        double redAccumSq = 0;
+
+        for(Double[][] row : matrix){
+            for(Double[] pixel : row){
+                blueAccumSq += (pixel[BLUE] - blueAvg) * (pixel[BLUE] - blueAvg);
+                greenAccumSq += (pixel[GREEN] - greenAvg) * (pixel[GREEN] - greenAvg);
+                redAccumSq += (pixel[RED] - redAvg) * (pixel[RED] - redAvg);
+            }
+        }
+
+
+        final double blueVar = Math.sqrt((1.0 / size) * blueAccumSq);
+        final double greenVar = Math.sqrt((1.0 / size) * greenAccumSq);
+        final double redVar = Math.sqrt((1.0 / size) * redAccumSq);
+        double[] variance = new double[3];
+        variance[BLUE] = blueVar;
+        variance[GREEN] = greenVar;
+        variance[RED] = redVar;
 
         for(int i = 0; i < blueValues.length; i++) {
             blueValues[i] /= (matrix.length * matrix[0].length);
@@ -173,12 +237,12 @@ public class ColorPicture extends Picture<Double[]> {
         series.put("Green", greenValues);
         series.put("Red", redValues);
 
-        return new Histogram(categories, series);
+        return new Histogram(categories, series, average, variance);
     }
 
     private void normalizeBand(int band) {
-        final double max = maxPixel(band);
-        final double min = minPixel(band);
+        final double max = getMaxPixelByBand(band);
+        final double min = getMinPixelByBand(band);
         final double m = 255 / (max - min);
         final double b = - min * m;
         for(Double[][] row : matrix){
@@ -188,7 +252,7 @@ public class ColorPicture extends Picture<Double[]> {
         }
     }
 
-    private double maxPixel(int band) {
+    private double getMaxPixelByBand(int band) {
         double max = matrix[0][0][band];
         for(Double[][] row : matrix){
             for(Double[] pixel : row){
@@ -199,7 +263,7 @@ public class ColorPicture extends Picture<Double[]> {
         return max;
     }
 
-    private double minPixel(int band) {
+    private double getMinPixelByBand(int band) {
         double min = matrix[0][0][band];
         for(Double[][] row : matrix){
             for(Double[] pixel : row){
@@ -223,5 +287,4 @@ public class ColorPicture extends Picture<Double[]> {
         }
         return otherMatrix;
     }
-
 }

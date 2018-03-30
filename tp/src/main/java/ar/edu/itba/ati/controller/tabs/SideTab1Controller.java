@@ -4,6 +4,7 @@ import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
 import ar.edu.itba.ati.io.Pictures;
 import ar.edu.itba.ati.model.pictures.Picture;
+import ar.edu.itba.ati.model.transformations.Contrast;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 import ar.edu.itba.ati.model.transformations.noise.ExponentialNoise;
 import ar.edu.itba.ati.model.transformations.noise.GaussianNoise;
@@ -16,7 +17,6 @@ import com.google.inject.Inject;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -43,6 +43,7 @@ public class SideTab1Controller implements SideTabController{
     public TextField thresholdVal;
     @FXML
     public TextField saltAndPepperVal;
+
 
 
     // Mask Filters
@@ -171,6 +172,12 @@ public class SideTab1Controller implements SideTabController{
         } catch (NumberFormatException e){
             return;
         }
+    }
+
+    @FXML
+    private void contrast(){
+        pictureService.applyTransformation(new Contrast());
+        eventBus.post(new ShowPictureEvent());
     }
 
     private void twoPictureOperation(BiFunction<Double,Double,Double> bf) {

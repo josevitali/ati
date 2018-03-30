@@ -47,7 +47,7 @@ public class GreyPicture extends Picture<Double> {
             }
         }
 
-        return Double.toString(avg/amount);
+        return "Grey: " + Double.toString(avg/amount);
     }
 
     public BufferedImage toBufferedImage() {
@@ -97,8 +97,8 @@ public class GreyPicture extends Picture<Double> {
 
     @Override
     public void normalize() {
-        final double max = maxPixel();
-        final double min = minPixel();
+        final double max = getMaxPixel();
+        final double min = getMinPixel();
         final double m = 255 / (max - min);
         final double b = - min * m;
         mapPixelByPixel(p -> m * p + b);
@@ -111,32 +111,52 @@ public class GreyPicture extends Picture<Double> {
 
     @Override
     public Histogram getHistogram() {
-        final int min = (int) Math.floor(minPixel());
-        final int max = (int) Math.floor(maxPixel());
+        final int min = (int) Math.floor(getMinPixel());
+        final int max = (int) Math.floor(getMaxPixel());
         double[] greyValues = new double[max - min + 1];
+
+        int size = width * height;
+
+        double accumsq = 0;
+        double accum = 0;
 
         for(Double[] row : matrix){
             for(Double pixel : row){
                 int n = ((int) Math.floor(pixel)) - min;
                 greyValues[n]++;
+                accum += pixel;
             }
         }
 
+        double average = accum / size;
+
+        for(Double[] row : matrix){
+            for(Double pixel : row){
+                accumsq += (average - pixel) * (average - pixel);
+            }
+        }
+
+        double variance = Math.sqrt((1.0 / size) * accumsq);
+
         for(int i = 0; i < greyValues.length; i++) {
-            greyValues[i] /= (matrix.length * matrix[0].length);
+            greyValues[i] /= size;
         }
 
         String[] categories = new String[greyValues.length];
         for(int i = min; i <= max; i++){
             categories[i - min] = new Integer(i).toString();
         }
+
         Map<String,double[]> series = new HashMap<>();
         series.put("Grey", greyValues);
 
-        return new Histogram(categories, series);
+        double[] avgArray = new double[]{average};
+        double[] varArray = new double[]{variance};
+        return new Histogram(categories, series, avgArray, varArray);
     }
 
-    private double maxPixel() {
+    @Override
+    public Double getMaxPixel() {
         double max = matrix[0][0];
         for(Double[] row : matrix){
             for(Double pixel : row){
@@ -147,7 +167,8 @@ public class GreyPicture extends Picture<Double> {
         return max;
     }
 
-    private double minPixel() {
+    @Override
+    public Double getMinPixel() {
         double min = matrix[0][0];
         for(Double[] row : matrix){
             for(Double pixel : row){

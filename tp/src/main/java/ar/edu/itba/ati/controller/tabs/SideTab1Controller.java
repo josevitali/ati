@@ -5,6 +5,7 @@ import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
 import ar.edu.itba.ati.io.Pictures;
 import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.transformations.Contrast;
+import ar.edu.itba.ati.model.transformations.Equalization;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 import ar.edu.itba.ati.model.transformations.noise.ExponentialNoise;
 import ar.edu.itba.ati.model.transformations.noise.GaussianNoise;
@@ -177,6 +178,12 @@ public class SideTab1Controller implements SideTabController{
     @FXML
     private void contrast(){
         pictureService.applyTransformation(new Contrast());
+        eventBus.post(new ShowPictureEvent());
+    }
+
+    @FXML
+    private void equalization() {
+        pictureService.applyTransformation(new Equalization());
         eventBus.post(new ShowPictureEvent());
     }
 

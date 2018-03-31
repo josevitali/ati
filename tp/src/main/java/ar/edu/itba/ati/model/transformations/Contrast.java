@@ -65,8 +65,12 @@ public class Contrast implements PictureTransformer {
         final double r1 = Arrays.stream(r1s).average().getAsDouble();
         final double r2 = Arrays.stream(r2s).average().getAsDouble();
         final double min = Arrays.stream(minValues).min(Double::compareTo).get();
-        final double max = Arrays.stream(minValues).max(Double::compareTo).get();
-        picture.mapPixelByPixel(px -> addContrastToPixel(px, r1, r2, min, max));
+        final double max = Arrays.stream(maxValues).max(Double::compareTo).get();
+
+        Double s1 = this.s1 == null ? (min + r1) / 2 : this.s1;
+        Double s2 = this.s2 == null ? (max + r2) / 2 : this.s2;
+
+        picture.mapPixelByPixel(px -> addContrastToPixel(px, r1, r2, s1, s2, min, max));
 
     }
 
@@ -87,21 +91,15 @@ public class Contrast implements PictureTransformer {
         double r1 = x1;
         double r2 = x2;
 
-        picture.mapPixelByPixel(px -> addContrastToPixel(px, r1, r2, min, max));
+        Double s1 = this.s1 == null ? (min + r1) / 2 : this.s1;
+        Double s2 = this.s2 == null ? (max + r2) / 2 : this.s2;
+
+        picture.mapPixelByPixel(px -> addContrastToPixel(px, r1, r2, s1, s2, min, max));
     }
 
     private double addContrastToPixel(final double pixel, final double r1, final double r2,
+                                      final double s1, final double s2,
                                       final double minValue, final double maxValue){
-
-        Double s1, s2;
-
-        if(this.s1 == null || this.s2 == null){
-            s1 = (minValue + r1) / 2;
-            s2 = (r2 + ((r1 + r2) / 2)) / 2;
-        } else {
-            s1 = null;
-            s2 = null;
-        }
 
         final Function<Double,Double> f1 = linealTransformation(minValue, minValue, r1, s1);
         final Function<Double,Double> f2 = linealTransformation(r1, s1, r2, s2);

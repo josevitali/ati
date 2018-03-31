@@ -59,6 +59,14 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>com.zenjava</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <version>8.8.3</version>
+        <configuration>
+          <mainClass>ar.edu.itba.ati.App</mainClass>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 

@@ -67,7 +67,7 @@ public class Pictures {
     }
 
     private static BufferedImage ppmPgmToBufferedImage(File file){
-        Mat mat = Highgui.imread(file.getAbsolutePath());
+        Mat mat = Highgui.imread(file.getAbsolutePath(), -1);
         return matToBufferedImage(mat);
     }
 

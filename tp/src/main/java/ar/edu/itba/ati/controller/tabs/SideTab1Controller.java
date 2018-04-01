@@ -31,6 +31,7 @@ public class SideTab1Controller implements SideTabController{
 
     private final EventBus eventBus;
     private final PictureService pictureService;
+
     @FXML
     private ScrollPane sideTabView1;
 
@@ -309,7 +310,6 @@ public class SideTab1Controller implements SideTabController{
     }
 
     @Override
-    @Subscribe
     public void reset(ResetParametersEvent event) {
         gammaVal.setText("");
         gaussVal.setText("");

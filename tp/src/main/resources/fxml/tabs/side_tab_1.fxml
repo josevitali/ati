@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -207,6 +204,3 @@
         <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
     </padding>
 </fx:root>
-<!--160-->
-<!--198-->
-<!--235-->

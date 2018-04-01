@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import ar.edu.itba.ati.views.ToolbarView?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<fx:root type="ToolbarView" visible="false" xmlns:fx="http://javafx.com/fxml"
+         fx:controller="ar.edu.itba.ati.controller.ToolbarController" fx:id="toolbar">
+    <Button fx:id="cropMenuItem" text="Crop" onAction="#crop"></Button>
+    <Button fx:id="averagePixel" text="Average" onAction="#average"></Button>
+    <Button fx:id="newWindow" text="Open in new window" onAction="#openPictureInNewWindow"/>
+    <Button fx:id="histogram" text="Histogram" onAction="#showHistogram"/>
+</fx:root>

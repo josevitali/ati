@@ -1,0 +1,19 @@
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import ar.edu.itba.ati.views.MenuBarView?>
+<?import ar.edu.itba.ati.views.PictureView?>
+<?import ar.edu.itba.ati.views.ToolbarView?>
+<?import ar.edu.itba.ati.views.SideMenuView?>
+
+<VBox xmlns:fx="http://javafx.com/fxml">
+    <children>
+    <MenuBarView fx:id="menuBarView"/>
+    <ToolbarView fx:id="toolBarView"/>
+    <HBox xmlns:fx="http://javafx.com/fxml" VBox.vgrow="ALWAYS">
+        <children>
+            <SideMenuView fx:id="sideMenuView"/>
+            <PictureView fx:id="pictureView"/>
+        </children>
+    </HBox>
+</children>
+</VBox>

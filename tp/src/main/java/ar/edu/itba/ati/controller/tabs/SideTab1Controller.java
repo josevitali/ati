@@ -14,12 +14,16 @@ import ar.edu.itba.ati.model.transformations.noise.SaltAndPepperNoise;
 import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.*;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.function.BiFunction;
 
@@ -29,6 +33,11 @@ public class SideTab1Controller implements SideTabController{
     private final PictureService pictureService;
     @FXML
     private ScrollPane sideTabView1;
+
+    @FXML
+    private Button contrastButton;
+    @FXML
+    private Button equalizationButton;
 
     @FXML
     public TextField gammaVal;
@@ -284,7 +293,23 @@ public class SideTab1Controller implements SideTabController{
         eventBus.post(new ShowPictureEvent());
     }
 
+    @Subscribe
+    private void buttonVisibility(ShowPictureEvent event){
+        if(pictureService.getPictureType() == BufferedImage.TYPE_BYTE_GRAY){
+            contrastButton.setManaged(true);
+            contrastButton.setVisible(true);
+            equalizationButton.setManaged(true);
+            equalizationButton.setVisible(true);
+        } else {
+            contrastButton.setManaged(false);
+            contrastButton.setVisible(false);
+            equalizationButton.setManaged(false);
+            equalizationButton.setVisible(false);
+        }
+    }
+
     @Override
+    @Subscribe
     public void reset(ResetParametersEvent event) {
         gammaVal.setText("");
         gaussVal.setText("");

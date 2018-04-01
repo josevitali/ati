@@ -21,8 +21,8 @@
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Product" onAction="#productPicture"/>
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Negative" onAction="#negative"/>
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Dynamic Range" onAction="#dynamicRange"/>
-                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Contrast" onAction="#contrast"/>
-                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Equalization" onAction="#equalization"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Contrast" fx:id="contrastButton" onAction="#contrast"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Equalization" fx:id="equalizationButton" onAction="#equalization"/>
                 <HBox prefWidth="200.0" style="-fx-spacing: 5;">
                     <children>
                         <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Gamma Power">

@@ -52,4 +52,7 @@ public class PictureService {
         picture.mapPixelByPixel(biFunction, otherPicture);
     }
 
+    public int getPictureType() {
+        return picture.getType();
+    }
 }

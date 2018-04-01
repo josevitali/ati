@@ -131,7 +131,17 @@ public class Pictures {
     private static void savePgmAndPpm(Picture picture, File file) {
         BufferedImage bufferedImage = picture.getNormalizedClone().toBufferedImage();
         byte[] data = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
-        Mat mat = new Mat(bufferedImage.getHeight(),bufferedImage.getWidth(), CvType.CV_8UC3);
+        Mat mat;
+        switch(picture.getType()) {
+            case BufferedImage.TYPE_3BYTE_BGR:
+                mat = new Mat(bufferedImage.getHeight(),bufferedImage.getWidth(), CvType.CV_8UC3);
+                break;
+            case BufferedImage.TYPE_BYTE_GRAY:
+                mat = new Mat(bufferedImage.getHeight(),bufferedImage.getWidth(), CvType.CV_8UC1);
+                break;
+            default:
+                throw new IllegalStateException("Image type " + picture.getType() + " not supported.");
+        }
         mat.put(0, 0, data);
         try {
             Highgui.imwrite(file.getCanonicalPath(), mat);

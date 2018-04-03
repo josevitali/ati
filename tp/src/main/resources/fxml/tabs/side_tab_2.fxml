@@ -13,7 +13,8 @@
         <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
               style="-fx-spacing: 10;">
             <children>
-                
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Prewitt" onAction="#prewittGradientMethod"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Sobel" onAction="#sobelGradientMethod"/>
             </children>
         </VBox>
     </content>

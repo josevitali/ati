@@ -1,20 +1,20 @@
-package ar.edu.itba.ati.model.transformations;
+package ar.edu.itba.ati.model.transformations.slidingWindows.withMask;
 
 import ar.edu.itba.ati.model.pictures.Picture;
-import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.Mask;
-import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.SlidingWindowWithMask;
+import ar.edu.itba.ati.model.transformations.PictureTransformer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiFunction;
-import java.util.stream.IntStream;
+import java.util.function.BiConsumer;
 
-public class GradientMethodTransformation implements PictureTransformer {
+public class SlidingMethodWithMultiMask implements PictureTransformer{
 
     private final List<Mask> masks;
+    private final BiConsumer<Picture,List<Picture>> bc;
 
-    public GradientMethodTransformation(List<Mask> masks){
+    public SlidingMethodWithMultiMask(List<Mask> masks, BiConsumer<Picture, List<Picture>> bc){
         this.masks = masks;
+        this.bc = bc;
     }
 
     @Override
@@ -31,12 +31,6 @@ public class GradientMethodTransformation implements PictureTransformer {
         PictureTransformer transformer = new SlidingWindowWithMask(masks.get(0));
         transformer.transform(picture);
 
-        picture.mapPixelByPixel(px -> px * px);
-
-        for(Picture otherPicture : otherPictures){
-            picture.mapPixelByPixel((d1, d2) -> d1 + d2 * d2, otherPicture);
-        }
-
-        picture.mapPixelByPixel(px -> Math.sqrt(px));
+        bc.accept(picture, otherPictures);
     }
 }

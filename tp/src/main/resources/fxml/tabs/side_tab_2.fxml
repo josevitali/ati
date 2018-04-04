@@ -13,8 +13,14 @@
         <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
               style="-fx-spacing: 10;">
             <children>
+                <Label alignment="CENTER" contentDisplay="CENTER" text="Gradient Methods" underline="true" />
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Prewitt" onAction="#prewittGradientMethod"/>
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Sobel" onAction="#sobelGradientMethod"/>
+                <Label alignment="CENTER" contentDisplay="CENTER" text="Maximum Methods" underline="true" />
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Unnamed" onAction="#unnamedMaxMethod"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Kirsh" onAction="#kirshMaxMethod"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Prewitt" onAction="#prewittMaxMethod"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Sobel" onAction="#sobelMaxMethod"/>
             </children>
         </VBox>
     </content>

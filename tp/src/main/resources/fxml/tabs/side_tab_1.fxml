@@ -36,7 +36,6 @@
                         </Button>
                     </children>
                 </HBox>
-                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="46.0" text="Noise" underline="true" />
                 <HBox prefWidth="200.0" style="-fx-spacing: 5;">
                     <children>
                         <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Threshold">
@@ -53,6 +52,7 @@
                         </Button>
                     </children>
                 </HBox>
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="46.0" text="Noise" underline="true" />
                 <HBox prefWidth="200.0" style="-fx-spacing: 5;">
                     <children>
                         <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Gauss">

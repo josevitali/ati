@@ -13,6 +13,7 @@ public class HighPassFilter extends SlidingWindowWithMask<Integer> {
     @Override
     public <Integer> void transform(Picture<Integer> picture){
         super.transform(picture);
+        picture.normalize();
         picture.mapPixelByPixel(new Function<Double, Double>() {
             @Override
             public Double apply(Double aDouble) {

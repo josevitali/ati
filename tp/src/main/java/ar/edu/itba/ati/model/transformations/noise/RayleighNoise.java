@@ -19,10 +19,10 @@ public class RayleighNoise implements PictureTransformer{
 
     @Override
     public void transform(Picture picture) {
-        for (int i = 0; i < picture.getHeight(); i++) {
-            for (int j = 0; j < picture.getHeight(); j++) {
+        for (int row = 0; row < picture.getHeight(); row++) {
+            for (int col = 0; col < picture.getWidth(); col++) {
                 Function<Double,Double> function = px -> px * (psi * Math.sqrt(-2 * Math.log(1 - random.nextDouble())));
-                picture.mapPixel(i, j, function);
+                picture.mapPixel(row, col, function);
             }
         }
     }

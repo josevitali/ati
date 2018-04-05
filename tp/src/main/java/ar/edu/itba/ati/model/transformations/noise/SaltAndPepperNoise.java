@@ -24,14 +24,14 @@ public class SaltAndPepperNoise implements PictureTransformer{
         picture.normalize();
         Function<Double,Double> blackFunction = px -> 0.0;
         Function<Double,Double> whiteFunction = px -> 255.0;
-        for (int i = 0; i < picture.getHeight(); i++) {
-            for (int j = 0; j < picture.getWidth(); j++) {
+        for (int row = 0; row < picture.getHeight(); row++) {
+            for (int col = 0; col < picture.getWidth(); col++) {
                 double value = random.nextDouble();
                 if(value <= p0) {
-                    picture.mapPixel(i, j, blackFunction);
+                    picture.mapPixel(row, col, blackFunction);
                 }
                 else if(value >= p1) {
-                    picture.mapPixel(i, j, whiteFunction);
+                    picture.mapPixel(row, col, whiteFunction);
                 }
             }
         }

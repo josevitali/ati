@@ -4,9 +4,7 @@ import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
 import ar.edu.itba.ati.io.Pictures;
 import ar.edu.itba.ati.model.pictures.Picture;
-import ar.edu.itba.ati.model.transformations.Contrast;
-import ar.edu.itba.ati.model.transformations.Equalization;
-import ar.edu.itba.ati.model.transformations.PictureTransformer;
+import ar.edu.itba.ati.model.transformations.*;
 import ar.edu.itba.ati.model.transformations.noise.ExponentialNoise;
 import ar.edu.itba.ati.model.transformations.noise.GaussianNoise;
 import ar.edu.itba.ati.model.transformations.noise.RayleighNoise;
@@ -89,6 +87,7 @@ public class SideTab1Controller implements SideTabController{
         twoPictureOperation((px1,px2) -> px1 * px2);
     }
 
+//    TODO: pasar a transformation
     @FXML
     private void threshold() {
         try {
@@ -106,16 +105,13 @@ public class SideTab1Controller implements SideTabController{
 
     @FXML
     private void negative() {
-        pictureService.mapPixelByPixel(p -> 255.0 - (double) p);
+        applyTransformation(new Negative());
         eventBus.post(new ShowPictureEvent());
     }
 
     @FXML
     private void dynamicRange() {
-        double productScalar = 5.0;
-        pictureService.mapPixelByPixel(px -> productScalar * (double) px);
-        pictureService.mapPixelByPixel(p -> (255.0 - 1) / Math.log(1 + 255.0) * Math.log(1 + (double) p));
-        pictureService.normalize();
+        applyTransformation(new DynamicRange());
         eventBus.post(new ShowPictureEvent());
     }
 

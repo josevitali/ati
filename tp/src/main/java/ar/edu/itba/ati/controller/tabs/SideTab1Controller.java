@@ -122,7 +122,7 @@ public class SideTab1Controller implements SideTabController{
             if(value < 0) {
                 return;
             }
-            pictureService.mapPixelByPixel(px -> Math.pow(255.0 -1, 1 - value) * Math.pow((double)px, value));
+            applyTransformation(new Gamma(value));
             eventBus.post(new ShowPictureEvent());
         } catch (NumberFormatException e){
             return;

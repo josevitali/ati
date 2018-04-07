@@ -16,4 +16,6 @@
     <Button fx:id="averagePixel" text="Average" onAction="#average"></Button>
     <Button fx:id="newWindow" text="Open in new window" onAction="#openPictureInNewWindow"/>
     <Button fx:id="histogram" text="Histogram" onAction="#showHistogram"/>
+    <Button fx:id="undo" text="Undo" onAction="#undo"/>
+    <Button fx:id="redo" text="Redo" onAction="#redo"/>
 </fx:root>

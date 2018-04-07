@@ -87,8 +87,6 @@ public abstract class Picture<T>{
 
     public abstract Histogram getHistogram();
 
-//    public abstract void applyHistogramFunction(Function<Double[],Double> f);
-
     public abstract void crop(int x0, int x1, int y0, int y1);
 
     public abstract T subMatrixOperation(int firstRow, int firstCol, int height, int width,

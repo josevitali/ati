@@ -17,16 +17,18 @@ import java.util.List;
 
 public class SideTab2Controller implements SideTabController {
 
-    private final EventBus eventBus;
-    private final PictureService pictureService;
-
-    @FXML
-    private ScrollPane sideTabView2;
+    protected final EventBus eventBus;
+    protected final PictureService pictureService;
 
     @Inject
-    public SideTab2Controller(final EventBus eventBus, final PictureService pictureService) {
+    public SideTab2Controller(final EventBus eventBus, final PictureService pictureService){
         this.eventBus = eventBus;
         this.pictureService = pictureService;
+    }
+
+    protected void applyTransformation(PictureTransformer transformer){
+        pictureService.applyTransformation(transformer);
+        eventBus.post(new ShowPictureEvent());
     }
 
     @FXML
@@ -64,11 +66,6 @@ public class SideTab2Controller implements SideTabController {
     private void sobelMaxMethod(){
         List<Mask> masks = Masks.rotate(Masks.SOBEL, Masks.ALL_DIRECTIONS);
         applyTransformation(new MaxMethodTransformation(masks));
-    }
-
-    private void applyTransformation(PictureTransformer transformer){
-        pictureService.applyTransformation(transformer);
-        eventBus.post(new ShowPictureEvent());
     }
 
     @Override

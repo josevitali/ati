@@ -27,8 +27,8 @@ import java.util.function.BiFunction;
 
 public class SideTab1Controller implements SideTabController{
 
-    private final EventBus eventBus;
-    private final PictureService pictureService;
+    protected final EventBus eventBus;
+    protected final PictureService pictureService;
 
     @FXML
     private ScrollPane sideTabView1;
@@ -55,8 +55,6 @@ public class SideTab1Controller implements SideTabController{
     @FXML
     public TextField saltAndPepperVal;
 
-
-
     // Mask Filters
     @FXML
     public TextField meanSize;
@@ -67,11 +65,15 @@ public class SideTab1Controller implements SideTabController{
     @FXML
     public TextField highPassSize;
 
-
     @Inject
     public SideTab1Controller(final EventBus eventBus, final PictureService pictureService){
         this.eventBus = eventBus;
         this.pictureService = pictureService;
+    }
+
+    protected void applyTransformation(PictureTransformer transformer){
+        pictureService.applyTransformation(transformer);
+        eventBus.post(new ShowPictureEvent());
     }
 
     @FXML
@@ -89,7 +91,6 @@ public class SideTab1Controller implements SideTabController{
         twoPictureOperation((px1,px2) -> px1 * px2);
     }
 
-//    TODO: pasar a transformation
     @FXML
     private void threshold() {
         try {
@@ -97,9 +98,13 @@ public class SideTab1Controller implements SideTabController{
             if(value > 255 || value < 0) {
                 return;
             }
-            pictureService.normalize();
-            pictureService.mapPixelByPixel(p -> (double) p > value ? 255.0 : 0.0);
-            eventBus.post(new ShowPictureEvent());
+            applyTransformation(new PictureTransformer() {
+                @Override
+                public <T> void transform(Picture<T> picture) {
+                    picture.normalize();
+                    picture.mapPixelByPixel(p -> (double) p > value ? 255.0 : 0.0);
+                }
+            });
         } catch (NumberFormatException e){
             return;
         }
@@ -108,13 +113,11 @@ public class SideTab1Controller implements SideTabController{
     @FXML
     private void negative() {
         applyTransformation(new Negative());
-        eventBus.post(new ShowPictureEvent());
     }
 
     @FXML
     private void dynamicRange() {
         applyTransformation(new DynamicRange());
-        eventBus.post(new ShowPictureEvent());
     }
 
     @FXML
@@ -125,7 +128,6 @@ public class SideTab1Controller implements SideTabController{
                 return;
             }
             applyTransformation(new Gamma(value));
-            eventBus.post(new ShowPictureEvent());
         } catch (NumberFormatException e){
             return;
         }
@@ -188,14 +190,12 @@ public class SideTab1Controller implements SideTabController{
 
     @FXML
     private void contrast(){
-        pictureService.applyTransformation(new Contrast());
-        eventBus.post(new ShowPictureEvent());
+        applyTransformation(new Contrast());
     }
 
     @FXML
     private void equalization() {
-        pictureService.applyTransformation(new Equalization());
-        eventBus.post(new ShowPictureEvent());
+        applyTransformation(new Equalization());
     }
 
     private void twoPictureOperation(BiFunction<Double,Double,Double> bf) {
@@ -205,8 +205,12 @@ public class SideTab1Controller implements SideTabController{
             return;
         }
 
-        pictureService.mapPixelByPixel(bf, otherPicture);
-        eventBus.post(new ShowPictureEvent());
+        applyTransformation(new PictureTransformer() {
+            @Override
+            public <T> void transform(Picture<T> picture) {
+                picture.mapPixelByPixel(bf, otherPicture);
+            }
+        });
     }
 
     private Picture choosePicture(){
@@ -288,11 +292,6 @@ public class SideTab1Controller implements SideTabController{
         } catch (NumberFormatException e){
             return;
         }
-    }
-
-    private void applyTransformation(PictureTransformer transformer){
-        pictureService.applyTransformation(transformer);
-        eventBus.post(new ShowPictureEvent());
     }
 
     @Subscribe

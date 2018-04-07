@@ -8,7 +8,7 @@ import java.util.function.Function;
 
 public class SlidingWindowWithMask<T extends Number> extends SlidingWindowTransformation<T> {
 
-    private final Mask<T> mask;
+    protected final Mask<T> mask;
     private final BiFunction<T[][],Double[][],Double> bf;
 
     public SlidingWindowWithMask(Mask<T> mask, BiFunction<T[][], Double[][], Double> bf) {

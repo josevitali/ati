@@ -1,7 +1,5 @@
 package ar.edu.itba.ati.model.transformations.slidingWindows.withMask;
 
-import ar.edu.itba.ati.controller.tabs.SideTab2Controller;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +20,7 @@ public class Masks {
     public static Mask PREWITT = new Mask(new Double[][]{{-1.0, -1.0, -1.0},{0.0, 0.0, 0.0},{1.0, 1.0, 1.0}});
     public static Mask SOBEL = new Mask(new Double[][]{{-1.0, -2.0, -1.0},{0.0, 0.0, 0.0},{1.0, 2.0, 1.0}});
     public static Mask KIRSH = new Mask(new Double[][]{{5.0, 5.0, 5.0},{-3.0, 0.0, -3.0},{-3.0, -3.0, -3.0}});
+    public static Mask LAPLACE = new Mask(new Double[][]{{0.0, -1.0, 0.0},{-1.0, 4.0, -1.0},{0.0, -1.0, 0.0}});
 
     public static List<Mask> rotate(Mask mask, int[] rotations){
         Number[][] matrix = mask.getMatrix();

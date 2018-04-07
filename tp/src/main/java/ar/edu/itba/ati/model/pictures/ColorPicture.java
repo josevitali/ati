@@ -84,6 +84,16 @@ public class ColorPicture extends Picture<Double[]> {
         return pixel;
     }
 
+    @Override
+    public Double[] evaluatePixel(BiFunction<Double, Double, Double> bf, Double[] pixel, Double[] otherPixel){
+        Double[] newPixel = new Double[3];
+        newPixel[BLUE] = bf.apply(pixel[BLUE], otherPixel[BLUE]);
+        newPixel[GREEN] = bf.apply(pixel[GREEN], otherPixel[GREEN]);
+        newPixel[RED] = bf.apply(pixel[RED], otherPixel[RED]);
+
+        return newPixel;
+    }
+
     public void mapPixelByPixelInSpecificBand(Function<Double, Double> f, int band){
         for(int row = 0; row < height; row++){
             for(int col = 0; col < width; col++){
@@ -141,7 +151,7 @@ public class ColorPicture extends Picture<Double[]> {
     }
 
     @Override
-    protected Double[] mapPixel(BiFunction<Double, Double, Double> bf, Double[] myPixel, Double[] otherPixel) {
+    public Double[] mapPixel(BiFunction<Double, Double, Double> bf, Double[] myPixel, Double[] otherPixel) {
         myPixel[BLUE] = bf.apply(myPixel[BLUE], otherPixel[BLUE]);
         myPixel[GREEN] = bf.apply(myPixel[GREEN], otherPixel[GREEN]);
         myPixel[RED] = bf.apply(myPixel[RED], otherPixel[RED]);

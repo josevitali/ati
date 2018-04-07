@@ -21,6 +21,7 @@
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Kirsh" onAction="#kirshMaxMethod"/>
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Prewitt" onAction="#prewittMaxMethod"/>
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Sobel" onAction="#sobelMaxMethod"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Laplace" onAction="#laplaceMethod"/>
             </children>
         </VBox>
     </content>

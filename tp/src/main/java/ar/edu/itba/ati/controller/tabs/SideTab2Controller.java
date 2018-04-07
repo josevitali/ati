@@ -2,11 +2,8 @@ package ar.edu.itba.ati.controller.tabs;
 
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
-import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.MaxMethodTransformation;
-import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.GradientMethodTransformation;
+import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.*;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
-import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.Mask;
-import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.Masks;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
@@ -66,6 +63,16 @@ public class SideTab2Controller implements SideTabController {
     private void sobelMaxMethod(){
         List<Mask> masks = Masks.rotate(Masks.SOBEL, Masks.ALL_DIRECTIONS);
         applyTransformation(new MaxMethodTransformation(masks));
+    }
+
+    @FXML
+    private void laplaceMethod(){
+        applyTransformation(new LaplaceTransformation(Masks.LAPLACE));
+    }
+
+    private void applyTransformation(PictureTransformer transformer){
+        pictureService.applyTransformation(transformer);
+        eventBus.post(new ShowPictureEvent());
     }
 
     @Override

@@ -43,6 +43,8 @@ public class SideTab1Controller implements SideTabController{
 
     // Noise
     @FXML
+    public TextField densityVal;
+    @FXML
     public TextField gaussVal;
     @FXML
     public TextField exponentialVal;
@@ -133,10 +135,11 @@ public class SideTab1Controller implements SideTabController{
     private void gaussNoise() {
         try {
             Double value = Double.valueOf(gaussVal.getText());
-            if(value < 0) {
+            Double density = Double.valueOf(densityVal.getText());
+            if(value < 0 || density < 0 || density > 1) {
                 return;
             }
-            applyTransformation(new GaussianNoise(0.0, value));
+            applyTransformation(new GaussianNoise(density,0.0, value));
         } catch (NumberFormatException e){
             return;
         }
@@ -146,10 +149,11 @@ public class SideTab1Controller implements SideTabController{
     private void exponentialNoise() {
         try {
             Double value = Double.valueOf(exponentialVal.getText());
-            if(value < 0) {
+            Double density = Double.valueOf(densityVal.getText());
+            if(value < 0 || density < 0 || density > 1) {
                 return;
             }
-            applyTransformation(new ExponentialNoise(value));
+            applyTransformation(new ExponentialNoise(density, value));
         } catch (NumberFormatException e){
             return;
         }
@@ -159,10 +163,11 @@ public class SideTab1Controller implements SideTabController{
     private void rayleighNoise() {
         try {
             Double value = Double.valueOf(rayleighVal.getText());
-            if(value < 0) {
+            Double density = Double.valueOf(densityVal.getText());
+            if(value < 0 || density < 0 || density > 1) {
                 return;
             }
-            applyTransformation(new RayleighNoise(value));
+            applyTransformation(new RayleighNoise(density, value));
         } catch (NumberFormatException e){
             return;
         }
@@ -308,6 +313,7 @@ public class SideTab1Controller implements SideTabController{
     @Override
     public void reset(ResetParametersEvent event) {
         gammaVal.setText("");
+        densityVal.setText("");
         gaussVal.setText("");
         exponentialVal.setText("");
         rayleighVal.setText("");

@@ -2,13 +2,12 @@ package ar.edu.itba.ati.controller.tabs;
 
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
-import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.*;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
+import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.*;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
 
 import java.util.List;
 
@@ -68,11 +67,6 @@ public class SideTab2Controller implements SideTabController {
     @FXML
     private void laplaceMethod(){
         applyTransformation(new LaplaceTransformation(Masks.LAPLACE));
-    }
-
-    private void applyTransformation(PictureTransformer transformer){
-        pictureService.applyTransformation(transformer);
-        eventBus.post(new ShowPictureEvent());
     }
 
     @Override

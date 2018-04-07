@@ -69,6 +69,12 @@ public class SideTab2Controller implements SideTabController {
         applyTransformation(new LaplaceTransformation(Masks.LAPLACE));
     }
 
+    @FXML
+    private void gaussianLaplaceMethod(){
+        //TODO deshardcodear
+        applyTransformation(new GaussianLaplaceTransformation(1, 3));
+    }
+
     @Override
     public void reset(ResetParametersEvent event) {
 

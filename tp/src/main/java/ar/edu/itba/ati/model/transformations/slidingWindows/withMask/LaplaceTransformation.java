@@ -6,7 +6,7 @@ import java.util.function.BiFunction;
 
 public class LaplaceTransformation extends SlidingWindowWithMask<Double> {
 
-    private BiFunction<Double, Double, Double> bf = new BiFunction<Double, Double, Double>() {
+    protected BiFunction<Double, Double, Double> bf = new BiFunction<Double, Double, Double>() {
         @Override
         public Double apply(Double prevVal, Double actualVal) {
             if(prevVal*actualVal < 0){

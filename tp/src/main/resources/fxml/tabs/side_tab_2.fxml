@@ -39,7 +39,23 @@
                         </Button>
                     </children>
                 </HBox>
-                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Gaussian Laplace" onAction="#gaussianLaplaceMethod"/>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="45.0" text="LoG">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" fx:id="gaussianLaplaceThresholdVal"/>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" promptText="σ" fx:id="gaussianLaplaceSigmaVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#gaussianLaplaceMethod">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
             </children>
         </VBox>
     </content>

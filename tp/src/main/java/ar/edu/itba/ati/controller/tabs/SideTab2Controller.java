@@ -19,6 +19,10 @@ public class SideTab2Controller implements SideTabController {
 
     @FXML
     public TextField laplaceThresholdVal;
+    @FXML
+    public TextField gaussianLaplaceThresholdVal;
+    @FXML
+    public TextField gaussianLaplaceSigmaVal;
 
     @Inject
     public SideTab2Controller(final EventBus eventBus, final PictureService pictureService){
@@ -84,8 +88,9 @@ public class SideTab2Controller implements SideTabController {
 
     @FXML
     private void gaussianLaplaceMethod(){
-        //TODO deshardcodear
-        applyTransformation(new GaussianLaplaceTransformation(1, 3));
+        Double threshold = Double.valueOf(gaussianLaplaceThresholdVal.getText());
+        Double sigma = Double.valueOf(gaussianLaplaceSigmaVal.getText());
+        applyTransformation(new GaussianLaplaceTransformation(sigma, threshold));
     }
 
     @Override

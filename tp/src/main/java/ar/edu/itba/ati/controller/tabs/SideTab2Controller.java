@@ -8,6 +8,7 @@ import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 import java.util.List;
 
@@ -15,6 +16,9 @@ public class SideTab2Controller implements SideTabController {
 
     protected final EventBus eventBus;
     protected final PictureService pictureService;
+
+    @FXML
+    public TextField laplaceThresholdVal;
 
     @Inject
     public SideTab2Controller(final EventBus eventBus, final PictureService pictureService){
@@ -66,6 +70,15 @@ public class SideTab2Controller implements SideTabController {
 
     @FXML
     private void laplaceMethod(){
+        Double value = Double.valueOf(laplaceThresholdVal.getText());
+        if(value > 255 || value < 0) {
+            return;
+        }
+        applyTransformation(new LaplaceThresholdTransformation(Masks.LAPLACE, value));
+    }
+
+    @FXML
+    private void simpleLaplaceMethod() {
         applyTransformation(new LaplaceTransformation(Masks.LAPLACE));
     }
 

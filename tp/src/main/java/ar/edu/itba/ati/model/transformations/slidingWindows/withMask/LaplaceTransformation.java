@@ -3,6 +3,7 @@ package ar.edu.itba.ati.model.transformations.slidingWindows.withMask;
 import ar.edu.itba.ati.model.pictures.Picture;
 
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class LaplaceTransformation extends SlidingWindowWithMask<Double> {
 
@@ -16,6 +17,19 @@ public class LaplaceTransformation extends SlidingWindowWithMask<Double> {
 
         }
     };
+    protected Function<Double, Function<Double, Function<Double, Double>>> triFunction = (prevVal -> (actualVal -> (nextVal -> {
+        if(actualVal == 0.0) {
+            if(prevVal*nextVal<0.0) {
+                return 255.0;
+            }
+            return 0.0;
+        }
+        if(prevVal*actualVal<0.0) {
+            return 255.0;
+        }
+        return 0.0;
+    })));
+
 
     private BiFunction<Double, Double, Double> unionFunction = new BiFunction<Double, Double, Double>() {
         @Override
@@ -46,16 +60,28 @@ public class LaplaceTransformation extends SlidingWindowWithMask<Double> {
         T prevElem = windowedMatrix[0][0];
         for (int i = 0; i < windowedMatrix.length; i++) {
             for (int j = 0; j < windowedMatrix[0].length; j++) {
-                rowMatrix[i][j] = picture.evaluatePixel(bf, prevElem, windowedMatrix[i][j]);
+                if(j+1 >= windowedMatrix[0].length) {
+                    rowMatrix[i][j] = picture.evaluateTwoPixels(bf, prevElem, windowedMatrix[i][j]);
+                }
+                else {
+                    rowMatrix[i][j] = picture.evaluateThreePixels(triFunction, prevElem, windowedMatrix[i][j], windowedMatrix[i][j+1]);
+                }
                 prevElem = windowedMatrix[i][j];
             }
         }
+
+        T[][] colMatrix = (T[][]) new Object[1 + picture.getHeight() - mask.getSize()][1 + picture.getWidth() - mask.getSize()];
 
         //Find sign changes in matrix by cols
         prevElem = windowedMatrix[0][0];
         for (int i = 0; i < windowedMatrix[0].length; i++) {
             for (int j = 0; j < windowedMatrix.length; j++) {
-                windowedMatrix[j][i] = picture.evaluatePixel(bf, prevElem, windowedMatrix[j][i]);
+                if(j+1 >= windowedMatrix.length) {
+                    colMatrix[j][i] = picture.evaluateTwoPixels(bf, prevElem, windowedMatrix[j][i]);
+                }
+                else {
+                    colMatrix[j][i] = picture.evaluateThreePixels(triFunction, prevElem, windowedMatrix[j][i], windowedMatrix[j+1][i]);
+                }
                 prevElem = windowedMatrix[j][i];
             }
         }
@@ -63,7 +89,7 @@ public class LaplaceTransformation extends SlidingWindowWithMask<Double> {
         //Create union between two matrices
         for (int i = 0; i < windowedMatrix.length; i++) {
             for (int j = 0; j < windowedMatrix[0].length; j++) {
-                windowedMatrix[i][j] = picture.mapPixel(unionFunction, windowedMatrix[i][j], rowMatrix[i][j]);
+                windowedMatrix[i][j] = picture.mapPixel(unionFunction, colMatrix[i][j], rowMatrix[i][j]);
             }
         }
 

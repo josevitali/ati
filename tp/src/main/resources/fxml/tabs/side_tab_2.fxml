@@ -21,7 +21,24 @@
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Kirsh" onAction="#kirshMaxMethod"/>
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Prewitt" onAction="#prewittMaxMethod"/>
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Sobel" onAction="#sobelMaxMethod"/>
-                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Laplace" onAction="#laplaceMethod"/>
+                <Label alignment="CENTER" contentDisplay="CENTER" text="Second Derivative Methods" underline="true" />
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Simple Laplace" onAction="#simpleLaplaceMethod"/>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Laplace">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="43.0" fx:id="laplaceThresholdVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#laplaceMethod">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Gaussian Laplace" onAction="#gaussianLaplaceMethod"/>
             </children>
         </VBox>

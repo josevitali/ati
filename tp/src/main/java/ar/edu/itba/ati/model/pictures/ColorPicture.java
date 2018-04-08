@@ -85,12 +85,22 @@ public class ColorPicture extends Picture<Double[]> {
     }
 
     @Override
-    public Double[] evaluatePixel(BiFunction<Double, Double, Double> bf, Double[] pixel, Double[] otherPixel){
+    public Double[] evaluateTwoPixels(BiFunction<Double, Double, Double> bf, Double[] pixel, Double[] otherPixel){
         Double[] newPixel = new Double[3];
         newPixel[BLUE] = bf.apply(pixel[BLUE], otherPixel[BLUE]);
         newPixel[GREEN] = bf.apply(pixel[GREEN], otherPixel[GREEN]);
         newPixel[RED] = bf.apply(pixel[RED], otherPixel[RED]);
 
+        return newPixel;
+    }
+
+    @Override
+    public Double[] evaluateThreePixels(Function<Double, Function<Double, Function<Double, Double>>> triFunction,
+                                   Double[] firstPixel, Double[] secondPixel, Double[] thirdPixel) {
+        Double[] newPixel = new Double[3];
+        newPixel[BLUE] = triFunction.apply(firstPixel[BLUE]).apply(secondPixel[BLUE]).apply(thirdPixel[BLUE]);
+        newPixel[GREEN] = triFunction.apply(firstPixel[GREEN]).apply(secondPixel[GREEN]).apply(thirdPixel[GREEN]);
+        newPixel[RED] = triFunction.apply(firstPixel[RED]).apply(secondPixel[RED]).apply(thirdPixel[RED]);
         return newPixel;
     }
 

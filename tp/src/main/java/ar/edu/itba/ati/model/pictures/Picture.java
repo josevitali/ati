@@ -54,7 +54,10 @@ public abstract class Picture<T>{
 
     protected abstract T mapPixel(Function<Double,Double> f, T pixel);
 
-    public abstract T evaluatePixel(BiFunction<Double, Double, Double> bf, T pixel, T otherPixel);
+    public abstract T evaluateTwoPixels(BiFunction<Double, Double, Double> bf, T pixel, T otherPixel);
+
+    public abstract T evaluateThreePixels(Function<Double, Function<Double, Function<Double, Double>>> triFunction,
+                                          T firstPixel, T secondPixel, T thirdPixel);
 
     public void mapPixel(int row, int col, Function<Double,Double> f){
         matrix[row][col] = mapPixel(f, matrix[row][col]);

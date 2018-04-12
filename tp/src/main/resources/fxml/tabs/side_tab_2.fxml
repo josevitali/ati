@@ -56,6 +56,8 @@
                         </Button>
                     </children>
                 </HBox>
+                <Label alignment="CENTER" contentDisplay="CENTER" text="Thresholds" underline="true" fx:id="thresholdLabel"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Global" onAction="#globalThreshold" fx:id="globalThresholdButton"/>
             </children>
         </VBox>
     </content>

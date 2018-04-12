@@ -2,14 +2,21 @@ package ar.edu.itba.ati.controller.tabs;
 
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
+import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.*;
+import ar.edu.itba.ati.model.transformations.threshold.GlobalThreshold;
+import ar.edu.itba.ati.model.transformations.threshold.ThresholdCriteria;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 public class SideTab2Controller implements SideTabController {
@@ -18,21 +25,22 @@ public class SideTab2Controller implements SideTabController {
     protected final PictureService pictureService;
 
     @FXML
-    public TextField laplaceThresholdVal;
+    private TextField laplaceThresholdVal;
     @FXML
-    public TextField gaussianLaplaceThresholdVal;
+    private TextField gaussianLaplaceThresholdVal;
     @FXML
-    public TextField gaussianLaplaceSigmaVal;
+    private TextField gaussianLaplaceSigmaVal;
+
+    // Threshold
+    @FXML
+    private Label thresholdLabel;
+    @FXML
+    private Button globalThresholdButton;
 
     @Inject
     public SideTab2Controller(final EventBus eventBus, final PictureService pictureService){
         this.eventBus = eventBus;
         this.pictureService = pictureService;
-    }
-
-    protected void applyTransformation(PictureTransformer transformer){
-        pictureService.applyTransformation(transformer);
-        eventBus.post(new ShowPictureEvent());
     }
 
     @FXML
@@ -91,6 +99,41 @@ public class SideTab2Controller implements SideTabController {
         Double threshold = Double.valueOf(gaussianLaplaceThresholdVal.getText());
         Double sigma = Double.valueOf(gaussianLaplaceSigmaVal.getText());
         applyTransformation(new GaussianLaplaceTransformation(sigma, threshold));
+    }
+
+    @FXML
+    private void globalThreshold(){
+        applyThreshold(new GlobalThreshold());
+    }
+
+    private void applyTransformation(PictureTransformer transformer){
+        pictureService.applyTransformation(transformer);
+        eventBus.post(new ShowPictureEvent());
+    }
+
+    private void applyThreshold(ThresholdCriteria thresholdCriteria){
+        final double t = thresholdCriteria.getThreshold(pictureService.getPicture());
+        applyTransformation(new PictureTransformer() {
+            @Override
+            public <T> void transform(Picture<T> picture) {
+                picture.mapPixelByPixel(px -> px < t ? 0.0 : 255.0);
+            }
+        });
+    }
+
+    @Subscribe
+    private void buttonVisibility(ShowPictureEvent event){
+        if(pictureService.getPictureType() == BufferedImage.TYPE_BYTE_GRAY){
+            thresholdLabel.setVisible(true);
+            thresholdLabel.setVisible(true);
+            globalThresholdButton.setManaged(true);
+            globalThresholdButton.setVisible(true);
+        } else {
+            thresholdLabel.setManaged(false);
+            thresholdLabel.setVisible(false);
+            globalThresholdButton.setManaged(false);
+            globalThresholdButton.setVisible(false);
+        }
     }
 
     @Override

@@ -34,7 +34,7 @@ public class GaussianLaplaceTransformation extends LaplaceTransformation{
     //TODO pasar a masks y ver tema de tamaño
     private static Mask<Double> gaussianMask(double sigma) {
         int size = 2*(int)sigma + 1;
-        size = 7;
+        size = 5;
         if(size%2 == 0)
             size+=1;
         System.out.println(size);

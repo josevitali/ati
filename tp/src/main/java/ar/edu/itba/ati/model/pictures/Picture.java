@@ -28,6 +28,11 @@ public abstract class Picture<T>{
         matrix[row][column] = pixel;
     }
 
+    public T[][] getMatrix(){
+        // TODO: debería ser una copia?
+        return matrix;
+    }
+
     public abstract String getAverageColor(int row1, int col1, int row2, int col2);
 
     public String getAverageColor(){

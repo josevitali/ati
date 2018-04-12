@@ -31,37 +31,18 @@ public class GaussianLaplaceTransformation extends LaplaceTransformation{
     }
 
 
-    //TODO pasar a masks y ver tema de tamaño
+    //TODO pasar a masks
     private static Mask<Double> gaussianMask(double sigma) {
-        int size = 2*(int)sigma + 1;
-        size = 7;
-        if(size%2 == 0)
-            size+=1;
-        System.out.println(size);
+        int size = 8*(int)sigma + 1;
         Double[][] matrix = new Double[size][size];
-        int halfSize = size / 2;
-        double accum = 0;
-        double value, x, y;
-        for(int row = 0; row < size; row++){
-            for(int col = 0; col < size; col++){
-                x = row - halfSize;
-                y = col  - halfSize;
-                double aux = ((Math.pow(x,2)+Math.pow(y,2))/Math.pow(sigma,2));
-                value = -(1/((Math.sqrt(2*Math.PI))*Math.pow(sigma,3)))*(2-aux)*Math.exp(-0.5*aux);
-                matrix[row][col] = value;
-                accum += value;
+        int halfSize = (size-1) / 2;
+        for(int row = -halfSize; row <= halfSize; row++){
+            for(int col = -halfSize; col <= halfSize; col++){
+                double member1= -1/(Math.sqrt(2*Math.PI)* Math.pow(sigma, 3));
+                double member2=2- (  (row*row+ col*col)/(sigma*sigma) );
+                double member3=Math.exp(-(row*row+col*col)/(2*sigma*sigma));
+                matrix[row+halfSize][col+halfSize] = member1*member2*member3;
             }
-        }
-        for(int row = 0; row < size; row++){
-            for(int col = 0; col < size; col++){
-                matrix[row][col] /= accum;
-            }
-        }
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[0].length; j++) {
-                System.out.print(matrix[i][j] + "\t");
-            }
-            System.out.println();
         }
         return new Mask(matrix);
     }

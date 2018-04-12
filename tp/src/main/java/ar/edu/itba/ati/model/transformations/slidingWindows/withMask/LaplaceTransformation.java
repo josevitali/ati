@@ -62,8 +62,7 @@ public class LaplaceTransformation extends SlidingWindowWithMask<Double> {
             for (int j = 0; j < windowedMatrix[0].length; j++) {
                 if(j+1 >= windowedMatrix[0].length) {
                     rowMatrix[i][j] = picture.evaluateTwoPixels(bf, prevElem, windowedMatrix[i][j]);
-                }
-                else {
+                } else {
                     rowMatrix[i][j] = picture.evaluateThreePixels(triFunction, prevElem, windowedMatrix[i][j], windowedMatrix[i][j+1]);
                 }
                 prevElem = windowedMatrix[i][j];
@@ -78,8 +77,7 @@ public class LaplaceTransformation extends SlidingWindowWithMask<Double> {
             for (int j = 0; j < windowedMatrix.length; j++) {
                 if(j+1 >= windowedMatrix.length) {
                     colMatrix[j][i] = picture.evaluateTwoPixels(bf, prevElem, windowedMatrix[j][i]);
-                }
-                else {
+                } else {
                     colMatrix[j][i] = picture.evaluateThreePixels(triFunction, prevElem, windowedMatrix[j][i], windowedMatrix[j+1][i]);
                 }
                 prevElem = windowedMatrix[j][i];
@@ -92,7 +90,7 @@ public class LaplaceTransformation extends SlidingWindowWithMask<Double> {
                 windowedMatrix[i][j] = picture.mapPixel(unionFunction, colMatrix[i][j], rowMatrix[i][j]);
             }
         }
-
+        
         finalizeTransformation(picture, windowedMatrix);
     }
 

@@ -6,6 +6,7 @@ import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.*;
 import ar.edu.itba.ati.model.transformations.threshold.GlobalThreshold;
+import ar.edu.itba.ati.model.transformations.threshold.OtsuThreshold;
 import ar.edu.itba.ati.model.transformations.threshold.ThresholdCriteria;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
@@ -36,6 +37,8 @@ public class SideTab2Controller implements SideTabController {
     private Label thresholdLabel;
     @FXML
     private Button globalThresholdButton;
+    @FXML
+    private Button otsuThresholdButton;
 
     @Inject
     public SideTab2Controller(final EventBus eventBus, final PictureService pictureService){
@@ -106,6 +109,11 @@ public class SideTab2Controller implements SideTabController {
         applyThreshold(new GlobalThreshold());
     }
 
+    @FXML
+    private void otsuThreshold(){
+        applyThreshold(new OtsuThreshold());
+    }
+
     private void applyTransformation(PictureTransformer transformer){
         pictureService.applyTransformation(transformer);
         eventBus.post(new ShowPictureEvent());
@@ -113,6 +121,7 @@ public class SideTab2Controller implements SideTabController {
 
     private void applyThreshold(ThresholdCriteria thresholdCriteria){
         final double t = thresholdCriteria.getThreshold(pictureService.getPicture());
+        System.out.println(t);
         applyTransformation(new PictureTransformer() {
             @Override
             public <T> void transform(Picture<T> picture) {
@@ -128,11 +137,15 @@ public class SideTab2Controller implements SideTabController {
             thresholdLabel.setVisible(true);
             globalThresholdButton.setManaged(true);
             globalThresholdButton.setVisible(true);
+            otsuThresholdButton.setManaged(true);
+            otsuThresholdButton.setVisible(true);
         } else {
             thresholdLabel.setManaged(false);
             thresholdLabel.setVisible(false);
             globalThresholdButton.setManaged(false);
             globalThresholdButton.setVisible(false);
+            otsuThresholdButton.setManaged(false);
+            otsuThresholdButton.setVisible(false);
         }
     }
 

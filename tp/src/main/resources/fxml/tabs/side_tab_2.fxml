@@ -56,6 +56,57 @@
                         </Button>
                     </children>
                 </HBox>
+                <Label alignment="CENTER" contentDisplay="CENTER" text="Diffusion Methods" underline="true" />
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Isotropic">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="43.0" promptText="t" fx:id="isotropicIterationsVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#isotropicDiffusion">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="45.0" text="Leclerc">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" promptText="t" fx:id="leclercIterationsVal"/>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" promptText="σ" fx:id="leclercSigmaVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#leclercDiffusion">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="45.0" text="Lorentz">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" promptText="t" fx:id="lorentzIterationsVal"/>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" promptText="σ" fx:id="lorentzSigmaVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#lorentzDiffusion">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
             </children>
         </VBox>
     </content>

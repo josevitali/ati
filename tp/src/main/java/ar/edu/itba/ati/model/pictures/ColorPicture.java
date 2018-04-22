@@ -1,6 +1,7 @@
 package ar.edu.itba.ati.model.pictures;
 
 import ar.edu.itba.ati.model.histograms.Histogram;
+import com.sun.org.apache.regexp.internal.RE;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
@@ -82,6 +83,16 @@ public class ColorPicture extends Picture<Double[]> {
         pixel[GREEN] = f.apply(pixel[GREEN]);
         pixel[RED] = f.apply(pixel[RED]);
         return pixel;
+    }
+
+    @Override
+    public Double[] evaluatePixel(Function<Double,Double> f, Double[] pixel) {
+        Double[] newPixel = new Double[3];
+        newPixel[BLUE] = f.apply(pixel[BLUE]);
+        newPixel[GREEN] = f.apply(pixel[GREEN]);
+        newPixel[RED] = f.apply(pixel[RED]);
+
+        return newPixel;
     }
 
     @Override

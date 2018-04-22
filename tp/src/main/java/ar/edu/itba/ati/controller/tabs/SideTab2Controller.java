@@ -3,6 +3,9 @@ package ar.edu.itba.ati.controller.tabs;
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
+import ar.edu.itba.ati.model.transformations.diffusion.IsotropicDiffusion;
+import ar.edu.itba.ati.model.transformations.diffusion.LeclercDiffusion;
+import ar.edu.itba.ati.model.transformations.diffusion.LorentzDiffusion;
 import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.*;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
@@ -23,6 +26,16 @@ public class SideTab2Controller implements SideTabController {
     public TextField gaussianLaplaceThresholdVal;
     @FXML
     public TextField gaussianLaplaceSigmaVal;
+    @FXML
+    public TextField isotropicIterationsVal;
+    @FXML
+    public TextField leclercIterationsVal;
+    @FXML
+    public TextField leclercSigmaVal;
+    @FXML
+    public TextField lorentzIterationsVal;
+    @FXML
+    public TextField lorentzSigmaVal;
 
     @Inject
     public SideTab2Controller(final EventBus eventBus, final PictureService pictureService){
@@ -91,6 +104,35 @@ public class SideTab2Controller implements SideTabController {
         Double threshold = Double.valueOf(gaussianLaplaceThresholdVal.getText());
         Double sigma = Double.valueOf(gaussianLaplaceSigmaVal.getText());
         applyTransformation(new GaussianLaplaceTransformation(sigma, threshold));
+    }
+
+    @FXML
+    private void isotropicDiffusion(){
+        Integer value = Integer.valueOf(isotropicIterationsVal.getText());
+        if(value < 1) {
+            return;
+        }
+        applyTransformation(new IsotropicDiffusion(value));
+    }
+
+    @FXML
+    private void leclercDiffusion() {
+        Integer iterations = Integer.valueOf(leclercIterationsVal.getText());
+        Double sigma = Double.valueOf(leclercSigmaVal.getText());
+        if(iterations < 0 || sigma < 0) {
+            return;
+        }
+        applyTransformation(new LeclercDiffusion(iterations, sigma));
+    }
+
+    @FXML
+    private void lorentzDiffusion() {
+        Integer iterations = Integer.valueOf(lorentzIterationsVal.getText());
+        Double sigma = Double.valueOf(lorentzSigmaVal.getText());
+        if(iterations < 0 || sigma < 0) {
+            return;
+        }
+        applyTransformation(new LorentzDiffusion(iterations, sigma));
     }
 
     @Override

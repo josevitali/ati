@@ -67,6 +67,11 @@ public class GreyPicture extends Picture<Double> {
     }
 
     @Override
+    public Double evaluatePixel(Function<Double,Double> f, Double pixel) {
+        return f.apply(pixel);
+    }
+
+    @Override
     public Double evaluateTwoPixels(BiFunction<Double, Double, Double> bf, Double pixel, Double otherPixel) {
         return bf.apply(pixel, otherPixel);
     }

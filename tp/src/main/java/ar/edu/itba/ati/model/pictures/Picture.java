@@ -54,6 +54,8 @@ public abstract class Picture<T>{
 
     protected abstract T mapPixel(Function<Double,Double> f, T pixel);
 
+    public abstract T evaluatePixel(Function<Double, Double> f, T pixel);
+
     public abstract T evaluateTwoPixels(BiFunction<Double, Double, Double> bf, T pixel, T otherPixel);
 
     public abstract T evaluateThreePixels(Function<Double, Function<Double, Function<Double, Double>>> triFunction,

@@ -67,6 +67,11 @@ public class GreyPicture extends Picture<Double> {
     }
 
     @Override
+    public Double evaluatePixel(Function<Double,Double> f, Double pixel) {
+        return f.apply(pixel);
+    }
+
+    @Override
     public Double evaluateTwoPixels(BiFunction<Double, Double, Double> bf, Double pixel, Double otherPixel) {
         return bf.apply(pixel, otherPixel);
     }
@@ -74,7 +79,8 @@ public class GreyPicture extends Picture<Double> {
     @Override
     public Double evaluateThreePixels(Function<Double, Function<Double, Function<Double, Double>>> triFunction,
                                       Double firstPixel, Double secondPixel, Double thirdPixel) {
-        return triFunction.apply(firstPixel).apply(secondPixel).apply(thirdPixel);
+        double ret = triFunction.apply(firstPixel).apply(secondPixel).apply(thirdPixel);
+        return ret;
     }
 
     public void crop(int x0, int x1, int y0, int y1){

@@ -71,11 +71,6 @@ public class SideTab1Controller implements SideTabController{
         this.pictureService = pictureService;
     }
 
-    protected void applyTransformation(PictureTransformer transformer){
-        pictureService.applyTransformation(transformer);
-        eventBus.post(new ShowPictureEvent());
-    }
-
     @FXML
     private void addPicture(){
         twoPictureOperation((px1,px2) -> px1 + px2);
@@ -292,6 +287,11 @@ public class SideTab1Controller implements SideTabController{
         } catch (NumberFormatException e){
             return;
         }
+    }
+
+    private void applyTransformation(PictureTransformer transformer){
+        pictureService.applyTransformation(transformer);
+        eventBus.post(new ShowPictureEvent());
     }
 
     @Subscribe

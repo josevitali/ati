@@ -61,13 +61,13 @@ public class SideTab2Controller implements SideTabController {
 
     @FXML
     private void prewittGradientMethod(){
-        List<Mask> masks = Masks.rotate(Masks.PREWITT, new int[]{Masks.TOP, Masks.DOWN});
+        List<Mask> masks = Masks.rotate(Masks.PREWITT, new int[]{Masks.TOP, Masks.RIGHT});
         applyTransformation(new GradientMethodTransformation(masks));
     }
 
     @FXML
     private void sobelGradientMethod(){
-        List<Mask> masks = Masks.rotate(Masks.SOBEL, new int[]{Masks.TOP, Masks.DOWN});
+        List<Mask> masks = Masks.rotate(Masks.SOBEL, new int[]{Masks.TOP, Masks.RIGHT});
         applyTransformation(new GradientMethodTransformation(masks));
     }
 

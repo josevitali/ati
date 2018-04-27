@@ -4,9 +4,7 @@ import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
 import ar.edu.itba.ati.io.Pictures;
 import ar.edu.itba.ati.model.pictures.Picture;
-import ar.edu.itba.ati.model.transformations.Contrast;
-import ar.edu.itba.ati.model.transformations.Equalization;
-import ar.edu.itba.ati.model.transformations.PictureTransformer;
+import ar.edu.itba.ati.model.transformations.*;
 import ar.edu.itba.ati.model.transformations.noise.ExponentialNoise;
 import ar.edu.itba.ati.model.transformations.noise.GaussianNoise;
 import ar.edu.itba.ati.model.transformations.noise.RayleighNoise;
@@ -29,8 +27,9 @@ import java.util.function.BiFunction;
 
 public class SideTab1Controller implements SideTabController{
 
-    private final EventBus eventBus;
-    private final PictureService pictureService;
+    protected final EventBus eventBus;
+    protected final PictureService pictureService;
+
     @FXML
     private ScrollPane sideTabView1;
 
@@ -44,6 +43,8 @@ public class SideTab1Controller implements SideTabController{
 
     // Noise
     @FXML
+    public TextField densityVal;
+    @FXML
     public TextField gaussVal;
     @FXML
     public TextField exponentialVal;
@@ -54,8 +55,6 @@ public class SideTab1Controller implements SideTabController{
     @FXML
     public TextField saltAndPepperVal;
 
-
-
     // Mask Filters
     @FXML
     public TextField meanSize;
@@ -65,7 +64,6 @@ public class SideTab1Controller implements SideTabController{
     public TextField gaussSigma;
     @FXML
     public TextField highPassSize;
-
 
     @Inject
     public SideTab1Controller(final EventBus eventBus, final PictureService pictureService){
@@ -95,9 +93,13 @@ public class SideTab1Controller implements SideTabController{
             if(value > 255 || value < 0) {
                 return;
             }
-            pictureService.normalize();
-            pictureService.mapPixelByPixel(p -> (double) p > value ? 255.0 : 0.0);
-            eventBus.post(new ShowPictureEvent());
+            applyTransformation(new PictureTransformer() {
+                @Override
+                public <T> void transform(Picture<T> picture) {
+                    picture.normalize();
+                    picture.mapPixelByPixel(p -> (double) p > value ? 255.0 : 0.0);
+                }
+            });
         } catch (NumberFormatException e){
             return;
         }
@@ -105,17 +107,12 @@ public class SideTab1Controller implements SideTabController{
 
     @FXML
     private void negative() {
-        pictureService.mapPixelByPixel(p -> 255.0 - (double) p);
-        eventBus.post(new ShowPictureEvent());
+        applyTransformation(new Negative());
     }
 
     @FXML
     private void dynamicRange() {
-        double productScalar = 5.0;
-        pictureService.mapPixelByPixel(px -> productScalar * (double) px);
-        pictureService.mapPixelByPixel(p -> (255.0 - 1) / Math.log(1 + 255.0) * Math.log(1 + (double) p));
-        pictureService.normalize();
-        eventBus.post(new ShowPictureEvent());
+        applyTransformation(new DynamicRange());
     }
 
     @FXML
@@ -125,8 +122,7 @@ public class SideTab1Controller implements SideTabController{
             if(value < 0) {
                 return;
             }
-            pictureService.mapPixelByPixel(px -> Math.pow(255.0 -1, 1 - value) * Math.pow((double)px, value));
-            eventBus.post(new ShowPictureEvent());
+            applyTransformation(new Gamma(value));
         } catch (NumberFormatException e){
             return;
         }
@@ -136,10 +132,11 @@ public class SideTab1Controller implements SideTabController{
     private void gaussNoise() {
         try {
             Double value = Double.valueOf(gaussVal.getText());
-            if(value < 0) {
+            Double density = Double.valueOf(densityVal.getText());
+            if(value < 0 || density < 0 || density > 1) {
                 return;
             }
-            applyTransformation(new GaussianNoise(0.0, value));
+            applyTransformation(new GaussianNoise(density,0.0, value));
         } catch (NumberFormatException e){
             return;
         }
@@ -149,10 +146,11 @@ public class SideTab1Controller implements SideTabController{
     private void exponentialNoise() {
         try {
             Double value = Double.valueOf(exponentialVal.getText());
-            if(value < 0) {
+            Double density = Double.valueOf(densityVal.getText());
+            if(value < 0 || density < 0 || density > 1) {
                 return;
             }
-            applyTransformation(new ExponentialNoise(value));
+            applyTransformation(new ExponentialNoise(density, value));
         } catch (NumberFormatException e){
             return;
         }
@@ -162,10 +160,11 @@ public class SideTab1Controller implements SideTabController{
     private void rayleighNoise() {
         try {
             Double value = Double.valueOf(rayleighVal.getText());
-            if(value < 0) {
+            Double density = Double.valueOf(densityVal.getText());
+            if(value < 0 || density < 0 || density > 1) {
                 return;
             }
-            applyTransformation(new RayleighNoise(value));
+            applyTransformation(new RayleighNoise(density, value));
         } catch (NumberFormatException e){
             return;
         }
@@ -186,14 +185,12 @@ public class SideTab1Controller implements SideTabController{
 
     @FXML
     private void contrast(){
-        pictureService.applyTransformation(new Contrast());
-        eventBus.post(new ShowPictureEvent());
+        applyTransformation(new Contrast());
     }
 
     @FXML
     private void equalization() {
-        pictureService.applyTransformation(new Equalization());
-        eventBus.post(new ShowPictureEvent());
+        applyTransformation(new Equalization());
     }
 
     private void twoPictureOperation(BiFunction<Double,Double,Double> bf) {
@@ -203,8 +200,12 @@ public class SideTab1Controller implements SideTabController{
             return;
         }
 
-        pictureService.mapPixelByPixel(bf, otherPicture);
-        eventBus.post(new ShowPictureEvent());
+        applyTransformation(new PictureTransformer() {
+            @Override
+            public <T> void transform(Picture<T> picture) {
+                picture.mapPixelByPixel(bf, otherPicture);
+            }
+        });
     }
 
     private Picture choosePicture(){
@@ -309,9 +310,9 @@ public class SideTab1Controller implements SideTabController{
     }
 
     @Override
-    @Subscribe
     public void reset(ResetParametersEvent event) {
         gammaVal.setText("");
+        densityVal.setText("");
         gaussVal.setText("");
         exponentialVal.setText("");
         rayleighVal.setText("");

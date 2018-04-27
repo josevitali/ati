@@ -2,6 +2,7 @@ package ar.edu.itba.ati.controller;
 
 import ar.edu.itba.ati.events.pictures.AverageEvent;
 import ar.edu.itba.ati.events.pictures.CropEvent;
+import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.toolbar.ShowToolbarEvent;
 import ar.edu.itba.ati.model.histograms.Histogram;
 import ar.edu.itba.ati.services.PictureService;
@@ -87,6 +88,18 @@ public class ToolbarController {
         stylesheets.add("style/histogram.css");
 
         newWindow(chart, "Histogram", stylesheets);
+    }
+
+    @FXML
+    private void undo(){
+        pictureService.undo();
+        eventBus.post(new ShowPictureEvent());
+    }
+
+    @FXML
+    private void redo(){
+        pictureService.redo();
+        eventBus.post(new ShowPictureEvent());
     }
 
     private void addSeries(ObservableList<BarChart.Series> barChartData, String[] categories, Map<String,double[]> series){

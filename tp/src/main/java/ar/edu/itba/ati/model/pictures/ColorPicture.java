@@ -1,6 +1,7 @@
 package ar.edu.itba.ati.model.pictures;
 
 import ar.edu.itba.ati.model.histograms.Histogram;
+import com.sun.org.apache.regexp.internal.RE;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
@@ -84,6 +85,36 @@ public class ColorPicture extends Picture<Double[]> {
         return pixel;
     }
 
+    @Override
+    public Double[] evaluatePixel(Function<Double,Double> f, Double[] pixel) {
+        Double[] newPixel = new Double[3];
+        newPixel[BLUE] = f.apply(pixel[BLUE]);
+        newPixel[GREEN] = f.apply(pixel[GREEN]);
+        newPixel[RED] = f.apply(pixel[RED]);
+
+        return newPixel;
+    }
+
+    @Override
+    public Double[] evaluateTwoPixels(BiFunction<Double, Double, Double> bf, Double[] pixel, Double[] otherPixel){
+        Double[] newPixel = new Double[3];
+        newPixel[BLUE] = bf.apply(pixel[BLUE], otherPixel[BLUE]);
+        newPixel[GREEN] = bf.apply(pixel[GREEN], otherPixel[GREEN]);
+        newPixel[RED] = bf.apply(pixel[RED], otherPixel[RED]);
+
+        return newPixel;
+    }
+
+    @Override
+    public Double[] evaluateThreePixels(Function<Double, Function<Double, Function<Double, Double>>> triFunction,
+                                   Double[] firstPixel, Double[] secondPixel, Double[] thirdPixel) {
+        Double[] newPixel = new Double[3];
+        newPixel[BLUE] = triFunction.apply(firstPixel[BLUE]).apply(secondPixel[BLUE]).apply(thirdPixel[BLUE]);
+        newPixel[GREEN] = triFunction.apply(firstPixel[GREEN]).apply(secondPixel[GREEN]).apply(thirdPixel[GREEN]);
+        newPixel[RED] = triFunction.apply(firstPixel[RED]).apply(secondPixel[RED]).apply(thirdPixel[RED]);
+        return newPixel;
+    }
+
     public void mapPixelByPixelInSpecificBand(Function<Double, Double> f, int band){
         for(int row = 0; row < height; row++){
             for(int col = 0; col < width; col++){
@@ -93,15 +124,15 @@ public class ColorPicture extends Picture<Double[]> {
     }
 
     public void crop(int x0, int x1, int y0, int y1){
-        Double[][][] newpic = new Double[x1-x0-1][y1-y0-1][];
-        for (int i = x0, i2 = 0; i < x1-1; i++, i2++) {
-            for (int j = y0, j2 = 0; j < y1-1; j++, j2++) {
+        Double[][][] newpic = new Double[x1-x0+1][y1-y0+1][];
+        for (int i = x0, i2 = 0; i <= x1; i++, i2++) {
+            for (int j = y0, j2 = 0; j <= y1; j++, j2++) {
                 newpic[i2][j2] = matrix[i][j];
             }
         }
         this.matrix = newpic;
-        this.width = y1-y0-1;
-        this.height = x1-x0-1;
+        this.width = y1-y0+1;
+        this.height = x1-x0+1;
     }
 
     @Override
@@ -141,7 +172,7 @@ public class ColorPicture extends Picture<Double[]> {
     }
 
     @Override
-    protected Double[] mapPixel(BiFunction<Double, Double, Double> bf, Double[] myPixel, Double[] otherPixel) {
+    public Double[] mapPixel(BiFunction<Double, Double, Double> bf, Double[] myPixel, Double[] otherPixel) {
         myPixel[BLUE] = bf.apply(myPixel[BLUE], otherPixel[BLUE]);
         myPixel[GREEN] = bf.apply(myPixel[GREEN], otherPixel[GREEN]);
         myPixel[RED] = bf.apply(myPixel[RED], otherPixel[RED]);

@@ -7,12 +7,13 @@ import java.util.function.Function;
 
 public class HighPassFilter extends SlidingWindowWithMask<Integer> {
     public HighPassFilter(int size) {
-        super(Mask.highPassMask(size));
+        super(Masks.highPassMask(size));
     }
 
     @Override
     public <Integer> void transform(Picture<Integer> picture){
         super.transform(picture);
+        picture.normalize();
         picture.mapPixelByPixel(new Function<Double, Double>() {
             @Override
             public Double apply(Double aDouble) {

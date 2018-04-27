@@ -28,6 +28,11 @@ public abstract class Picture<T>{
         matrix[row][column] = pixel;
     }
 
+    public T[][] getMatrix(){
+        // TODO: debería ser una copia?
+        return matrix;
+    }
+
     public abstract String getAverageColor(int row1, int col1, int row2, int col2);
 
     public String getAverageColor(){
@@ -54,6 +59,13 @@ public abstract class Picture<T>{
 
     protected abstract T mapPixel(Function<Double,Double> f, T pixel);
 
+    public abstract T evaluatePixel(Function<Double, Double> f, T pixel);
+
+    public abstract T evaluateTwoPixels(BiFunction<Double, Double, Double> bf, T pixel, T otherPixel);
+
+    public abstract T evaluateThreePixels(Function<Double, Function<Double, Function<Double, Double>>> triFunction,
+                                          T firstPixel, T secondPixel, T thirdPixel);
+
     public void mapPixel(int row, int col, Function<Double,Double> f){
         matrix[row][col] = mapPixel(f, matrix[row][col]);
     }
@@ -69,7 +81,7 @@ public abstract class Picture<T>{
         }
     }
 
-    protected abstract T mapPixel(BiFunction<Double, Double, Double> bf, T myPixel, T otherPixel);
+    public abstract T mapPixel(BiFunction<Double, Double, Double> bf, T myPixel, T otherPixel);
 
     public void mapPixel(int row, int col, BiFunction<Double,Double,Double> bf, T otherPixel){
         matrix[row][col] = mapPixel(bf, matrix[row][col], otherPixel);
@@ -86,8 +98,6 @@ public abstract class Picture<T>{
     }
 
     public abstract Histogram getHistogram();
-
-//    public abstract void applyHistogramFunction(Function<Double[],Double> f);
 
     public abstract void crop(int x0, int x1, int y0, int y1);
 

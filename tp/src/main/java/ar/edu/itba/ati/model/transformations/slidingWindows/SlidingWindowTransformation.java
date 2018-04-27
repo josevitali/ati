@@ -9,7 +9,7 @@ public abstract class SlidingWindowTransformation<T> implements PictureTransform
 
     private final int windowHeight;
     private final int windowWidth;
-    private final Function<Double[][],Double> f;
+    protected final Function<Double[][],Double> f;
 
     public SlidingWindowTransformation(int windowHeight, int windowWidth, Function<Double[][], Double> f) {
         this.windowHeight = windowHeight;

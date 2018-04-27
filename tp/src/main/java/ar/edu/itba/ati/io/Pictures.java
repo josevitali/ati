@@ -171,9 +171,6 @@ public class Pictures {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
     }
 
 }

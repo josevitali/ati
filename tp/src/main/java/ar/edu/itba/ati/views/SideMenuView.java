@@ -4,7 +4,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.io.Resources;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 

@@ -35,32 +35,6 @@ public class Mask<T extends Number> {
         this.nucleusCol = nucleusCol;
     }
 
-    public static Mask<Double> meanMask(int size){
-        Double[][] matrix = new Double[size][size];
-
-        for(int row = 0; row < size; row++){
-            for(int col = 0; col < size; col++){
-                matrix[row][col] = 1.0 / (size * size);
-            }
-        }
-
-        return new Mask(matrix);
-    }
-
-    public static Mask<Integer> highPassMask(int size){
-        Integer[][] matrix = new Integer[size][size];
-
-        for(int row = 0; row < size; row++){
-            for(int col = 0; col < size; col++){
-                matrix[row][col] = -1;
-            }
-        }
-
-        Mask mask = new Mask(matrix);
-        mask.putElement(size * size - 1, mask.getNucleusRow(), mask.getNucleusCol());
-        return mask;
-    }
-
     public T[][] getMatrix() {
         return matrix;
     }

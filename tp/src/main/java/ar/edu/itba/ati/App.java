@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 
 public class App extends Application{
 
-    //TODO sacar cabezeada
     public static Stage primaryStage;
 
     public static void main( String[] args ){

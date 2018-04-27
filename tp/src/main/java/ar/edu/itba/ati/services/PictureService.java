@@ -4,6 +4,8 @@ import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 
 import java.io.File;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -12,12 +14,18 @@ public class PictureService {
     private Picture picture = null;
     private File file = null;
 
+    private Deque<Picture> undoPictures = new LinkedList<>();
+    private Deque<Picture> redoPictures = new LinkedList<>();
+    private static final int UNDO_AMOUNT = 15;
+
     public Picture getPicture() {
-        return picture.getClone();
+        return picture;
     }
 
     public void setPicture(Picture picture) {
         this.picture = picture;
+        undoPictures.clear();
+        redoPictures.clear();
     }
 
     public File getFile() {
@@ -28,11 +36,8 @@ public class PictureService {
         this.file = file;
     }
 
-    public void normalize(){
-        picture.normalize();
-    }
-
     public void cropPicture(final int minRow, final int maxRow, final int minCol, final int maxCol){
+        pushUndo();
         picture.crop(minRow, maxRow, minCol, maxCol);
     }
 
@@ -41,18 +46,42 @@ public class PictureService {
     }
 
     public void applyTransformation(PictureTransformer transformer){
+        pushUndo();
+        redoPictures.clear();
         transformer.transform(picture);
-    }
-
-    public void mapPixelByPixel(Function<Double,Double> function){
-        picture.mapPixelByPixel(function);
-    }
-
-    public void mapPixelByPixel(BiFunction<Double,Double,Double> biFunction, Picture otherPicture){
-        picture.mapPixelByPixel(biFunction, otherPicture);
     }
 
     public int getPictureType() {
         return picture.getType();
     }
+
+    public void undo(){
+        if(!undoPictures.isEmpty()){
+            pushRedo();
+            picture = undoPictures.pop();
+        }
+    }
+
+    public void redo(){
+        if(!redoPictures.isEmpty()){
+            pushUndo();
+            picture = redoPictures.pop();
+        }
+    }
+
+    /**
+     * Pushes picture into undoPictures.
+     * Should be called before applying a transformation.
+     */
+    private void pushUndo(){
+        if(undoPictures.size() == UNDO_AMOUNT){
+            undoPictures.pollLast();
+        }
+        undoPictures.push(picture.getClone());
+    }
+
+    private void pushRedo(){
+        redoPictures.push(picture.getClone());
+    }
+
 }

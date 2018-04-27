@@ -1,7 +1,5 @@
 package ar.edu.itba.ati.model.transformations.slidingWindows.withMask;
 
-import java.util.function.BiFunction;
-
 public class GaussianSmoothing extends SlidingWindowWithMask<Double> {
     public GaussianSmoothing(double sigma) {
         super(gaussianMask(calculateSize(sigma), sigma));
@@ -19,6 +17,7 @@ public class GaussianSmoothing extends SlidingWindowWithMask<Double> {
         return size % 2 == 0 ? size - 1 : size;
     }
 
+    //TODO pasar a masks
     private static Mask<Double> gaussianMask(int size, double sigma) {
         Double[][] matrix = new Double[size][size];
         int halfSize = size / 2;

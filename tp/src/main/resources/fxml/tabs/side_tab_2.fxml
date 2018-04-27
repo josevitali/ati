@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<?import ar.edu.itba.ati.views.tabs.SideTab2View?>
+
+<?import javafx.geometry.Insets?>
+<fx:root type="SideTab2View" xmlns:fx="http://javafx.com/fxml"
+         fx:controller="ar.edu.itba.ati.controller.tabs.SideTab2Controller" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+         fitToHeight="true" fitToWidth="true" prefHeight="639.0" prefWidth="241.0" fx:id="sideTabView2">
+    <content>
+        <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+              style="-fx-spacing: 10;">
+            <children>
+                <Label alignment="CENTER" contentDisplay="CENTER" text="Gradient Methods" underline="true" />
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Prewitt" onAction="#prewittGradientMethod"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Sobel" onAction="#sobelGradientMethod"/>
+                <Label alignment="CENTER" contentDisplay="CENTER" text="Maximum Methods" underline="true" />
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Unnamed" onAction="#unnamedMaxMethod"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Kirsh" onAction="#kirshMaxMethod"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Prewitt" onAction="#prewittMaxMethod"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Sobel" onAction="#sobelMaxMethod"/>
+                <Label alignment="CENTER" contentDisplay="CENTER" text="Second Derivative Methods" underline="true" />
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Simple Laplace" onAction="#simpleLaplaceMethod"/>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Laplace">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="43.0" fx:id="laplaceThresholdVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#laplaceMethod">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="45.0" text="LoG">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" fx:id="gaussianLaplaceThresholdVal"/>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" promptText="σ" fx:id="gaussianLaplaceSigmaVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#gaussianLaplaceMethod">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <Label alignment="CENTER" contentDisplay="CENTER" text="Diffusion Methods" underline="true" />
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Isotropic">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="43.0" promptText="t" fx:id="isotropicIterationsVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#isotropicDiffusion">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="45.0" text="Leclerc">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" promptText="t" fx:id="leclercIterationsVal"/>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" promptText="σ" fx:id="leclercSigmaVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#leclercDiffusion">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="45.0" text="Lorentz">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" promptText="t" fx:id="lorentzIterationsVal"/>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" promptText="σ" fx:id="lorentzSigmaVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#lorentzDiffusion">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <Label alignment="CENTER" contentDisplay="CENTER" text="Thresholds" underline="true" fx:id="thresholdLabel"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Global" onAction="#globalThreshold" fx:id="globalThresholdButton"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Otsu" onAction="#otsuThreshold" fx:id="otsuThresholdButton"/>
+            </children>
+        </VBox>
+    </content>
+    <padding>
+        <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+    </padding>
+</fx:root>

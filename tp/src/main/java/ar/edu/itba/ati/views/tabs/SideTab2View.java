@@ -9,9 +9,9 @@ import java.io.IOException;
 
 import static ar.edu.itba.ati.App.INJECTOR;
 
-public class SideTab1View extends ScrollPane {
-    public SideTab1View() {
-        FXMLLoader fxmLoader = new FXMLLoader(Resources.getResource("fxml/tabs/side_tab_1.fxml"));
+public class SideTab2View extends ScrollPane {
+    public SideTab2View() {
+        FXMLLoader fxmLoader = new FXMLLoader(Resources.getResource("fxml/tabs/side_tab_2.fxml"));
         fxmLoader.setRoot(this);
         fxmLoader.setControllerFactory(clazz -> {
             final Object controller = INJECTOR.getInstance(clazz);

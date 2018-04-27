@@ -4,6 +4,8 @@ import ar.edu.itba.ati.model.pictures.GreyPicture;
 import ar.edu.itba.ati.model.pictures.Picture;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OtsuThreshold implements ThresholdCriteria {
 
@@ -36,18 +38,21 @@ public class OtsuThreshold implements ThresholdCriteria {
 
         final double globalMean = cumulativeMeans[255];
 
-        double t = 0;
         double maxVariance = 0;
+        List<Integer> ts = new ArrayList();
         for(i = 0; i < 256; i++){
             double variance = (globalMean * cumulativeFreqs[i] - cumulativeMeans[i]) * (globalMean * cumulativeFreqs[i] - cumulativeMeans[i]) /
                     (cumulativeFreqs[i] * (1 - cumulativeFreqs[i]));
             if(variance > maxVariance){
+                ts.clear();
+                ts.add(i);
                 maxVariance = variance;
-                t = i;
+            } else if(variance == maxVariance){
+                ts.add(i);
             }
         }
 
-        return t;
+        return ts.stream().mapToDouble(d -> d).average().getAsDouble();
     }
 
 }

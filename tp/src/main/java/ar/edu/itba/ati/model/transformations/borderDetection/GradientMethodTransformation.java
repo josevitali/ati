@@ -1,6 +1,9 @@
-package ar.edu.itba.ati.model.transformations.slidingWindows.withMask;
+package ar.edu.itba.ati.model.transformations.borderDetection;
 
 import ar.edu.itba.ati.model.pictures.Picture;
+import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.Mask;
+import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.SlidingMethodWithMultiMask;
+
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;

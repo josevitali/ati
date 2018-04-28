@@ -1,4 +1,7 @@
-package ar.edu.itba.ati.model.transformations.slidingWindows.withMask;
+package ar.edu.itba.ati.model.transformations.smoothing;
+
+import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.Mask;
+import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.SlidingWindowWithMask;
 
 public class GaussianSmoothing extends SlidingWindowWithMask<Double> {
     public GaussianSmoothing(double sigma) {

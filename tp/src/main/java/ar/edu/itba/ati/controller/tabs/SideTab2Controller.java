@@ -4,6 +4,7 @@ import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
 import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
+import ar.edu.itba.ati.model.transformations.borderDetection.*;
 import ar.edu.itba.ati.model.transformations.diffusion.IsotropicDiffusion;
 import ar.edu.itba.ati.model.transformations.diffusion.LeclercDiffusion;
 import ar.edu.itba.ati.model.transformations.diffusion.LorentzDiffusion;

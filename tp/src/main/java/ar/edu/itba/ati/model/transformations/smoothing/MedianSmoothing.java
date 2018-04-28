@@ -1,4 +1,7 @@
-package ar.edu.itba.ati.model.transformations.slidingWindows.withMask;
+package ar.edu.itba.ati.model.transformations.smoothing;
+
+import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.Mask;
+import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.SlidingWindowWithMask;
 
 import java.util.ArrayList;
 import java.util.Comparator;

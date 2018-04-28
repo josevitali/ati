@@ -27,8 +27,8 @@ import java.util.function.BiFunction;
 
 public class SideTab1Controller implements SideTabController{
 
-    protected final EventBus eventBus;
-    protected final PictureService pictureService;
+    private final EventBus eventBus;
+    private final PictureService pictureService;
 
     @FXML
     private ScrollPane sideTabView1;

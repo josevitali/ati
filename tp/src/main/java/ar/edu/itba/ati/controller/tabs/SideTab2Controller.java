@@ -25,8 +25,8 @@ import java.util.List;
 
 public class SideTab2Controller implements SideTabController {
 
-    protected final EventBus eventBus;
-    protected final PictureService pictureService;
+    private final EventBus eventBus;
+    private final PictureService pictureService;
 
     @FXML
     private TextField laplaceThresholdVal;
@@ -192,7 +192,14 @@ public class SideTab2Controller implements SideTabController {
 
     @Override
     public void reset(ResetParametersEvent event) {
-
+        laplaceThresholdVal.setText("");
+        gaussianLaplaceThresholdVal.setText("");
+        gaussianLaplaceSigmaVal.setText("");
+        isotropicIterationsVal.setText("");
+        leclercIterationsVal.setText("");
+        leclercSigmaVal.setText("");
+        lorentzIterationsVal.setText("");
+        lorentzSigmaVal.setText("");
     }
 
 }

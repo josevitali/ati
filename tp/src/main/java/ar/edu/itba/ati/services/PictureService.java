@@ -2,6 +2,7 @@ package ar.edu.itba.ati.services;
 
 import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
+import ar.edu.itba.ati.model.transformations.borderDetection.SusanDetector;
 
 import java.io.File;
 import java.util.Deque;
@@ -49,6 +50,8 @@ public class PictureService {
         pushUndo();
         redoPictures.clear();
         transformer.transform(picture);
+        //TODO: remove
+        setPicture(((SusanDetector) transformer).transformedPicture);
     }
 
     public int getPictureType() {

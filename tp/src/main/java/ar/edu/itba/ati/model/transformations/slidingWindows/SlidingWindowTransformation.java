@@ -18,7 +18,7 @@ public abstract class SlidingWindowTransformation<T> implements PictureTransform
     }
 
     @Override
-    public <T> void transform(Picture<T> picture) {
+    public <T,R> Picture transform(Picture<T> picture) {
         T[][] auxMatrix = (T[][]) new Object[1 + picture.getHeight() - windowHeight][1 + picture.getWidth() - windowWidth];
 
         for(int row = 0; row < auxMatrix.length; row++){
@@ -28,6 +28,7 @@ public abstract class SlidingWindowTransformation<T> implements PictureTransform
         }
 
         finalizeTransformation(picture, auxMatrix);
+        return picture;
     }
 
     protected abstract <T> void finalizeTransformation(Picture<T> picture, T[][] transformedMatrix);

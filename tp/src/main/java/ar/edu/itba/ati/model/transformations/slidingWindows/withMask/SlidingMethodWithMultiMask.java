@@ -18,7 +18,7 @@ public class SlidingMethodWithMultiMask implements PictureTransformer{
     }
 
     @Override
-    public <T> void transform(Picture<T> picture) {
+    public <T,R> Picture transform(Picture<T> picture) {
         List<Picture> otherPictures = new ArrayList();
 
         for(int i = 1; i < masks.size(); i++){
@@ -32,5 +32,6 @@ public class SlidingMethodWithMultiMask implements PictureTransformer{
         transformer.transform(picture);
 
         bc.accept(picture, otherPictures);
+        return picture;
     }
 }

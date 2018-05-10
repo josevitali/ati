@@ -17,9 +17,10 @@ public class SaltAndPepperNoise extends Noise{
     }
 
     @Override
-    public void transform(Picture picture) {
+    public Picture transform(Picture picture) {
         picture.normalize();
         super.transform(picture);
+        return picture;
     }
 
     @Override

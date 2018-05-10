@@ -8,12 +8,13 @@ import java.awt.image.BufferedImage;
 
 public class Negative implements PictureTransformer {
     @Override
-    public <T> void transform(Picture<T> picture) {
+    public <T,R> Picture transform(Picture<T> picture) {
         if(picture.getType() == BufferedImage.TYPE_BYTE_GRAY){
             greyNegative((GreyPicture) picture);
         } else if(picture.getType() == BufferedImage.TYPE_3BYTE_BGR){
             colorNegative((ColorPicture) picture);
         }
+        return picture;
     }
 
     private void colorNegative(ColorPicture picture) {

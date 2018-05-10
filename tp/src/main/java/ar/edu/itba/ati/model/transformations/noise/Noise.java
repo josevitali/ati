@@ -16,7 +16,7 @@ public abstract class Noise implements PictureTransformer{
     }
 
     @Override
-    public void transform(Picture picture) {
+    public Picture transform(Picture picture) {
         for (int row = 0; row < picture.getHeight(); row++) {
             for (int col = 0; col < picture.getWidth(); col++) {
                 if(random.nextDouble() <= density){
@@ -24,6 +24,8 @@ public abstract class Noise implements PictureTransformer{
                 }
             }
         }
+
+        return picture;
     }
 
     protected abstract Double applyNoise(Double pixel);

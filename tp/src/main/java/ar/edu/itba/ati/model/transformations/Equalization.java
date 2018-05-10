@@ -11,7 +11,7 @@ import java.util.Map;
 public class Equalization implements PictureTransformer {
 
     @Override
-    public <T> void transform(Picture<T> picture) {
+    public <T,R> Picture transform(Picture<T> picture) {
         switch (picture.getType()) {
             case BufferedImage.TYPE_3BYTE_BGR:
                 equalizeColorHistogram((ColorPicture) picture);
@@ -22,6 +22,7 @@ public class Equalization implements PictureTransformer {
             default:
                 throw new IllegalArgumentException("The image type is not supported");
         }
+        return picture;
     }
 
     private void equalizeColorHistogram(ColorPicture picture) {

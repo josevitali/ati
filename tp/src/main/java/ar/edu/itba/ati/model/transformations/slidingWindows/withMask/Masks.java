@@ -21,6 +21,14 @@ public class Masks {
     public static Mask SOBEL = new Mask(new Double[][]{{-1.0, -2.0, -1.0},{0.0, 0.0, 0.0},{1.0, 2.0, 1.0}});
     public static Mask KIRSH = new Mask(new Double[][]{{5.0, 5.0, 5.0},{-3.0, 0.0, -3.0},{-3.0, -3.0, -3.0}});
     public static Mask LAPLACE = new Mask(new Double[][]{{0.0, -1.0, 0.0},{-1.0, 4.0, -1.0},{0.0, -1.0, 0.0}});
+    // TODO: method with size parameter
+    public static Mask CIRCULAR = new Mask(new Integer[][]{{0,0,1,1,1,0,0},
+                                                          {0,1,1,1,1,1,0},
+                                                          {1,1,1,1,1,1,1},
+                                                          {1,1,1,1,1,1,1},
+                                                          {1,1,1,1,1,1,1},
+                                                          {0,1,1,1,1,1,0},
+                                                          {0,0,1,1,1,0,0}});
 
     public static List<Mask> rotate(Mask mask, int[] rotations){
         Number[][] matrix = mask.getMatrix();

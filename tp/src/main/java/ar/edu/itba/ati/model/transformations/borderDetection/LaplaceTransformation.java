@@ -47,7 +47,7 @@ public class LaplaceTransformation extends SlidingWindowWithMask<Double> {
     }
 
     @Override
-    public <T> void transform(Picture<T> picture) {
+    public <T,R> Picture transform(Picture<T> picture) {
         T[][] windowedMatrix = (T[][]) new Object[1 + picture.getHeight() - mask.getSize()][1 + picture.getWidth() - mask.getSize()];
 
         for(int row = 0; row < windowedMatrix.length; row++) {
@@ -94,6 +94,7 @@ public class LaplaceTransformation extends SlidingWindowWithMask<Double> {
         }
         
         finalizeTransformation(picture, windowedMatrix);
+        return picture;
     }
 
 

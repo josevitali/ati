@@ -4,11 +4,9 @@ import ar.edu.itba.ati.model.pictures.ColorPicture;
 import ar.edu.itba.ati.model.pictures.GreyPicture;
 import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
-import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.Mask;
 import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.Masks;
 import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.SlidingWindowWithMask;
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -40,7 +38,7 @@ public class SusanDetector implements PictureTransformer {
     }
 
     @Override
-    public <T> void transform(Picture<T> picture) {
+    public <T,R> Picture transform(Picture<T> picture) {
         // TODO: solo para imagenes grises
         picture.normalize();
         GreyPicture greyPicture = (GreyPicture) picture;
@@ -54,10 +52,9 @@ public class SusanDetector implements PictureTransformer {
         for(int row = 3; row < greyPicture.getHeight() - 3; row++){
             for(int col = 3; col < greyPicture.getWidth() - 3; col++){
                 px = greyPicture.getPixel(row,col);
-                //TODO: cambiar criterios de cuando es borde o esquina
-                if(px >= 0.6 && px <= 0.8){
+                if(px >= 0.65 && px <= 0.8){
                     cornerPixels.add(new int[]{row,col});
-                } else if(px >= 0.40 && px <= 0.55){
+                } else if(px >= 0.45 && px <= 0.60){
                     borderPixels.add(new int[]{row,col});
                 }
             }
@@ -65,6 +62,6 @@ public class SusanDetector implements PictureTransformer {
 
         borderPixels.forEach(border -> colorPicture.putPixel(new Double[]{0.0,0.0,254.0},border[0],border[1]));
         cornerPixels.forEach(corner -> colorPicture.putPixel(new Double[]{0.0,254.0,0.0},corner[0],corner[1]));
-        transformedPicture = colorPicture;
+        return colorPicture;
     }
 }

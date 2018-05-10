@@ -49,9 +49,10 @@ public class PictureService {
     public void applyTransformation(PictureTransformer transformer){
         pushUndo();
         redoPictures.clear();
-        transformer.transform(picture);
+        picture = transformer.transform(picture);
+        //transformer.transform(picture);
         //TODO: remove
-        setPicture(((SusanDetector) transformer).transformedPicture);
+        //setPicture(((SusanDetector) transformer).transformedPicture);
     }
 
     public int getPictureType() {

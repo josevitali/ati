@@ -19,7 +19,7 @@ public abstract class Diffusion implements PictureTransformer{
     }
 
     @Override
-    public <T> void transform(Picture<T> picture) {
+    public <T,R> Picture transform(Picture<T> picture) {
         Picture<T> prevPicture = picture.getClone();
 
         for (int t = 0; t < iterations; t++) {
@@ -51,5 +51,6 @@ public abstract class Diffusion implements PictureTransformer{
                 }
             }
         }
+        return picture;
     }
 }

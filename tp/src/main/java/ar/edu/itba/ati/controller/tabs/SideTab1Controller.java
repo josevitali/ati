@@ -98,9 +98,10 @@ public class SideTab1Controller implements SideTabController{
             }
             applyTransformation(new PictureTransformer() {
                 @Override
-                public <T> void transform(Picture<T> picture) {
+                public <T,R> Picture transform(Picture<T> picture) {
                     picture.normalize();
                     picture.mapPixelByPixel(p -> (double) p > value ? 255.0 : 0.0);
+                    return picture;
                 }
             });
         } catch (NumberFormatException e){
@@ -205,8 +206,9 @@ public class SideTab1Controller implements SideTabController{
 
         applyTransformation(new PictureTransformer() {
             @Override
-            public <T> void transform(Picture<T> picture) {
+            public <T,R> Picture transform(Picture<T> picture) {
                 picture.mapPixelByPixel(bf, otherPicture);
+                return picture;
             }
         });
     }

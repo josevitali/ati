@@ -13,7 +13,7 @@ public class HighPassFilter extends SlidingWindowWithMask<Integer> {
     }
 
     @Override
-    public <Integer> void transform(Picture<Integer> picture){
+    public Picture transform(Picture picture){
         super.transform(picture);
         picture.normalize();
         picture.mapPixelByPixel(new Function<Double, Double>() {
@@ -22,5 +22,6 @@ public class HighPassFilter extends SlidingWindowWithMask<Integer> {
                 return aDouble >= 255.0/2 ? 255.0 : 0.0;
             }
         });
+        return picture;
     }
 }

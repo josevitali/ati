@@ -166,8 +166,9 @@ public class SideTab2Controller implements SideTabController {
         final double t = thresholdCriteria.getThreshold(pictureService.getPicture());
         applyTransformation(new PictureTransformer() {
             @Override
-            public <T> void transform(Picture<T> picture) {
+            public <T,R> Picture transform(Picture<T> picture) {
                 picture.mapPixelByPixel(px -> px < t ? 0.0 : 255.0);
+                return picture;
             }
         });
     }

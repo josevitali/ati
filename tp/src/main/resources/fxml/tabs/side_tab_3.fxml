@@ -14,6 +14,7 @@
               style="-fx-spacing: 10;">
             <children>
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Susan" onAction="#susanDetector"/>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Pixel Exchange" onAction="#pixelExchange"/>
             </children>
         </VBox>
     </content>

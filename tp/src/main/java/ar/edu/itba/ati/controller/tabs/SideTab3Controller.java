@@ -17,13 +17,13 @@ public class SideTab3Controller implements SideTabController {
 
     private final EventBus eventBus;
     private final PictureService pictureService;
-    @FXML
-    private TextField cannySigma;
 
     @FXML
-    public TextField houghThresholdVal;
+    private TextField cannySigma;
     @FXML
-    public TextField houghDeltaVal;
+    private TextField houghThresholdVal;
+    @FXML
+    private TextField houghDeltaVal;
 
 
     @Inject

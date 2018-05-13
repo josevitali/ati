@@ -1,11 +1,13 @@
 package ar.edu.itba.ati.model.transformations.borderDetection;
 
+import ar.edu.itba.ati.model.pictures.ColorPicture;
 import ar.edu.itba.ati.model.pictures.GreyPicture;
 import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.shapes.Shape;
 import ar.edu.itba.ati.model.shapes.generators.ShapeGenerator;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 
+import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -28,7 +30,14 @@ public class HoughDetector implements PictureTransformer{
 
     @Override
     public <T, R> Picture<R> transform(Picture<T> picture) {
-        GreyPicture greyPicture = (GreyPicture) picture;
+
+        GreyPicture greyPicture;
+        if(picture.getType() == BufferedImage.TYPE_3BYTE_BGR) {
+            greyPicture = ((ColorPicture)picture).toGreyPicture();
+        } else {
+            greyPicture = (GreyPicture)picture;
+        }
+
         if(this.parametricSpace == null){
             this.parametricSpace = parametricSpaceGenerator.getParametricSet(picture.getWidth(), picture.getHeight(), delta);
         }

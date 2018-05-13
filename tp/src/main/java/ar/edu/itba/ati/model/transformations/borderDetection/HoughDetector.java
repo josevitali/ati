@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class HoughDetector implements PictureTransformer{
 
@@ -28,9 +29,7 @@ public class HoughDetector implements PictureTransformer{
         this.parametricSpaceGenerator = sg;
     }
 
-    @Override
-    public <T, R> Picture<R> transform(Picture<T> picture) {
-
+    private Set<Shape> findShapes(Picture picture){
         GreyPicture greyPicture;
         if(picture.getType() == BufferedImage.TYPE_3BYTE_BGR) {
             greyPicture = ((ColorPicture)picture).toGreyPicture();
@@ -61,6 +60,23 @@ public class HoughDetector implements PictureTransformer{
 
         for(Map.Entry e: accumulator.entrySet()){
             System.out.println(e);
+        }
+
+        return accumulator
+                .entrySet()
+                .stream()
+                .filter(e -> e.getValue() > threshold)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public <T, R> Picture<R> transform(Picture<T> picture) {
+
+        Set<Shape> shapes = findShapes(picture);
+
+        for(Shape s: shapes){
+
         }
 
         return null;

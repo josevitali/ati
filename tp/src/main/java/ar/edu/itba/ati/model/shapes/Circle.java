@@ -1,5 +1,8 @@
 package ar.edu.itba.ati.model.shapes;
 
+import ar.edu.itba.ati.model.pictures.ColorPicture;
+import ar.edu.itba.ati.model.pictures.GreyPicture;
+
 public class Circle implements Shape{
 
     private double delta, radius, centerX, centerY;
@@ -15,4 +18,15 @@ public class Circle implements Shape{
     public boolean belongs(int x, int y) {
         return Math.abs(Math.pow(radius,2) - Math.pow(x - centerX,2) - Math.pow(y - centerY,2)) <= delta;
     }
+
+    @Override
+    public ColorPicture drawShape(GreyPicture picture) {
+        ColorPicture colorPicture = picture.toColorPicture();
+
+
+
+        return colorPicture;
+
+    }
+
 }

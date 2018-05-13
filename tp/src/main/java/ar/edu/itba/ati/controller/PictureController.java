@@ -41,7 +41,7 @@ public class PictureController {
     @FXML
     @Subscribe
     protected void showPicture(ShowPictureEvent event) {
-        Picture picture = pictureService.getPicture();
+        Picture picture = pictureService.getPicture().getClone();
         picture.normalize();
         Image image = SwingFXUtils.toFXImage(picture.toBufferedImage(), null);
 

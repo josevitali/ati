@@ -8,12 +8,28 @@
 <?import javafx.geometry.Insets?>
 <fx:root type="SideTab3View" xmlns:fx="http://javafx.com/fxml"
          fx:controller="ar.edu.itba.ati.controller.tabs.SideTab3Controller" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
-         fitToHeight="true" fitToWidth="true" prefHeight="639.0" prefWidth="241.0" fx:id="sideTabView2">
+         fitToHeight="true" fitToWidth="true" prefHeight="639.0" prefWidth="241.0" fx:id="sideTabView3">
     <content>
         <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
               style="-fx-spacing: 10;">
             <children>
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Susan" onAction="#susanDetector"/>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Canny">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="43.0" promptText="σ" fx:id="cannySigma"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#cannyDetector">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
             </children>
         </VBox>
     </content>

@@ -1,6 +1,6 @@
 package ar.edu.itba.ati.controller.tabs;
 
-import ar.edu.itba.ati.events.ReturnEvent;
+import ar.edu.itba.ati.events.returnValues.ReturnEndsEvent;
 import ar.edu.itba.ati.events.pictures.GetEndsEvent;
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
@@ -12,7 +12,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 
 public class SideTab3Controller implements SideTabController {
 
@@ -53,7 +52,7 @@ public class SideTab3Controller implements SideTabController {
 
     @FXML
     @Subscribe
-    public void setEnds(ReturnEvent returnEvent){
+    public void setEnds(ReturnEndsEvent returnEvent){
         ends = (int[]) returnEvent.getReturnValue();
     }
 }

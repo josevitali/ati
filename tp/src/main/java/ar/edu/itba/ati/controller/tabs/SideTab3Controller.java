@@ -2,7 +2,9 @@ package ar.edu.itba.ati.controller.tabs;
 
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
+import ar.edu.itba.ati.model.shapes.generators.LineSpaceGenerator;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
+import ar.edu.itba.ati.model.transformations.borderDetection.HoughDetector;
 import ar.edu.itba.ati.model.transformations.borderDetection.CannyDetector;
 import ar.edu.itba.ati.model.transformations.borderDetection.SusanDetector;
 import ar.edu.itba.ati.services.PictureService;
@@ -17,6 +19,11 @@ public class SideTab3Controller implements SideTabController {
     private final PictureService pictureService;
     @FXML
     private TextField cannySigma;
+
+    @FXML
+    public TextField houghThresholdVal;
+    @FXML
+    public TextField houghDeltaVal;
 
 
     @Inject
@@ -40,6 +47,13 @@ public class SideTab3Controller implements SideTabController {
 
         CannyDetector cannyDetector = new CannyDetector(value);
         applyTransformation(cannyDetector);
+    }
+
+    @FXML
+    private void linearHoughTransformation(){
+        System.out.println(houghDeltaVal + " " + houghThresholdVal);
+        HoughDetector houghDetector = new HoughDetector(Integer.valueOf(houghThresholdVal.getText()), Double.valueOf(houghDeltaVal.getText()), new LineSpaceGenerator());
+        applyTransformation(houghDetector);
     }
 
     private void applyTransformation(PictureTransformer transformer){

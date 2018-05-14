@@ -2,10 +2,11 @@ package ar.edu.itba.ati.controller.tabs;
 
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
+import ar.edu.itba.ati.model.shapes.generators.CircleSpaceGenerator;
 import ar.edu.itba.ati.model.shapes.generators.LineSpaceGenerator;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
-import ar.edu.itba.ati.model.transformations.borderDetection.HoughDetector;
 import ar.edu.itba.ati.model.transformations.borderDetection.CannyDetector;
+import ar.edu.itba.ati.model.transformations.borderDetection.HoughDetector;
 import ar.edu.itba.ati.model.transformations.borderDetection.SusanDetector;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
@@ -21,9 +22,13 @@ public class SideTab3Controller implements SideTabController {
     @FXML
     private TextField cannySigma;
     @FXML
-    private TextField houghThresholdVal;
+    private TextField linearHoughThresholdVal;
     @FXML
-    private TextField houghDeltaVal;
+    private TextField linearHoughDeltaVal;
+    @FXML
+    private TextField circularHoughThresholdVal;
+    @FXML
+    private TextField circularHoughDeltaVal;
 
 
     @Inject
@@ -51,7 +56,13 @@ public class SideTab3Controller implements SideTabController {
 
     @FXML
     private void linearHoughTransformation(){
-        HoughDetector houghDetector = new HoughDetector(Integer.valueOf(houghThresholdVal.getText()), Double.valueOf(houghDeltaVal.getText()), new LineSpaceGenerator());
+        HoughDetector houghDetector = new HoughDetector(Integer.valueOf(linearHoughThresholdVal.getText()), Double.valueOf(linearHoughDeltaVal.getText()), new LineSpaceGenerator());
+        applyTransformation(houghDetector);
+    }
+
+    @FXML
+    private void circularHoughTransformation(){
+        HoughDetector houghDetector = new HoughDetector(Integer.valueOf(circularHoughThresholdVal.getText()), Double.valueOf(circularHoughDeltaVal.getText()), new CircleSpaceGenerator());
         applyTransformation(houghDetector);
     }
 

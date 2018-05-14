@@ -33,16 +33,11 @@ public class HoughDetector implements PictureTransformer{
         this.parametricSpaceGenerator = sg;
     }
 
-    private Set<Shape> findShapes(Picture picture){
-        GreyPicture greyPicture;
-        if(picture.getType() == BufferedImage.TYPE_3BYTE_BGR) {
-            greyPicture = ((ColorPicture)picture).toGreyPicture();
-        } else {
-            greyPicture = (GreyPicture)picture;
-        }
+    private Set<Shape> findShapes(GreyPicture greyPicture){
+
 
         if(this.parametricSpace == null){
-            this.parametricSpace = parametricSpaceGenerator.getParametricSet(picture.getWidth(), picture.getHeight(), delta);
+            this.parametricSpace = parametricSpaceGenerator.getParametricSet(greyPicture.getWidth(), greyPicture.getHeight(), delta);
         }
 
         Map<Shape, Integer> accumulator = new HashMap<>();

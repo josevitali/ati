@@ -7,6 +7,4 @@ public interface Shape {
 
     boolean belongs(int x, int y);
 
-    ColorPicture drawShape(GreyPicture picture);
-
 }

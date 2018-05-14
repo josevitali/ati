@@ -19,14 +19,4 @@ public class Circle implements Shape{
         return Math.abs(Math.pow(radius,2) - Math.pow(x - centerX,2) - Math.pow(y - centerY,2)) <= delta;
     }
 
-    @Override
-    public ColorPicture drawShape(GreyPicture picture) {
-        ColorPicture colorPicture = picture.toColorPicture();
-
-
-
-        return colorPicture;
-
-    }
-
 }

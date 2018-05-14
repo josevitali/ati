@@ -51,7 +51,6 @@ public class SideTab3Controller implements SideTabController {
 
     @FXML
     private void linearHoughTransformation(){
-        System.out.println(houghDeltaVal + " " + houghThresholdVal);
         HoughDetector houghDetector = new HoughDetector(Integer.valueOf(houghThresholdVal.getText()), Double.valueOf(houghDeltaVal.getText()), new LineSpaceGenerator());
         applyTransformation(houghDetector);
     }

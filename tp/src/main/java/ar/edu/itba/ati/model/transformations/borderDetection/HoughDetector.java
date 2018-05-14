@@ -3,12 +3,14 @@ package ar.edu.itba.ati.model.transformations.borderDetection;
 import ar.edu.itba.ati.model.pictures.ColorPicture;
 import ar.edu.itba.ati.model.pictures.GreyPicture;
 import ar.edu.itba.ati.model.pictures.Picture;
+import ar.edu.itba.ati.model.shapes.Line;
 import ar.edu.itba.ati.model.shapes.Shape;
 import ar.edu.itba.ati.model.shapes.generators.ShapeGenerator;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,6 +24,8 @@ public class HoughDetector implements PictureTransformer{
     private ShapeGenerator parametricSpaceGenerator;
 
     private Set<Shape> parametricSpace;
+
+    private Set<Shape> shapes;
 
     public HoughDetector(int threshold, double delta, ShapeGenerator sg) {
         this.threshold = threshold;
@@ -46,8 +50,8 @@ public class HoughDetector implements PictureTransformer{
             accumulator.put(shape, 0);
         }
 
-        for (int i = 0; i < greyPicture.getWidth(); i++) {
-            for (int j = 0; j < greyPicture.getHeight(); j++) {
+        for (int i = 0; i < greyPicture.getHeight(); i++) {
+            for (int j = 0; j < greyPicture.getWidth(); j++) {
                 if (greyPicture.getPixel(i,j) == 255.0) {
                     for (Shape shape: accumulator.keySet()) {
                         if (shape.belongs(i, j)) {
@@ -56,10 +60,6 @@ public class HoughDetector implements PictureTransformer{
                     }
                 }
             }
-        }
-
-        for(Map.Entry e: accumulator.entrySet()){
-            System.out.println(e);
         }
 
         return accumulator
@@ -71,15 +71,42 @@ public class HoughDetector implements PictureTransformer{
     }
 
     @Override
-    public <T, R> Picture<R> transform(Picture<T> picture) {
+    public Picture transform(Picture picture) {
 
-        Set<Shape> shapes = findShapes(picture);
+        this.shapes = findShapes(picture);
 
-        for(Shape s: shapes){
+        System.out.println("shapes size: " + shapes.size());
 
+        ColorPicture colorPicture;
+        if(picture.getType() == BufferedImage.TYPE_BYTE_GRAY) {
+            colorPicture = ((GreyPicture) picture).toColorPicture();
+        }
+        else {
+            colorPicture = (ColorPicture) picture;
         }
 
-        return null;
+        Set<Shape> seletedShapes = new HashSet<>();
+
+
+        for (int i = 0; i < colorPicture.getHeight(); i++) {
+            for (int j = 0; j < colorPicture.getWidth(); j++) {
+                for (Shape shape: this.shapes) {
+                    if (shape.belongs(i, j)) {
+                        colorPicture.putPixel(new Double[] {0.0,255.0,0.0}, i, j);
+                        seletedShapes.add(shape);
+                    }
+                }
+            }
+        }
+
+        System.out.println("selectedShapes size: " + seletedShapes.size());
+        for (Shape shape: this.shapes) {
+            System.out.println("teta: " + ((Line)shape).getTeta());
+            System.out.println("ro: " + ((Line)shape).getRo());
+        }
+        
+        return colorPicture;
     }
+
 
 }

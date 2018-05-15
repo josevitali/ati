@@ -40,13 +40,17 @@ public class PixelExchangeMethod implements PictureTransformer {
         final ColorPicture colorPicture = picture.getType() == BufferedImage.TYPE_BYTE_GRAY ?
                 ((GreyPicture) picture).toColorPicture() : (ColorPicture) picture;
         int i = 0;
+        boolean insideLoutIf = true;
+        boolean insideLinIf = true;
 
         // #1
         // Define initial lin, lout & phi matrix
         Double[] tetha = initialParameters(lin, lout, phi, colorPicture);
 
-        while(i < iterations){
+        while(i < iterations && (insideLinIf || insideLoutIf)){
             i++;
+            insideLoutIf = false;
+            insideLinIf = false;
 
             Set<Point> toRemoveLin = new HashSet();
             Set<Point> toAddLin = new HashSet();
@@ -56,7 +60,8 @@ public class PixelExchangeMethod implements PictureTransformer {
             // #2
             for(Point point : lout){
 
-                if(fd(colorPicture.getPixel(point.x,point.y), tetha) >= 0){
+                if(fd(colorPicture.getPixel(point.x,point.y), tetha) > 0){
+                    insideLoutIf = true;
                     toRemoveLout.add(point);
                     toAddLin.add(point);
 
@@ -120,6 +125,7 @@ public class PixelExchangeMethod implements PictureTransformer {
             for(Point point : lin){
 
                 if(fd(colorPicture.getPixel(point.x,point.y), tetha) < 0){
+                    insideLinIf = true;
                     toRemoveLin.add(point);
                     toAddLout.add(point);
 

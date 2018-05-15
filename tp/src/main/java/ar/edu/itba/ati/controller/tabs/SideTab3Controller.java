@@ -37,7 +37,6 @@ public class SideTab3Controller implements SideTabController {
     private void pixelExchange() {
         eventBus.post(new GetEndsEvent());
         PixelExchangeMethod pixelExchange = new PixelExchangeMethod(ends[0],ends[1],ends[2],ends[3],300, 0.2);
-        ends = null;
         applyTransformation(pixelExchange);
     }
 

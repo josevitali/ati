@@ -7,7 +7,6 @@ import ar.edu.itba.ati.model.transformations.PictureTransformer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,17 +17,19 @@ public class PixelExchangeMethod implements PictureTransformer {
     private final int firstCol;
     private final int lastCol;
     private final int iterations;
+    private final double restriction;
     private static final int OUT = 3;
     private static final int LOUT = 1;
     private static final int LIN = -1;
     private static final int IN = -3;
 
-    public PixelExchangeMethod(int firstRow, int lastRow, int firstCol, int lastCol, int iterations) {
+    public PixelExchangeMethod(int firstRow, int lastRow, int firstCol, int lastCol, int iterations, double restriction) {
         this.firstRow = firstRow;
         this.lastRow = lastRow;
         this.firstCol = firstCol;
         this.lastCol = lastCol;
         this.iterations = iterations;
+        this.restriction = restriction;
     }
 
     @Override
@@ -42,14 +43,11 @@ public class PixelExchangeMethod implements PictureTransformer {
 
         // #1
         // Define initial lin, lout & phi matrix
-        Double[] tethas = initialParameters(lin, lout, phi, colorPicture);
-        Double tetha0 = tethas[0];
-        Double tetha1 = tethas[1];
+        Double[] tetha = initialParameters(lin, lout, phi, colorPicture);
 
         while(i < iterations){
             i++;
 
-            double tethaX;
             Set<Point> toRemoveLin = new HashSet();
             Set<Point> toAddLin = new HashSet();
             Set<Point> toRemoveLout = new HashSet();
@@ -57,9 +55,8 @@ public class PixelExchangeMethod implements PictureTransformer {
 
             // #2
             for(Point point : lout){
-                tethaX = Arrays.stream(colorPicture.getPixel(point.x, point.y)).mapToDouble(d -> d).average().getAsDouble();
 
-                if(fd(tetha0, tetha1, tethaX) > 0){
+                if(fd(colorPicture.getPixel(point.x,point.y), tetha) >= 0){
                     toRemoveLout.add(point);
                     toAddLin.add(point);
 
@@ -121,9 +118,8 @@ public class PixelExchangeMethod implements PictureTransformer {
 
             //#4
             for(Point point : lin){
-                tethaX = Arrays.stream(colorPicture.getPixel(point.x, point.y)).mapToDouble(d -> d).average().getAsDouble();
 
-                if(fd(tetha0, tetha1, tethaX) < 0){
+                if(fd(colorPicture.getPixel(point.x,point.y), tetha) < 0){
                     toRemoveLin.add(point);
                     toAddLout.add(point);
 
@@ -181,11 +177,10 @@ public class PixelExchangeMethod implements PictureTransformer {
             toAddLout.clear();
             toRemoveLin.clear();
             toRemoveLout.clear();
-
         }
 
         for(Point out : lout){
-            colorPicture.putPixel(new Double[]{0.0,255.0,0.0}, out.x, out.y);
+            colorPicture.putPixel(new Double[]{255.0,255.0,0.0}, out.x, out.y);
         }
         for(Point in : lin){
             colorPicture.putPixel(new Double[]{0.0,0.0,255.0}, in.x, in.y);
@@ -196,43 +191,58 @@ public class PixelExchangeMethod implements PictureTransformer {
     private Double[] initialParameters(Set<Point> lin, Set<Point> lout, int[][] phi, ColorPicture colorPicture){
         final int height = colorPicture.getHeight();
         final int width = colorPicture.getWidth();
-        Double tetha0 = 0.0;
-        Double tetha1 = 0.0;
+        Double[] tetha = new Double[]{new Double(0.0),new Double(0.0),new Double(0.0)};
 
         for(int row = 0; row < height; row++){
             for(int col = 0; col < width; col++){
                 if(row > firstRow && row < lastRow && col > firstCol && col < lastCol){
                     // Inside
                     phi[row][col] = IN;
-                    tetha1 += Arrays.stream(colorPicture.getPixel(row, col)).mapToDouble(d -> d).average().getAsDouble();
+                    addVectors(tetha, colorPicture.getPixel(row,col));
                 } else if (((row == firstRow || row == lastRow) && (col >= firstCol && col <= lastCol)) ||
                         ((col == firstCol || col == lastCol) && (row >= firstRow && row <= lastRow))){
                     // lin
                     phi[row][col] = LIN;
                     lin.add(new Point(row,col));
-                    tetha1 += Arrays.stream(colorPicture.getPixel(row, col)).mapToDouble(d -> d).average().getAsDouble();
+                    addVectors(tetha, colorPicture.getPixel(row,col));
                 } else if (((row == firstRow - 1 || row == lastRow + 1) && (col >= firstCol - 1 && col <= lastCol + 1)) ||
                         ((col == firstCol - 1 || col == lastCol + 1) && (row >= firstRow - 1 && row <= lastRow + 1))){
                     // lout
                     phi[row][col] = LOUT;
                     lout.add(new Point(row,col));
-                    tetha0 += Arrays.stream(colorPicture.getPixel(row, col)).mapToDouble(d -> d).average().getAsDouble();
                 } else {
                     // Outside
                     phi[row][col] = OUT;
-                    tetha0 += Arrays.stream(colorPicture.getPixel(row, col)).mapToDouble(d -> d).average().getAsDouble();
                 }
             }
         }
 
-        final int inside = (1 + lastRow - firstRow) * (1 + lastCol - firstCol);
-        tetha1 /= inside;
-        tetha0 /= ((width * height) - inside);
+        for(int i = 0; i < 3; i++){
+            tetha[i] /= ((1 + lastRow - firstRow) * (1 + lastCol - firstCol));
+        }
 
-        return new Double[]{tetha0,tetha1};
+        return tetha;
     }
 
-    private double fd(final double tetha0, final double tetha1, final double tethaX){
-        return Math.log((tetha0 - tethaX)/(tetha1 - tethaX));
+    private double fd(Double[] pixel, Double[] tetha){
+        double[] diff = new double[]{pixel[0] - tetha[0], pixel[1] - tetha[1], pixel[2] - tetha[2]};
+        double nom = Math.sqrt(diff[0] * diff[0] + diff[1] * diff[1] + diff[2] * diff[2]);
+
+        double den = 256 * Math.sqrt(3);
+        double result = (nom/den);
+
+        return result < restriction ? 1 : -1;
+    }
+
+    private void addVectors(Double[] vec1, Double[] vec2){
+        int length = vec1.length;
+
+        if(vec2.length != length){
+            throw new IllegalArgumentException("Vectors should have same length.");
+        }
+
+        for(int i = 0; i < length; i++){
+            vec1[i] += vec2[i];
+        }
     }
 }

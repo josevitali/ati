@@ -12,6 +12,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 
 public class SideTab3Controller implements SideTabController {
 
@@ -20,6 +21,10 @@ public class SideTab3Controller implements SideTabController {
 
     private int[] ends;
 
+    @FXML
+    private TextField pixelExchangeIterationsVal;
+    @FXML
+    private TextField pixelExchangeRestrictionVal;
 
     @Inject
     public SideTab3Controller(final EventBus eventBus, final PictureService pictureService){
@@ -36,7 +41,12 @@ public class SideTab3Controller implements SideTabController {
     @FXML
     private void pixelExchange() {
         eventBus.post(new GetEndsEvent());
-        PixelExchangeMethod pixelExchange = new PixelExchangeMethod(ends[0],ends[1],ends[2],ends[3],300, 0.2);
+        int iterations = Integer.valueOf(pixelExchangeIterationsVal.getText());
+        double restriction = Double.valueOf(pixelExchangeRestrictionVal.getText());
+        if(iterations < 0 || restriction < 0 || restriction > 1) {
+            return;
+        }
+        PixelExchangeMethod pixelExchange = new PixelExchangeMethod(ends[0],ends[1],ends[2],ends[3],iterations, restriction);
         applyTransformation(pixelExchange);
     }
 

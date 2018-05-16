@@ -59,6 +59,8 @@ public class PixelExchangeMethod implements PictureTransformer {
         boolean insideLoutIf = true;
         boolean insideLinIf = true;
 
+        long millis = System.currentTimeMillis();
+
         // #1
         // Define initial lin, lout & phi matrix
         if(tetha == null || phi == null){
@@ -203,8 +205,6 @@ public class PixelExchangeMethod implements PictureTransformer {
             toRemoveLin.clear();
             toRemoveLout.clear();
         }
-
-
 
 
         // Second cycle
@@ -353,6 +353,9 @@ public class PixelExchangeMethod implements PictureTransformer {
 //        for(Point in : lin){
 //            colorPicture.putPixel(new Double[]{0.0,0.0,255.0}, in.x, in.y);
 //        }
+
+        System.out.println("Elapsed time: " + (System.currentTimeMillis() - millis) + "ms");
+
         return colorPicture;
     }
 

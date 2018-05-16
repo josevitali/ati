@@ -40,6 +40,12 @@ public class SideTab3Controller implements SideTabController {
 
     @FXML
     private Button susanButton;
+    @FXML
+    private Button priorFrameButton;
+    @FXML
+    private Button nextFrameButton;
+    @FXML
+    private Button playButton;
 
     @FXML
     private TextField pixelExchangeIterationsVal;
@@ -91,6 +97,7 @@ public class SideTab3Controller implements SideTabController {
         pictureService.setPicture(video.get(0));
         eventBus.post(new GetEndsEvent());
         eventBus.post(new ShowPictureEvent());
+        setVideoButtonsVisibility(true);
 
         int iterations = Integer.valueOf(pixelExchangeIterationsVal.getText());
         double restriction = Double.valueOf(pixelExchangeRestrictionVal.getText());
@@ -165,6 +172,18 @@ public class SideTab3Controller implements SideTabController {
 
     @Override
     public void reset(ResetParametersEvent event) {
+        pixelExchangeIterationsVal.setText("");
+        pixelExchangeRestrictionVal.setText("");
+        setVideoButtonsVisibility(false);
+    }
+
+    private void setVideoButtonsVisibility(boolean b){
+        priorFrameButton.setManaged(b);
+        priorFrameButton.setVisible(b);
+        nextFrameButton.setManaged(b);
+        nextFrameButton.setVisible(b);
+        playButton.setManaged(b);
+        playButton.setVisible(b);
     }
 
     @FXML

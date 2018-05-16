@@ -42,17 +42,17 @@
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Video" onAction="#pixelExchangeVideo" fx:id="pixelExchangeVideoButton"/>
                 <HBox alignment="CENTER" prefWidth="200.0" style="-fx-spacing: 5;">
                     <children>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="Prior" textAlignment="CENTER" onAction="#prior">
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="Prior" textAlignment="CENTER" onAction="#prior" fx:id="priorFrameButton">
                             <HBox.margin>
                                 <Insets right="10.0" />
                             </HBox.margin>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="Next" textAlignment="CENTER" onAction="#next">
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="Next" textAlignment="CENTER" onAction="#next" fx:id="nextFrameButton">
                             <HBox.margin>
                                 <Insets right="10.0" />
                             </HBox.margin>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="Play" textAlignment="CENTER" onAction="#play"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="Play" textAlignment="CENTER" onAction="#play" fx:id="playButton"/>
                     </children>
                 </HBox>
 

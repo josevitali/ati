@@ -12,7 +12,11 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+
+import java.awt.image.BufferedImage;
 
 public class SideTab3Controller implements SideTabController {
 
@@ -20,6 +24,9 @@ public class SideTab3Controller implements SideTabController {
     private final PictureService pictureService;
 
     private int[] ends;
+
+    @FXML
+    private Button susanButton;
 
     @FXML
     private TextField pixelExchangeIterationsVal;
@@ -53,6 +60,17 @@ public class SideTab3Controller implements SideTabController {
     private void applyTransformation(PictureTransformer transformer){
         pictureService.applyTransformation(transformer);
         eventBus.post(new ShowPictureEvent());
+    }
+
+    @Subscribe
+    private void buttonVisibility(ShowPictureEvent event){
+        if(pictureService.getPictureType() == BufferedImage.TYPE_BYTE_GRAY){
+            susanButton.setManaged(true);
+            susanButton.setVisible(true);
+        } else {
+            susanButton.setManaged(false);
+            susanButton.setVisible(false);
+        }
     }
 
     @Override

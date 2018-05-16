@@ -7,16 +7,14 @@ import ar.edu.itba.ati.model.transformations.PictureTransformer;
 import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.Masks;
 import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.SlidingWindowWithMask;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
-//public class SusanDetector extends SlidingWindowWithMask<Integer> {
 public class SusanDetector implements PictureTransformer {
 
     private final SlidingWindowWithMask<Integer> slidingWindow;
-    //TODO: remove
-    public Picture transformedPicture = null;
 
     public SusanDetector(double t){
         this.slidingWindow = new SlidingWindowWithMask<>(Masks.CIRCULAR, new BiFunction<Integer[][], Double[][], Double>() {
@@ -39,7 +37,10 @@ public class SusanDetector implements PictureTransformer {
 
     @Override
     public <T,R> Picture transform(Picture<T> picture) {
-        // TODO: solo para imagenes grises
+        if(picture.getType() != BufferedImage.TYPE_BYTE_GRAY){
+            throw new IllegalArgumentException("Picture must be grey.");
+        }
+
         picture.normalize();
         GreyPicture greyPicture = (GreyPicture) picture;
         ColorPicture colorPicture = ((GreyPicture) picture).toColorPicture();

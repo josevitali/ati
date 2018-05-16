@@ -36,6 +36,7 @@ public class PixelExchangeMethod implements PictureTransformer {
 
     @Override
     public <T, R> Picture transform(Picture<T> picture) {
+        picture.normalize();
         final Set<Point> lin = new HashSet();
         final Set<Point> lout = new HashSet();
         final int[][] phi = new int[picture.getHeight()][picture.getWidth()];

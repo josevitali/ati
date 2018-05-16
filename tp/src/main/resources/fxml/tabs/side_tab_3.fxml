@@ -17,21 +17,27 @@
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Susan" onAction="#susanDetector" fx:id="susanButton"/>
 
                 <Label alignment="CENTER" contentDisplay="CENTER" text="Pixel Exchange" underline="true" />
-                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                <HBox alignment="CENTER" prefWidth="200.0" style="-fx-spacing: 5;">
                     <children>
-                        <TextField prefHeight="27.0" prefWidth="67.0" promptText="Iterations" fx:id="pixelExchangeIterationsVal">
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="85.0" promptText="Iterations" fx:id="pixelExchangeIterationsVal">
                             <HBox.margin>
                                 <Insets left="10.0" />
                             </HBox.margin>
-                            <font>
-                                <Font size="10.0" />
-                            </font>
                         </TextField>
-                        <TextField prefHeight="27.0" prefWidth="67.0" promptText="Restriction" fx:id="pixelExchangeRestrictionVal">
-                            <font>
-                                <Font size="10.0" />
-                            </font>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="85.0" promptText="Restriction" fx:id="pixelExchangeRestrictionVal">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
                         </TextField>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefWidth="200.0" style="-fx-spacing: 55;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Static">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
                         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0" text="OK" textAlignment="CENTER" onAction="#pixelExchangeStatic">
                             <HBox.margin>
                                 <Insets right="10.0" />
@@ -39,7 +45,21 @@
                         </Button>
                     </children>
                 </HBox>
-                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Video" onAction="#pixelExchangeVideo" fx:id="pixelExchangeVideoButton"/>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="80.0" text="Video">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="45.0" text="Get" textAlignment="CENTER" onAction="#getVideo">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0" text="OK" textAlignment="CENTER" onAction="#pixelExchangeVideo"/>
+                    </children>
+                </HBox>
                 <HBox alignment="CENTER" prefWidth="200.0" style="-fx-spacing: 5;">
                     <children>
                         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="Prior" textAlignment="CENTER" onAction="#prior" fx:id="priorFrameButton">
@@ -52,7 +72,21 @@
                                 <Insets right="10.0" />
                             </HBox.margin>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="Play" textAlignment="CENTER" onAction="#play" fx:id="playButton"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="«" textAlignment="CENTER" onAction="#toFirstFrame" fx:id="toFirstFrameButton"/>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="►" textAlignment="CENTER" onAction="#play" fx:id="playButton">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="▌▐" textAlignment="CENTER" onAction="#stop" fx:id="stopButton">
+                            <font>
+                                <Font size="6.0" />
+                            </font>
+                        </Button>
                     </children>
                 </HBox>
 

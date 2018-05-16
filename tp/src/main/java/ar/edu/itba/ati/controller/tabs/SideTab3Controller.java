@@ -36,7 +36,7 @@ public class SideTab3Controller implements SideTabController {
 
     private List<Picture> video;
     private int actualFrame;
-    private boolean inPlay = false;
+    private boolean playing = false;
 
     @FXML
     private Button susanButton;
@@ -45,7 +45,11 @@ public class SideTab3Controller implements SideTabController {
     @FXML
     private Button nextFrameButton;
     @FXML
+    private Button toFirstFrameButton;
+    @FXML
     private Button playButton;
+    @FXML
+    private Button stopButton;
 
     @FXML
     private TextField pixelExchangeIterationsVal;
@@ -79,7 +83,7 @@ public class SideTab3Controller implements SideTabController {
     }
 
     @FXML
-    private void pixelExchangeVideo() {
+    private void getVideo(){
         FileChooser fileChooser = new FileChooser();
         List<File> files = fileChooser.showOpenMultipleDialog(sideTabView3.getScene().getWindow());
         video.clear();
@@ -95,10 +99,13 @@ public class SideTab3Controller implements SideTabController {
 
         pictureService.setFile(files.get(0));
         pictureService.setPicture(video.get(0));
-        eventBus.post(new GetEndsEvent());
         eventBus.post(new ShowPictureEvent());
         setVideoButtonsVisibility(true);
+    }
 
+    @FXML
+    private void pixelExchangeVideo() {
+        eventBus.post(new GetEndsEvent());
         int iterations = Integer.valueOf(pixelExchangeIterationsVal.getText());
         double restriction = Double.valueOf(pixelExchangeRestrictionVal.getText());
         if(iterations < 0 || restriction < 0 || restriction > 1) {
@@ -141,10 +148,21 @@ public class SideTab3Controller implements SideTabController {
     }
 
     @FXML
+    private void toFirstFrame() {
+        applyTransformation(new PictureTransformer() {
+            @Override
+            public <T, R> Picture<R> transform(Picture<T> picture) {
+                actualFrame = 0;
+                return video.get(0);
+            }
+        });
+    }
+
+    @FXML
     private void play() {
         // FIXME
-        inPlay = true;
-        while (inPlay){
+        playing = true;
+        while (playing){
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
@@ -152,6 +170,11 @@ public class SideTab3Controller implements SideTabController {
             }
             next();
         }
+    }
+
+    @FXML
+    private void stop() {
+        playing = false;
     }
 
     private void applyTransformation(PictureTransformer transformer){
@@ -175,6 +198,7 @@ public class SideTab3Controller implements SideTabController {
         pixelExchangeIterationsVal.setText("");
         pixelExchangeRestrictionVal.setText("");
         setVideoButtonsVisibility(false);
+        playing = false;
     }
 
     private void setVideoButtonsVisibility(boolean b){
@@ -184,11 +208,15 @@ public class SideTab3Controller implements SideTabController {
         nextFrameButton.setVisible(b);
         playButton.setManaged(b);
         playButton.setVisible(b);
+        toFirstFrameButton.setManaged(b);
+        toFirstFrameButton.setVisible(b);
+        stopButton.setManaged(b);
+        stopButton.setVisible(b);
     }
 
     @FXML
     @Subscribe
     public void setEnds(ReturnEndsEvent returnEvent){
-        ends = (int[]) returnEvent.getReturnValue();
+        ends = returnEvent.getReturnValue();
     }
 }

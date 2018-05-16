@@ -1,8 +1,5 @@
 package ar.edu.itba.ati.model.shapes;
 
-import ar.edu.itba.ati.model.pictures.ColorPicture;
-import ar.edu.itba.ati.model.pictures.GreyPicture;
-
 public class Line implements Shape {
 
     private double delta, ro;
@@ -25,6 +22,16 @@ public class Line implements Shape {
     @Override
     public boolean belongs(int x, int y) {
         return Math.abs(ro - x*Math.cos(Math.toRadians(teta)) - y*Math.sin(Math.toRadians(teta))) <= delta;
+    }
+
+    @Override
+    public boolean isLine() {
+        return true;
+    }
+
+    @Override
+    public boolean isCircle() {
+        return false;
     }
 
 }

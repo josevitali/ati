@@ -16,6 +16,16 @@ public class Circle implements Shape{
         return Math.abs(Math.pow(radius,2) - Math.pow(x - centerX,2) - Math.pow(y - centerY,2)) <= delta;
     }
 
+    @Override
+    public boolean isLine() {
+        return false;
+    }
+
+    @Override
+    public boolean isCircle() {
+        return true;
+    }
+
 
     public double getDelta() {
         return delta;
@@ -31,5 +41,14 @@ public class Circle implements Shape{
 
     public double getCenterY() {
         return centerY;
+    }
+
+    @Override
+    public String toString() {
+        return "Circle{" +
+                "radius=" + radius +
+                ", centerX=" + centerX +
+                ", centerY=" + centerY +
+                '}';
     }
 }

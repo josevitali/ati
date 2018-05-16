@@ -8,6 +8,7 @@ import ar.edu.itba.ati.model.shapes.generators.ShapeGenerator;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 
 import java.awt.image.BufferedImage;
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -82,6 +83,52 @@ public class HoughDetector implements PictureTransformer{
 
         System.out.println("shapes size: " + shapes.size());
 
+        for(Shape s: shapes)
+            System.out.println(s);
+
+        if(shapes.size() == 0)
+            return picture;
+
+        if(shapes.iterator().next().isCircle()){
+            return circleTransformation(picture);
+        }else if(shapes.iterator().next().isLine()){
+            return lineTransformation(picture);
+        }else{
+            throw new InvalidParameterException("Shape is not supported in Hough transformation");
+        }
+
+    }
+
+    private Picture circleTransformation(Picture picture){
+
+        GreyPicture greyPicture;
+
+        ColorPicture colorPicture;
+        if(picture.getType() == BufferedImage.TYPE_BYTE_GRAY) {
+            colorPicture = ((GreyPicture) picture).toColorPicture();
+            greyPicture = (GreyPicture) picture;
+        }
+        else {
+            colorPicture = (ColorPicture) picture;
+            greyPicture = ((ColorPicture) picture).toGreyPicture();
+        }
+
+        for (int i = 0; i < colorPicture.getHeight(); i++) {
+            for (int j = 0; j < colorPicture.getWidth(); j++) {
+                if(greyPicture.getPixel(i,j) == 255.0){
+                    for (Shape shape: this.shapes) {
+                        if (shape.belongs(i, j)) {
+                            colorPicture.putPixel(new Double[] {0.0,255.0,0.0}, i, j);
+                        }
+                    }
+                }
+            }
+        }
+        return colorPicture;
+    }
+
+    private Picture lineTransformation(Picture picture){
+
         ColorPicture colorPicture;
         if(picture.getType() == BufferedImage.TYPE_BYTE_GRAY) {
             colorPicture = ((GreyPicture) picture).toColorPicture();
@@ -99,7 +146,7 @@ public class HoughDetector implements PictureTransformer{
                 }
             }
         }
-        
+
         return colorPicture;
     }
 

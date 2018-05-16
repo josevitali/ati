@@ -89,6 +89,10 @@ public class SideTab3Controller implements SideTabController {
         video.clear();
         actualFrame = 0;
 
+        if(files == null){
+            return;
+        }
+
         files.forEach(f -> {
             try {
                 video.add(Pictures.getPicture(f));
@@ -164,7 +168,7 @@ public class SideTab3Controller implements SideTabController {
         playing = true;
         while (playing){
             try {
-                Thread.sleep(50);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

@@ -348,11 +348,11 @@ public class PixelExchangeMethod implements PictureTransformer {
         }
 
         for(Point out : lout){
-            colorPicture.putPixel(new Double[]{255.0,255.0,0.0}, out.x, out.y);
+            colorPicture.putPixel(new Double[]{0.0,255.0,255.0}, out.x, out.y);
         }
-        for(Point in : lin){
-            colorPicture.putPixel(new Double[]{0.0,0.0,255.0}, in.x, in.y);
-        }
+//        for(Point in : lin){
+//            colorPicture.putPixel(new Double[]{0.0,0.0,255.0}, in.x, in.y);
+//        }
         return colorPicture;
     }
 

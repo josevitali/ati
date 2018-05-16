@@ -89,10 +89,22 @@ public class SideTab3Controller implements SideTabController {
 
         pictureService.setFile(files.get(0));
         pictureService.setPicture(video.get(0));
+        eventBus.post(new GetEndsEvent());
         eventBus.post(new ShowPictureEvent());
 
+        int iterations = Integer.valueOf(pixelExchangeIterationsVal.getText());
+        double restriction = Double.valueOf(pixelExchangeRestrictionVal.getText());
+        if(iterations < 0 || restriction < 0 || restriction > 1) {
+            return;
+        }
+        PixelExchangeMethod pixelExchange = new PixelExchangeMethod(ends[0],ends[1],ends[2],ends[3],iterations, restriction);
 
+        for(Picture picture : video){
+            pixelExchange.transform(picture);
+            pixelExchange = new PixelExchangeMethod(pixelExchange);
+        }
 
+        eventBus.post(new ShowPictureEvent());
     }
 
     @FXML
@@ -104,6 +116,19 @@ public class SideTab3Controller implements SideTabController {
                     actualFrame = -1;
                 }
                 return video.get(++actualFrame);
+            }
+        });
+    }
+
+    @FXML
+    private void prior() {
+        applyTransformation(new PictureTransformer() {
+            @Override
+            public <T, R> Picture<R> transform(Picture<T> picture) {
+                if(actualFrame == 0){
+                    actualFrame = video.size();
+                }
+                return video.get(--actualFrame);
             }
         });
     }

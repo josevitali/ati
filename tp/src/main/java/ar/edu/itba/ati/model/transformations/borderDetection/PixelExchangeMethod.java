@@ -14,16 +14,21 @@ import java.util.Set;
 
 public class PixelExchangeMethod implements PictureTransformer {
 
-    private final int firstRow;
-    private final int lastRow;
-    private final int firstCol;
-    private final int lastCol;
+    private int firstRow;
+    private int lastRow;
+    private int firstCol;
+    private int lastCol;
     private final int iterations;
     private final double restriction;
     private static final int OUT = 3;
     private static final int LOUT = 1;
     private static final int LIN = -1;
     private static final int IN = -3;
+
+    private final Set<Point> lin;
+    private final Set<Point> lout;
+    private int[][] phi = null;
+    private Double[] tetha = null;
 
     public PixelExchangeMethod(int firstRow, int lastRow, int firstCol, int lastCol, int iterations, double restriction) {
         this.firstRow = firstRow;
@@ -32,14 +37,22 @@ public class PixelExchangeMethod implements PictureTransformer {
         this.lastCol = lastCol;
         this.iterations = iterations;
         this.restriction = restriction;
+        this.lin = new HashSet<>();
+        this.lout = new HashSet<>();
+    }
+
+    public PixelExchangeMethod(PixelExchangeMethod other){
+        this.iterations = other.getIterations();
+        this.restriction = other.getRestriction();
+        this.lin = other.getLin();
+        this.lout = other.getLout();
+        this.phi = other.getPhi();
+        this.tetha = other.getTetha();
     }
 
     @Override
     public <T, R> Picture transform(Picture<T> picture) {
         picture.normalize();
-        final Set<Point> lin = new HashSet();
-        final Set<Point> lout = new HashSet();
-        final int[][] phi = new int[picture.getHeight()][picture.getWidth()];
         final ColorPicture colorPicture = picture.getType() == BufferedImage.TYPE_BYTE_GRAY ?
                 ((GreyPicture) picture).toColorPicture() : (ColorPicture) picture;
         int i = 0;
@@ -48,7 +61,10 @@ public class PixelExchangeMethod implements PictureTransformer {
 
         // #1
         // Define initial lin, lout & phi matrix
-        Double[] tetha = initialParameters(lin, lout, phi, colorPicture);
+        if(tetha == null || phi == null){
+            phi = new int[picture.getHeight()][picture.getWidth()];
+            tetha = initialParameters(lin, lout, phi, colorPicture);
+        }
 
         while(i < iterations && (insideLinIf || insideLoutIf)){
             i++;
@@ -409,5 +425,29 @@ public class PixelExchangeMethod implements PictureTransformer {
         for(int i = 0; i < length; i++){
             vec1[i] += vec2[i];
         }
+    }
+
+    public Set<Point> getLin() {
+        return lin;
+    }
+
+    public Set<Point> getLout() {
+        return lout;
+    }
+
+    public int[][] getPhi() {
+        return phi;
+    }
+
+    public Double[] getTetha() {
+        return tetha;
+    }
+
+    public int getIterations() {
+        return iterations;
+    }
+
+    public double getRestriction() {
+        return restriction;
     }
 }

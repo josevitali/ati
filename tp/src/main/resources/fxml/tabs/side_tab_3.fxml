@@ -42,6 +42,11 @@
                 <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Video" onAction="#pixelExchangeVideo" fx:id="pixelExchangeVideoButton"/>
                 <HBox alignment="CENTER" prefWidth="200.0" style="-fx-spacing: 5;">
                     <children>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="Prior" textAlignment="CENTER" onAction="#prior">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
                         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="Next" textAlignment="CENTER" onAction="#next">
                             <HBox.margin>
                                 <Insets right="10.0" />

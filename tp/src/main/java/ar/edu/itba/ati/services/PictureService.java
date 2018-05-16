@@ -50,9 +50,6 @@ public class PictureService {
         pushUndo();
         redoPictures.clear();
         picture = transformer.transform(picture);
-        //transformer.transform(picture);
-        //TODO: remove
-        //setPicture(((SusanDetector) transformer).transformedPicture);
     }
 
     public int getPictureType() {

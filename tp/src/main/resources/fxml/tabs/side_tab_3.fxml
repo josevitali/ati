@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <fx:root type="SideTab3View" xmlns:fx="http://javafx.com/fxml"
          fx:controller="ar.edu.itba.ati.controller.tabs.SideTab3Controller" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
-         fitToHeight="true" fitToWidth="true" prefHeight="639.0" prefWidth="241.0" fx:id="sideTabView2">
+         fitToHeight="true" fitToWidth="true" prefHeight="639.0" prefWidth="241.0" fx:id="sideTabView3">
     <content>
         <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
               style="-fx-spacing: 10;">
@@ -32,11 +32,22 @@
                                 <Font size="10.0" />
                             </font>
                         </TextField>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0" text="OK" textAlignment="CENTER" onAction="#pixelExchange">
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0" text="OK" textAlignment="CENTER" onAction="#pixelExchangeStatic">
                             <HBox.margin>
                                 <Insets right="10.0" />
                             </HBox.margin>
                         </Button>
+                    </children>
+                </HBox>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Video" onAction="#pixelExchangeVideo" fx:id="pixelExchangeVideoButton"/>
+                <HBox alignment="CENTER" prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="Next" textAlignment="CENTER" onAction="#next">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="50.0" text="Play" textAlignment="CENTER" onAction="#play"/>
                     </children>
                 </HBox>
 

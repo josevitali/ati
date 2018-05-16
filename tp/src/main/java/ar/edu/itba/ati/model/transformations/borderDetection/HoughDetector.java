@@ -42,9 +42,8 @@ public class HoughDetector implements PictureTransformer{
 
         if(this.parametricSpace == null){
             this.parametricSpace = parametricSpaceGenerator.getParametricSet(picture.getWidth(), picture.getHeight(), delta);
+            System.out.println("parametric space size: " + parametricSpace.size());
         }
-
-        System.out.println("parametric space size: " + parametricSpace.size());
 
         Map<Shape, Integer> accumulator = new HashMap<>();
         for (Shape shape: parametricSpace) {
@@ -83,11 +82,9 @@ public class HoughDetector implements PictureTransformer{
 
         System.out.println("shapes size: " + shapes.size());
 
-        for(Shape s: shapes)
-            System.out.println(s);
-
-        if(shapes.size() == 0)
+        if(shapes.size() == 0) {
             return picture;
+        }
 
         if(shapes.iterator().next().isCircle()){
             return circleTransformation(picture);

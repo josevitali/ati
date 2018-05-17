@@ -1,11 +1,12 @@
 package ar.edu.itba.ati.controller;
 
+import ar.edu.itba.ati.events.returnValues.ReturnEndsEvent;
 import ar.edu.itba.ati.events.pictures.AverageEvent;
 import ar.edu.itba.ati.events.pictures.CropEvent;
+import ar.edu.itba.ati.events.pictures.GetEndsEvent;
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.services.PictureService;
-import ar.edu.itba.ati.views.PictureView;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
@@ -71,6 +72,15 @@ public class PictureController {
         pictureService.average(ends[0], ends[1], ends[2], ends[3]);
         rubberBandSelection.removeBounds();
 
+    }
+
+    @FXML
+    @Subscribe
+    public void getEnds(GetEndsEvent getEndsEvent){
+        Bounds selectionBounds = rubberBandSelection.getBounds();
+        final int[] ends = getEnds(selectionBounds);
+        eventBus.post(new ReturnEndsEvent(ends));
+        rubberBandSelection.removeBounds();
     }
 
     private int[] getEnds(Bounds bounds){

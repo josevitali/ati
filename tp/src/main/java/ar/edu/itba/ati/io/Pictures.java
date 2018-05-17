@@ -46,6 +46,8 @@ public class Pictures {
                 bufferedImage = ppmPgmToBufferedImage(file);
                 break;
             case "bmp":
+            case "jpg":
+            case "jpeg":
                 bufferedImage = bmpToBufferedImage(file);
                 break;
             case "raw":
@@ -110,6 +112,8 @@ public class Pictures {
                 savePgmAndPpm(picture, file);
                 break;
             case "bmp":
+            case "jpg":
+            case "jpeg":
                 saveBmp(picture, file);
                 break;
             case "raw":

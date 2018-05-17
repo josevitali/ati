@@ -105,6 +105,26 @@ public class PixelExchangeMethod implements PictureTransformer {
                     if(point.y < phi[0].length - 1 && phi[point.x][point.y + 1] == OUT){
                         toAddLout.add(new Point(point.x,point.y + 1));
                     }
+
+                    // up & left
+                    if(point.x > 0 && point.y > 0 && phi[point.x - 1][point.y - 1] == OUT){
+                        toAddLout.add(new Point(point.x - 1,point.y - 1));
+                    }
+
+                    // up & right
+                    if(point.x > 0 && point.y < phi[0].length - 1 && phi[point.x - 1][point.y + 1] == OUT){
+                        toAddLout.add(new Point(point.x - 1,point.y + 1));
+                    }
+
+                    // down & left
+                    if(point.x < phi.length - 1 && point.y > 0 && phi[point.x + 1][point.y - 1] == OUT){
+                        toAddLout.add(new Point(point.x + 1,point.y - 1));
+                    }
+
+                    // down & right
+                    if(point.x < phi.length - 1 && point.y < phi[0].length - 1 && phi[point.x + 1][point.y + 1] == OUT){
+                        toAddLout.add(new Point(point.x + 1,point.y + 1));
+                    }
                 }
             }
 
@@ -246,6 +266,26 @@ public class PixelExchangeMethod implements PictureTransformer {
                     if(point.y < phi[0].length - 1 && phi[point.x][point.y + 1] == OUT){
                         toAddLout.add(new Point(point.x,point.y + 1));
                     }
+
+                    // up & left
+                    if(point.x > 0 && point.y > 0 && phi[point.x - 1][point.y - 1] == OUT){
+                        toAddLout.add(new Point(point.x - 1,point.y - 1));
+                    }
+
+                    // up & right
+                    if(point.x > 0 && point.y < phi[0].length - 1 && phi[point.x - 1][point.y + 1] == OUT){
+                        toAddLout.add(new Point(point.x - 1,point.y + 1));
+                    }
+
+                    // down & left
+                    if(point.x < phi.length - 1 && point.y > 0 && phi[point.x + 1][point.y - 1] == OUT){
+                        toAddLout.add(new Point(point.x + 1,point.y - 1));
+                    }
+
+                    // down & right
+                    if(point.x < phi.length - 1 && point.y < phi[0].length - 1 && phi[point.x + 1][point.y + 1] == OUT){
+                        toAddLout.add(new Point(point.x + 1,point.y + 1));
+                    }
                 }
             }
 
@@ -350,9 +390,9 @@ public class PixelExchangeMethod implements PictureTransformer {
         for(Point out : lout){
             colorPicture.putPixel(new Double[]{0.0,255.0,255.0}, out.x, out.y);
         }
-//        for(Point in : lin){
-//            colorPicture.putPixel(new Double[]{0.0,0.0,255.0}, in.x, in.y);
-//        }
+        for(Point in : lin){
+            colorPicture.putPixel(new Double[]{0.0,0.0,255.0}, in.x, in.y);
+        }
 
         System.out.println("Elapsed time: " + (System.currentTimeMillis() - millis) + "ms");
 

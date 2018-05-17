@@ -14,7 +14,40 @@
         <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
               style="-fx-spacing: 10;">
             <children>
-                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Susan" onAction="#susanDetector"/>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="45.0" text="Linear Hough">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" promptText="th" fx:id="linearHoughThresholdVal"/>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" promptText="δ" fx:id="linearHoughDeltaVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#linearHoughTransformation">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="45.0" text="Circular Hough">
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" promptText="th" fx:id="circularHoughThresholdVal"/>
+                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="40.0" promptText="δ" fx:id="circularHoughDeltaVal"/>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="37.0"
+                                text="OK" textAlignment="CENTER" onAction="#circularHoughTransformation">
+                            <HBox.margin>
+                                <Insets right="10.0" />
+                            </HBox.margin>
+                        </Button>
+                    </children>
+                </HBox>
                 <HBox prefWidth="200.0" style="-fx-spacing: 5;">
                     <children>
                         <Label contentDisplay="CENTER" prefHeight="27.0" prefWidth="89.0" text="Canny">

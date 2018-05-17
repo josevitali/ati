@@ -1,22 +1,23 @@
 package ar.edu.itba.ati.controller.tabs;
 
-import ar.edu.itba.ati.events.returnValues.ReturnEndsEvent;
 import ar.edu.itba.ati.events.pictures.GetEndsEvent;
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
+import ar.edu.itba.ati.events.returnValues.ReturnEndsEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
 import ar.edu.itba.ati.io.Pictures;
 import ar.edu.itba.ati.model.pictures.Picture;
+import ar.edu.itba.ati.model.shapes.generators.CircleSpaceGenerator;
+import ar.edu.itba.ati.model.shapes.generators.LineSpaceGenerator;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 import ar.edu.itba.ati.model.transformations.borderDetection.CannyDetector;
+import ar.edu.itba.ati.model.transformations.borderDetection.HoughDetector;
 import ar.edu.itba.ati.model.transformations.borderDetection.PixelExchangeMethod;
 import ar.edu.itba.ati.model.transformations.borderDetection.SusanDetector;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -32,6 +33,7 @@ public class SideTab3Controller implements SideTabController {
 
     private final EventBus eventBus;
     private final PictureService pictureService;
+
     @FXML
     private ScrollPane sideTabView3;
 
@@ -60,6 +62,14 @@ public class SideTab3Controller implements SideTabController {
     private TextField pixelExchangeRestrictionVal;
     @FXML
     private TextField cannySigma;
+    @FXML
+    private TextField linearHoughThresholdVal;
+    @FXML
+    private TextField linearHoughDeltaVal;
+    @FXML
+    private TextField circularHoughThresholdVal;
+    @FXML
+    private TextField circularHoughDeltaVal;
 
 
     @Inject
@@ -196,6 +206,18 @@ public class SideTab3Controller implements SideTabController {
     @FXML
     private void stop() {
         playing = false;
+    }
+
+    @FXML
+    private void linearHoughTransformation(){
+        HoughDetector houghDetector = new HoughDetector(Integer.valueOf(linearHoughThresholdVal.getText()), Double.valueOf(linearHoughDeltaVal.getText()), new LineSpaceGenerator());
+        applyTransformation(houghDetector);
+    }
+
+    @FXML
+    private void circularHoughTransformation(){
+        HoughDetector houghDetector = new HoughDetector(Integer.valueOf(circularHoughThresholdVal.getText()), Double.valueOf(circularHoughDeltaVal.getText()), new CircleSpaceGenerator());
+        applyTransformation(houghDetector);
     }
 
     private void applyTransformation(PictureTransformer transformer){

@@ -14,6 +14,7 @@ import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+import javafx.embed.swing.JFXPanel;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
@@ -32,7 +33,7 @@ public class SideTab3Controller implements SideTabController {
     private final EventBus eventBus;
     private final PictureService pictureService;
     @FXML
-    private TextField cannySigma;
+    private ScrollPane sideTabView3;
 
     private int[] ends;
 
@@ -57,6 +58,9 @@ public class SideTab3Controller implements SideTabController {
     private TextField pixelExchangeIterationsVal;
     @FXML
     private TextField pixelExchangeRestrictionVal;
+    @FXML
+    private TextField cannySigma;
+
 
     @Inject
     public SideTab3Controller(final EventBus eventBus, final PictureService pictureService){
@@ -214,6 +218,7 @@ public class SideTab3Controller implements SideTabController {
     public void reset(ResetParametersEvent event) {
         pixelExchangeIterationsVal.setText("");
         pixelExchangeRestrictionVal.setText("");
+        cannySigma.setText("");
         setVideoButtonsVisibility(false);
         playing = false;
     }

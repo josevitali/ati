@@ -26,6 +26,8 @@ public class HoughDetector implements PictureTransformer{
 
     private Set<Shape> shapes;
 
+    private int max = 0;
+
     public HoughDetector(int threshold, double delta, ShapeGenerator sg) {
         this.threshold = threshold;
         this.delta = delta;
@@ -50,6 +52,8 @@ public class HoughDetector implements PictureTransformer{
             accumulator.put(shape, 0);
         }
 
+        max = 0;
+
         //For every pixel in the image
         for (int i = 0; i < greyPicture.getHeight(); i++) {
             for (int j = 0; j < greyPicture.getWidth(); j++) {
@@ -61,6 +65,9 @@ public class HoughDetector implements PictureTransformer{
                         if (shape.belongs(i, j)) {
                             //Add one in accumulator for given shape
                             accumulator.put(shape, accumulator.get(shape) + 1);
+                            if(accumulator.get(shape) > max) {
+                                max = accumulator.get(shape);
+                            }
                         }
                     }
                 }
@@ -70,7 +77,7 @@ public class HoughDetector implements PictureTransformer{
         return accumulator
                 .entrySet()
                 .stream()
-                .filter(e -> e.getValue() > threshold)
+                .filter(e -> e.getValue() > threshold / 100.0* max)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
     }

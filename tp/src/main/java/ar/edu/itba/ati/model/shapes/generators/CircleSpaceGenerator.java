@@ -11,7 +11,7 @@ public class CircleSpaceGenerator implements ShapeGenerator{
     @Override
     public Set<Shape> getParametricSet(int maxX, int maxY, double delta) {
         Set<Shape> parametricSpace = new HashSet<>();
-        for (int radius = 1; radius <= Math.min(maxX, maxY)/2; radius += 1) {
+        for (int radius = 20; radius <= Math.min(maxX, maxY)/2; radius += 10) {
             for (int x = radius; x <= maxX-radius; x+=1) {
                 for (int y = radius; y <= maxY - radius; y+=1) {
                     parametricSpace.add(new Circle(delta, radius, x, y));

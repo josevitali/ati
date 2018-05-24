@@ -5,8 +5,13 @@ import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.Masks;
 import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.SlidingWindowWithMask;
 
 public class GaussianSmoothing extends SlidingWindowWithMask<Double> {
+
     public GaussianSmoothing(double sigma) {
         super(Masks.gaussianMask(calculateSize(sigma), sigma));
+    }
+
+    public GaussianSmoothing(double sigma, int size) {
+        super(Masks.gaussianMask(size, sigma));
     }
 
     private static int calculateSize(double sigma) {

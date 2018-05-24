@@ -5,11 +5,15 @@ import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
 import ar.edu.itba.ati.io.Pictures;
 import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.transformations.*;
+import ar.edu.itba.ati.model.transformations.borderDetection.HighPassFilter;
 import ar.edu.itba.ati.model.transformations.noise.ExponentialNoise;
 import ar.edu.itba.ati.model.transformations.noise.GaussianNoise;
 import ar.edu.itba.ati.model.transformations.noise.RayleighNoise;
 import ar.edu.itba.ati.model.transformations.noise.SaltAndPepperNoise;
 import ar.edu.itba.ati.model.transformations.slidingWindows.withMask.*;
+import ar.edu.itba.ati.model.transformations.smoothing.GaussianSmoothing;
+import ar.edu.itba.ati.model.transformations.smoothing.MeanSmoothing;
+import ar.edu.itba.ati.model.transformations.smoothing.MedianSmoothing;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -18,7 +22,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.awt.image.BufferedImage;
@@ -27,8 +30,8 @@ import java.util.function.BiFunction;
 
 public class SideTab1Controller implements SideTabController{
 
-    protected final EventBus eventBus;
-    protected final PictureService pictureService;
+    private final EventBus eventBus;
+    private final PictureService pictureService;
 
     @FXML
     private ScrollPane sideTabView1;
@@ -95,9 +98,10 @@ public class SideTab1Controller implements SideTabController{
             }
             applyTransformation(new PictureTransformer() {
                 @Override
-                public <T> void transform(Picture<T> picture) {
+                public <T,R> Picture transform(Picture<T> picture) {
                     picture.normalize();
                     picture.mapPixelByPixel(p -> (double) p > value ? 255.0 : 0.0);
+                    return picture;
                 }
             });
         } catch (NumberFormatException e){
@@ -202,8 +206,9 @@ public class SideTab1Controller implements SideTabController{
 
         applyTransformation(new PictureTransformer() {
             @Override
-            public <T> void transform(Picture<T> picture) {
+            public <T,R> Picture transform(Picture<T> picture) {
                 picture.mapPixelByPixel(bf, otherPicture);
+                return picture;
             }
         });
     }

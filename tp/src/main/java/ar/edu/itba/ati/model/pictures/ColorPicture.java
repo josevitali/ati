@@ -318,4 +318,19 @@ public class ColorPicture extends Picture<Double[]> {
         }
         return otherMatrix;
     }
+
+    public GreyPicture toGreyPicture() {
+        Double[][] greyMatrix = new Double[this.height][this.width];
+        for (int i = 0; i < this.height; i++) {
+            for (int j = 0; j < this.width; j++) {
+                Double[] px = matrix[i][j];
+                Double blue = px[BLUE];
+                Double green = px[GREEN];
+                Double red = px[RED];
+
+                greyMatrix[i][j] = (blue + green + red) / 3;
+            }
+        }
+        return new GreyPicture(BufferedImage.TYPE_BYTE_GRAY, greyMatrix, this.height, this.width);
+    }
 }

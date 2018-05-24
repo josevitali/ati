@@ -4,6 +4,7 @@ import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
 import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
+import ar.edu.itba.ati.model.transformations.borderDetection.*;
 import ar.edu.itba.ati.model.transformations.diffusion.IsotropicDiffusion;
 import ar.edu.itba.ati.model.transformations.diffusion.LeclercDiffusion;
 import ar.edu.itba.ati.model.transformations.diffusion.LorentzDiffusion;
@@ -25,8 +26,8 @@ import java.util.List;
 
 public class SideTab2Controller implements SideTabController {
 
-    protected final EventBus eventBus;
-    protected final PictureService pictureService;
+    private final EventBus eventBus;
+    private final PictureService pictureService;
 
     @FXML
     private TextField laplaceThresholdVal;
@@ -165,8 +166,9 @@ public class SideTab2Controller implements SideTabController {
         final double t = thresholdCriteria.getThreshold(pictureService.getPicture());
         applyTransformation(new PictureTransformer() {
             @Override
-            public <T> void transform(Picture<T> picture) {
+            public <T,R> Picture transform(Picture<T> picture) {
                 picture.mapPixelByPixel(px -> px < t ? 0.0 : 255.0);
+                return picture;
             }
         });
     }
@@ -192,7 +194,14 @@ public class SideTab2Controller implements SideTabController {
 
     @Override
     public void reset(ResetParametersEvent event) {
-
+        laplaceThresholdVal.setText("");
+        gaussianLaplaceThresholdVal.setText("");
+        gaussianLaplaceSigmaVal.setText("");
+        isotropicIterationsVal.setText("");
+        leclercIterationsVal.setText("");
+        leclercSigmaVal.setText("");
+        lorentzIterationsVal.setText("");
+        lorentzSigmaVal.setText("");
     }
 
 }

@@ -16,12 +16,13 @@ public class Gamma implements PictureTransformer {
     }
 
     @Override
-    public <T> void transform(Picture<T> picture) {
+    public <T,R> Picture transform(Picture<T> picture) {
         if(picture.getType() == BufferedImage.TYPE_BYTE_GRAY){
             greyGamma((GreyPicture) picture);
         } else if(picture.getType() == BufferedImage.TYPE_3BYTE_BGR){
             colorGamma((ColorPicture) picture);
         }
+        return picture;
     }
 
     private void greyGamma(GreyPicture picture) {

@@ -25,7 +25,7 @@ public class Contrast implements PictureTransformer {
     }
 
     @Override
-    public <T> void transform(Picture<T> picture) {
+    public <T,R> Picture transform(Picture<T> picture) {
 
         switch (picture.getType()){
 
@@ -40,6 +40,7 @@ public class Contrast implements PictureTransformer {
             default:
                 throw new IllegalArgumentException("The image type is not supported");
         }
+        return picture;
     }
 
     private void addContrastColorImage(ColorPicture picture){

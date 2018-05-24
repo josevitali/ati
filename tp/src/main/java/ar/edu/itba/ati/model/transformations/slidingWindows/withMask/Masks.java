@@ -21,6 +21,14 @@ public class Masks {
     public static Mask SOBEL = new Mask(new Double[][]{{-1.0, -2.0, -1.0},{0.0, 0.0, 0.0},{1.0, 2.0, 1.0}});
     public static Mask KIRSH = new Mask(new Double[][]{{5.0, 5.0, 5.0},{-3.0, 0.0, -3.0},{-3.0, -3.0, -3.0}});
     public static Mask LAPLACE = new Mask(new Double[][]{{0.0, -1.0, 0.0},{-1.0, 4.0, -1.0},{0.0, -1.0, 0.0}});
+    // TODO: method with size parameter
+    public static Mask CIRCULAR = new Mask(new Integer[][]{{0,0,1,1,1,0,0},
+                                                          {0,1,1,1,1,1,0},
+                                                          {1,1,1,1,1,1,1},
+                                                          {1,1,1,1,1,1,1},
+                                                          {1,1,1,1,1,1,1},
+                                                          {0,1,1,1,1,1,0},
+                                                          {0,0,1,1,1,0,0}});
 
     public static List<Mask> rotate(Mask mask, int[] rotations){
         Number[][] matrix = mask.getMatrix();
@@ -87,5 +95,30 @@ public class Masks {
         Mask mask = new Mask(matrix);
         mask.putElement(size * size - 1, mask.getNucleusRow(), mask.getNucleusCol());
         return mask;
+    }
+
+    public static Mask<Double> gaussianMask(int size, double sigma) {
+        Double[][] matrix = new Double[size][size];
+        int halfSize = size / 2;
+        double accum = 0;
+        double value, x, y;
+
+        for(int row = 0; row < size; row++){
+            for(int col = 0; col < size; col++){
+                x = row - halfSize;
+                y = col  - halfSize;
+                value = (1 / (2 * Math.PI * sigma * sigma)) * Math.exp(- (x * x + y * y) / (sigma * sigma));
+                matrix[row][col] = value;
+                accum += value;
+            }
+        }
+
+        for(int row = 0; row < size; row++){
+            for(int col = 0; col < size; col++){
+                matrix[row][col] /= accum;
+            }
+        }
+
+        return new Mask(matrix);
     }
 }

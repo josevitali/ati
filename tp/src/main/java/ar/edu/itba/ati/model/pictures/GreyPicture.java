@@ -206,4 +206,16 @@ public class GreyPicture extends Picture<Double> {
         return otherMatrix;
     }
 
+    public ColorPicture toColorPicture(){
+        Double[][][] colorMatrix = new Double[this.height][this.width][3];
+        double px;
+        for(int row = 0; row < this.height; row++){
+            for(int col = 0; col < this.width; col++){
+                px = matrix[row][col];
+                colorMatrix[row][col] = new Double[]{px,px,px};
+            }
+        }
+        return new ColorPicture(BufferedImage.TYPE_3BYTE_BGR, colorMatrix, this.height, this.width);
+    }
+
 }

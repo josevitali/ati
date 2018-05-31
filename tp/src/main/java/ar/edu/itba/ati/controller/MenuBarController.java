@@ -1,5 +1,6 @@
 package ar.edu.itba.ati.controller;
 
+import ar.edu.itba.ati.events.alerts.AlertMessageEvent;
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
 import ar.edu.itba.ati.events.side_menu.ShowSideMenuEvent;
@@ -8,9 +9,11 @@ import ar.edu.itba.ati.io.Pictures;
 import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 import org.apache.commons.io.FilenameUtils;
@@ -99,6 +102,15 @@ public class MenuBarController {
     @FXML
     protected void handleQuit(ActionEvent event){
         System.exit(0);
+    }
+
+    @FXML
+    @Subscribe
+    protected void alertMessage(AlertMessageEvent alertMessageEvent){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "");
+        alert.setTitle(alertMessageEvent.getTitle());
+        alert.setHeaderText(alertMessageEvent.getMessage());
+        alert.showAndWait();
     }
 
 }

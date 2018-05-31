@@ -1,9 +1,11 @@
 package ar.edu.itba.ati.model.transformations;
 
+import ar.edu.itba.ati.events.alerts.AlertMessageEvent;
 import ar.edu.itba.ati.io.Pictures;
 import ar.edu.itba.ati.model.pictures.ColorPicture;
 import ar.edu.itba.ati.model.pictures.GreyPicture;
 import ar.edu.itba.ati.model.pictures.Picture;
+import com.google.common.eventbus.EventBus;
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.*;
 import org.opencv.features2d.*;
@@ -11,7 +13,6 @@ import org.opencv.highgui.Highgui;
 
 import java.awt.image.BufferedImage;
 import java.security.InvalidParameterException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,9 +21,15 @@ import static ar.edu.itba.ati.io.Pictures.matToBufferedImage;
 public class Sift implements PictureTransformer {
 
     private final Picture otherPicture;
+    private final float nndrRatio;
+    private final double matchesPercentage;
+    private final EventBus eventBus;
 
-    public Sift(Picture otherPicture) {
+    public Sift(Picture otherPicture, float nndrRatio, double matchesPercentage, EventBus eventBus) {
         this.otherPicture = otherPicture;
+        this.nndrRatio = nndrRatio;
+        this.matchesPercentage = matchesPercentage;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -59,9 +66,8 @@ public class Sift implements PictureTransformer {
         DescriptorMatcher descriptorMatcher = DescriptorMatcher.create(DescriptorMatcher.FLANNBASED);
         descriptorMatcher.knnMatch(objectDescriptors, sceneDescriptors, matches, 2);
 
-        LinkedList<DMatch> goodMatchesList = new LinkedList<DMatch>();
 
-        float nndrRatio = 0.7f;
+        LinkedList<DMatch> goodMatchesList = new LinkedList<DMatch>();
 
         for (int i = 0; i < matches.size(); i++) {
             MatOfDMatch matofDMatch = matches.get(i);
@@ -75,7 +81,7 @@ public class Sift implements PictureTransformer {
             }
         }
 
-        if (goodMatchesList.size() >= 7) {
+        if (goodMatchesList.size() >= matchesPercentage * matches.size()) {
             System.out.println("Object Found");
 
             List<KeyPoint> objKeypointlist = objectKeyPoints.toList();
@@ -120,6 +126,7 @@ public class Sift implements PictureTransformer {
 
         } else {
             System.out.println("Object Not Found");
+            eventBus.post(new AlertMessageEvent("Images are different","Images are different"));
             return picture;
         }
 

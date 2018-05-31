@@ -1,6 +1,6 @@
 package ar.edu.itba.ati.controller;
 
-import ar.edu.itba.ati.events.alerts.NoObjectFoundEvent;
+import ar.edu.itba.ati.events.alerts.AlertMessageEvent;
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
 import ar.edu.itba.ati.events.side_menu.ShowSideMenuEvent;
@@ -106,9 +106,11 @@ public class MenuBarController {
 
     @FXML
     @Subscribe
-    protected void noObjectFound(NoObjectFoundEvent noObjectFoundEvent){
-        System.out.println("hola");
-        new Alert(Alert.AlertType.ERROR, "This is an error!").showAndWait();
+    protected void alertMessage(AlertMessageEvent alertMessageEvent){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "");
+        alert.setTitle(alertMessageEvent.getTitle());
+        alert.setHeaderText(alertMessageEvent.getMessage());
+        alert.showAndWait();
     }
 
 }

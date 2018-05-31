@@ -1,6 +1,6 @@
 package ar.edu.itba.ati.model.transformations;
 
-import ar.edu.itba.ati.events.alerts.NoObjectFoundEvent;
+import ar.edu.itba.ati.events.alerts.AlertMessageEvent;
 import ar.edu.itba.ati.io.Pictures;
 import ar.edu.itba.ati.model.pictures.ColorPicture;
 import ar.edu.itba.ati.model.pictures.GreyPicture;
@@ -124,7 +124,7 @@ public class Sift implements PictureTransformer {
 
         } else {
             System.out.println("Object Not Found");
-            eventBus.post(new NoObjectFoundEvent());
+            eventBus.post(new AlertMessageEvent("Images are different","Images are different"));
             return picture;
         }
 

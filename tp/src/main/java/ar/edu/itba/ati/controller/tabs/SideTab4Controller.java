@@ -29,6 +29,12 @@ public class SideTab4Controller implements SideTabController {
     @FXML
     private TextField harrisVal;
 
+    @FXML
+    private TextField nndrRatio;
+
+    @FXML
+    private TextField matchesPercentage;
+
     @Inject
     public SideTab4Controller(final EventBus eventBus, final PictureService pictureService){
         this.eventBus = eventBus;
@@ -47,7 +53,12 @@ public class SideTab4Controller implements SideTabController {
 
     @FXML
     private void sift() {
-        Sift sift = new Sift(choosePicture());
+        float nndrRatioVal = Float.valueOf(nndrRatio.getText());
+        double matchesPercentageVal = Double.valueOf(matchesPercentage.getText());
+        if(nndrRatioVal < 0 || nndrRatioVal > 1 || matchesPercentageVal < 0 || matchesPercentageVal > 1) {
+            return;
+        }
+        Sift sift = new Sift(choosePicture(), nndrRatioVal, matchesPercentageVal);
         applyTransformation(sift);
     }
 

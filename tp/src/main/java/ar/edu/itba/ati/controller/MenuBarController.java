@@ -13,6 +13,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 import org.apache.commons.io.FilenameUtils;
@@ -107,7 +108,7 @@ public class MenuBarController {
     @Subscribe
     protected void noObjectFound(NoObjectFoundEvent noObjectFoundEvent){
         System.out.println("hola");
-//        new Alert(Alert.AlertType.ERROR, "This is an error!").showAndWait();
+        new Alert(Alert.AlertType.ERROR, "This is an error!").showAndWait();
     }
 
 }

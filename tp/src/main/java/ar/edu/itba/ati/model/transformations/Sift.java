@@ -21,11 +21,14 @@ import static ar.edu.itba.ati.io.Pictures.matToBufferedImage;
 public class Sift implements PictureTransformer {
 
     private final Picture otherPicture;
+    private final float nndrRatio;
+    private final double matchesPercentage;
+    private final EventBus eventBus;
 
-    private EventBus eventBus;
-
-    public Sift(Picture otherPicture, EventBus eventBus) {
+    public Sift(Picture otherPicture, float nndrRatio, double matchesPercentage, EventBus eventBus) {
         this.otherPicture = otherPicture;
+        this.nndrRatio = nndrRatio;
+        this.matchesPercentage = matchesPercentage;
         this.eventBus = eventBus;
     }
 
@@ -63,9 +66,8 @@ public class Sift implements PictureTransformer {
         DescriptorMatcher descriptorMatcher = DescriptorMatcher.create(DescriptorMatcher.FLANNBASED);
         descriptorMatcher.knnMatch(objectDescriptors, sceneDescriptors, matches, 2);
 
-        LinkedList<DMatch> goodMatchesList = new LinkedList<DMatch>();
 
-        float nndrRatio = 0.7f;
+        LinkedList<DMatch> goodMatchesList = new LinkedList<DMatch>();
 
         for (int i = 0; i < matches.size(); i++) {
             MatOfDMatch matofDMatch = matches.get(i);
@@ -79,7 +81,7 @@ public class Sift implements PictureTransformer {
             }
         }
 
-        if (goodMatchesList.size() >= 7) {
+        if (goodMatchesList.size() >= matchesPercentage * matches.size()) {
             System.out.println("Object Found");
 
             List<KeyPoint> objKeypointlist = objectKeyPoints.toList();

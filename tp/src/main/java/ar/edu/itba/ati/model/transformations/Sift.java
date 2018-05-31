@@ -11,7 +11,6 @@ import org.opencv.highgui.Highgui;
 
 import java.awt.image.BufferedImage;
 import java.security.InvalidParameterException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -63,9 +62,8 @@ public class Sift implements PictureTransformer {
         DescriptorMatcher descriptorMatcher = DescriptorMatcher.create(DescriptorMatcher.FLANNBASED);
         descriptorMatcher.knnMatch(objectDescriptors, sceneDescriptors, matches, 2);
 
-        LinkedList<DMatch> goodMatchesList = new LinkedList<DMatch>();
 
-//        float nndrRatio = 0.7f;
+        LinkedList<DMatch> goodMatchesList = new LinkedList<DMatch>();
 
         for (int i = 0; i < matches.size(); i++) {
             MatOfDMatch matofDMatch = matches.get(i);
@@ -79,9 +77,7 @@ public class Sift implements PictureTransformer {
             }
         }
 
-        int descriptorsMinSize = Math.min(objectDescriptors.toArray().length, sceneDescriptors.toArray().length);
-
-        if (goodMatchesList.size() >= matchesPercentage * descriptorsMinSize) {
+        if (goodMatchesList.size() >= matchesPercentage * matches.size()) {
             System.out.println("Object Found");
 
             List<KeyPoint> objKeypointlist = objectKeyPoints.toList();

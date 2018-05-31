@@ -16,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.util.function.BiFunction;
 
 public class SideTab4Controller implements SideTabController {
 
@@ -47,7 +46,7 @@ public class SideTab4Controller implements SideTabController {
 
     @FXML
     private void sift() {
-        Sift sift = new Sift(choosePicture());
+        Sift sift = new Sift(choosePicture(), eventBus);
         applyTransformation(sift);
     }
 

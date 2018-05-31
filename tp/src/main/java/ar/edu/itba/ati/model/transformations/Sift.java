@@ -1,9 +1,11 @@
 package ar.edu.itba.ati.model.transformations;
 
+import ar.edu.itba.ati.events.alerts.NoObjectFoundEvent;
 import ar.edu.itba.ati.io.Pictures;
 import ar.edu.itba.ati.model.pictures.ColorPicture;
 import ar.edu.itba.ati.model.pictures.GreyPicture;
 import ar.edu.itba.ati.model.pictures.Picture;
+import com.google.common.eventbus.EventBus;
 import org.opencv.calib3d.Calib3d;
 import org.opencv.core.*;
 import org.opencv.features2d.*;
@@ -11,7 +13,6 @@ import org.opencv.highgui.Highgui;
 
 import java.awt.image.BufferedImage;
 import java.security.InvalidParameterException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,8 +22,11 @@ public class Sift implements PictureTransformer {
 
     private final Picture otherPicture;
 
-    public Sift(Picture otherPicture) {
+    private EventBus eventBus;
+
+    public Sift(Picture otherPicture, EventBus eventBus) {
         this.otherPicture = otherPicture;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -120,6 +124,7 @@ public class Sift implements PictureTransformer {
 
         } else {
             System.out.println("Object Not Found");
+            eventBus.post(new NoObjectFoundEvent());
             return picture;
         }
 

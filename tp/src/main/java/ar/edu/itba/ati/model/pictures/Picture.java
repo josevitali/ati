@@ -125,4 +125,6 @@ public abstract class Picture<T>{
     public abstract T getMaxPixel();
 
     public abstract T getMinPixel();
+
+    public abstract Picture concatenatePicture(Picture otherPicture);
 }

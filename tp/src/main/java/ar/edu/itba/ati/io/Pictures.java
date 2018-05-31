@@ -89,7 +89,7 @@ public class Pictures {
         return bufferedImage;
     }
 
-    private static BufferedImage matToBufferedImage(Mat mat) {
+    public static BufferedImage matToBufferedImage(Mat mat) {
         int type = mat.channels() > 1 ? BufferedImage.TYPE_3BYTE_BGR : BufferedImage.TYPE_BYTE_GRAY;
         int bufferSize = mat.channels() * mat.cols() * mat.rows();
         byte[] buffer = new byte[bufferSize];
@@ -133,6 +133,15 @@ public class Pictures {
     }
 
     private static void savePgmAndPpm(Picture picture, File file) {
+        Mat mat = pictureToMat(picture);
+        try {
+            Highgui.imwrite(file.getCanonicalPath(), mat);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Mat pictureToMat(Picture picture){
         BufferedImage bufferedImage = picture.getNormalizedClone().toBufferedImage();
         byte[] data = ((DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
         Mat mat;
@@ -147,11 +156,7 @@ public class Pictures {
                 throw new IllegalStateException("Image type " + picture.getType() + " not supported.");
         }
         mat.put(0, 0, data);
-        try {
-            Highgui.imwrite(file.getCanonicalPath(), mat);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        return mat;
     }
 
     private static void saveRaw(Picture picture, File file) {
@@ -176,5 +181,4 @@ public class Pictures {
             e.printStackTrace();
         }
     }
-
 }

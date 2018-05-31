@@ -172,6 +172,38 @@ public class ColorPicture extends Picture<Double[]> {
     }
 
     @Override
+    public Picture concatenatePicture(Picture otherPicture) {
+        if(otherPicture.getType() != BufferedImage.TYPE_3BYTE_BGR){
+            throw new IllegalArgumentException("Picture should be in color");
+        }
+
+        int concatHeight = Math.max(this.height, otherPicture.height);
+        int concatWidth = this.width + otherPicture.width;
+
+        Double[][][] concatMatrix = new Double[concatHeight][concatWidth][3];
+
+        for(int row = 0; row < concatHeight; row++){
+            for(int col = 0; col < concatWidth; col++){
+                concatMatrix[row][col] = new Double[]{0.0,0.0,0.0};
+            }
+        }
+
+        for(int row = 0; row < this.height; row++){
+            for(int col = 0; col < this.width; col++){
+                concatMatrix[row][col] = this.matrix[row][col];
+            }
+        }
+
+        for(int row = 0; row < this.height; row++){
+            for(int col = this.width; col < otherPicture.getWidth(); col++){
+                concatMatrix[row][col] = (Double[]) otherPicture.getPixel(row,col);
+            }
+        }
+
+        return new ColorPicture(this.type, concatMatrix, concatHeight, concatWidth);
+    }
+
+    @Override
     public Double[] mapPixel(BiFunction<Double, Double, Double> bf, Double[] myPixel, Double[] otherPixel) {
         myPixel[BLUE] = bf.apply(myPixel[BLUE], otherPixel[BLUE]);
         myPixel[GREEN] = bf.apply(myPixel[GREEN], otherPixel[GREEN]);

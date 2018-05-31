@@ -30,6 +30,7 @@
                         </Button>
                     </children>
                 </HBox>
+                <Button alignment="TOP_CENTER" mnemonicParsing="false" prefHeight="27.0" prefWidth="161.0" text="Sift" onAction="#sift"/>
             </children>
         </VBox>
     </content>

@@ -218,4 +218,36 @@ public class GreyPicture extends Picture<Double> {
         return new ColorPicture(BufferedImage.TYPE_3BYTE_BGR, colorMatrix, this.height, this.width);
     }
 
+    @Override
+    public Picture concatenatePicture(Picture otherPicture) {
+        if(otherPicture.getType() != BufferedImage.TYPE_BYTE_GRAY){
+            throw new IllegalArgumentException("Picture should be gray");
+        }
+
+        int concatHeight = Math.max(this.height, otherPicture.height);
+        int concatWidth = this.width + otherPicture.width;
+
+        Double[][] concatMatrix = new Double[concatHeight][concatWidth];
+
+        for(int row = Math.min(this.height, otherPicture.getHeight()); row < concatHeight; row++){
+            for(int col = 0; col < concatWidth; col++){
+                concatMatrix[row][col] = new Double(0.0);
+            }
+        }
+
+        for(int row = 0; row < this.height; row++){
+            for(int col = 0; col < this.width; col++){
+                concatMatrix[row][col] = this.matrix[row][col];
+            }
+        }
+
+        for(int row = 0; row < this.height; row++){
+            for(int col = this.width; col < otherPicture.getWidth(); col++){
+                concatMatrix[row][col] = (Double) otherPicture.getPixel(row,col);
+            }
+        }
+
+        return new GreyPicture(this.type, concatMatrix, concatHeight, concatWidth);
+    }
+
 }

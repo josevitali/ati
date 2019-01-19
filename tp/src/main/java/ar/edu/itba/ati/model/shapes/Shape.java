@@ -8,4 +8,6 @@ public interface Shape {
 
     boolean isCircle();
 
+    boolean isRectangle();
+
 }

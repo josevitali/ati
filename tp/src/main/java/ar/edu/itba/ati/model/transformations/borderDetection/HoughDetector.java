@@ -7,8 +7,10 @@ import ar.edu.itba.ati.model.shapes.Shape;
 import ar.edu.itba.ati.model.shapes.generators.ShapeGenerator;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -47,9 +49,9 @@ public class HoughDetector implements PictureTransformer{
             System.out.println("parametric space size: " + parametricSpace.size());
         }
 
-        Map<Shape, Integer> accumulator = new HashMap<>();
+        Map<Shape, ArrayList<Point>> accumulator = new HashMap<>();
         for (Shape shape: parametricSpace) {
-            accumulator.put(shape, 0);
+            accumulator.put(shape, new ArrayList<>());
         }
 
         max = 0;
@@ -64,9 +66,9 @@ public class HoughDetector implements PictureTransformer{
                         //If the pixel belongs to a shape
                         if (shape.belongs(i, j)) {
                             //Add one in accumulator for given shape
-                            accumulator.put(shape, accumulator.get(shape) + 1);
-                            if(accumulator.get(shape) > max) {
-                                max = accumulator.get(shape);
+                            accumulator.get(shape).add(new Point(i, j));
+                            if(accumulator.get(shape).size() > max) {
+                                max = accumulator.get(shape).size();
                             }
                         }
                     }
@@ -77,7 +79,7 @@ public class HoughDetector implements PictureTransformer{
         return accumulator
                 .entrySet()
                 .stream()
-                .filter(e -> e.getValue() > threshold / 100.0* max)
+                .filter(e -> e.getValue().size() > threshold)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
     }
@@ -97,7 +99,10 @@ public class HoughDetector implements PictureTransformer{
             return circleTransformation(picture);
         }else if(shapes.iterator().next().isLine()){
             return lineTransformation(picture);
-        }else{
+        }else if(shapes.iterator().next().isRectangle()){
+            return lineTransformation(picture);
+        }
+        else{
             throw new InvalidParameterException("Shape is not supported in Hough transformation");
         }
 

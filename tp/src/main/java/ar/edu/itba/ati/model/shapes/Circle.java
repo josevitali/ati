@@ -26,6 +26,11 @@ public class Circle implements Shape{
         return true;
     }
 
+    @Override
+    public boolean isRectangle() {
+        return false;
+    }
+
 
     public double getDelta() {
         return delta;

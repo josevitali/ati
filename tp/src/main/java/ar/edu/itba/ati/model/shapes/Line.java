@@ -34,4 +34,9 @@ public class Line implements Shape {
         return false;
     }
 
+    @Override
+    public boolean isRectangle() {
+        return false;
+    }
+
 }

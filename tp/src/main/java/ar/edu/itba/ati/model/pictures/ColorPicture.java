@@ -1,7 +1,7 @@
 package ar.edu.itba.ati.model.pictures;
 
 import ar.edu.itba.ati.model.histograms.Histogram;
-import com.sun.org.apache.regexp.internal.RE;
+//import com.sun.org.apache.regexp.internal.RE;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;

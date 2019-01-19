@@ -77,11 +77,10 @@ public class Sift implements PictureTransformer {
 
             if (m1.distance <= m2.distance * nndrRatio) {
                 goodMatchesList.addLast(m1);
-
             }
         }
 
-        if (goodMatchesList.size() >= matchesPercentage * matches.size()) {
+        if (goodMatchesList.size() >= matchesPercentage) {
             System.out.println("Object Found");
 
             List<KeyPoint> objKeypointlist = objectKeyPoints.toList();

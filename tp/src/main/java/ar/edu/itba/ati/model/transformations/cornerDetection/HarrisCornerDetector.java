@@ -70,7 +70,7 @@ public class HarrisCornerDetector implements PictureTransformer {
         for(int row = 0; row < picture.getHeight(); row++){
             for(int col = 0; col < picture.getWidth(); col++){
                 if(cim.getPixel(row,col) > max * threshold){
-                    colorPicture.putPixel(new Double[]{0.0,255.0,255.0}, row, col);
+                    colorPicture.putPixel(new Double[]{0.0,0.0,255.0}, row, col);
                 }
             }
         }

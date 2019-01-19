@@ -53,8 +53,8 @@ public class SideTab4Controller implements SideTabController {
     @FXML
     private void sift() {
         float nndrRatioVal = Float.valueOf(nndrRatio.getText());
-        double matchesPercentageVal = Double.valueOf(matchesPercentage.getText());
-        if(nndrRatioVal < 0 || nndrRatioVal > 1 || matchesPercentageVal < 0 || matchesPercentageVal > 1) {
+        int matchesPercentageVal = Integer.valueOf(matchesPercentage.getText());
+        if(nndrRatioVal < 0 || nndrRatioVal > 1 || matchesPercentageVal < 0) {
             return;
         }
         Sift sift = new Sift(choosePicture(), nndrRatioVal, matchesPercentageVal, eventBus);

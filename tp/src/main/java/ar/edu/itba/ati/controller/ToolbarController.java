@@ -5,6 +5,7 @@ import ar.edu.itba.ati.events.pictures.CropEvent;
 import ar.edu.itba.ati.events.pictures.ShowPictureEvent;
 import ar.edu.itba.ati.events.toolbar.ShowToolbarEvent;
 import ar.edu.itba.ati.model.histograms.Histogram;
+import ar.edu.itba.ati.model.transformations.GreyColorToggle;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -59,6 +60,12 @@ public class ToolbarController {
     @FXML
     private void average(){
        eventBus.post(new AverageEvent());
+    }
+
+    @FXML
+    private void greyColorTransform() {
+        pictureService.applyTransformation(new GreyColorToggle());
+        eventBus.post(new ShowPictureEvent());
     }
 
     @FXML

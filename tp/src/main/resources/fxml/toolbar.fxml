@@ -14,6 +14,7 @@
          fx:controller="ar.edu.itba.ati.controller.ToolbarController" fx:id="toolbar">
     <Button fx:id="cropMenuItem" text="Crop" onAction="#crop"></Button>
     <Button fx:id="averagePixel" text="Average" onAction="#average"></Button>
+    <Button fx:id="greyColor" text="Grey/Color" onAction="#greyColorTransform"></Button>
     <Button fx:id="newWindow" text="Open in new window" onAction="#openPictureInNewWindow"/>
     <Button fx:id="histogram" text="Histogram" onAction="#showHistogram"/>
     <Button fx:id="undo" text="Undo" onAction="#undo"/>

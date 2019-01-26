@@ -41,8 +41,8 @@ public class GreyPicture extends Picture<Double> {
         int amount = (1 + row2 - row1) * (1 + col2 - col1);
         double avg = 0;
 
-        for(int row = row1; row <= row2; row++){
-            for(int col = col1; col <= col2; col++){
+        for(int row = row1; row <= row2 & row < height; row++){
+            for(int col = col1; col <= col2 & col < width; col++){
                 avg += matrix[row][col];
             }
         }

@@ -14,6 +14,7 @@ import ar.edu.itba.ati.model.transformations.borderDetection.CannyDetector;
 import ar.edu.itba.ati.model.transformations.borderDetection.HoughDetector;
 import ar.edu.itba.ati.model.transformations.borderDetection.PixelExchangeMethod;
 import ar.edu.itba.ati.model.transformations.borderDetection.SusanDetector;
+import ar.edu.itba.ati.model.transformations.licenseDetection.LicenseDetection;
 import ar.edu.itba.ati.services.PictureService;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -211,8 +212,9 @@ public class SideTab3Controller implements SideTabController {
 
     @FXML
     private void linearHoughTransformation(){
-        HoughDetector houghDetector = new HoughDetector(Integer.valueOf(linearHoughThresholdVal.getText()), Double.valueOf(linearHoughDeltaVal.getText()), new RectangleSpaceGenerator());
-        applyTransformation(houghDetector);
+        LicenseDetection licenseDetection = new LicenseDetection(Integer.valueOf(linearHoughThresholdVal.getText()),
+                Double.valueOf(linearHoughDeltaVal.getText()));
+        applyTransformation(licenseDetection);
     }
 
     @FXML

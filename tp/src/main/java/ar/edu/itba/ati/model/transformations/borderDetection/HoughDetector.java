@@ -49,11 +49,11 @@ public class HoughDetector implements PictureTransformer{
             System.out.println("parametric space size: " + parametricSpace.size());
         }
 
-        Map<Shape, ArrayList<Point>> white_accumulator = new HashMap<>();
+        Map<Shape, ArrayList<Point>> whiteAccumulator = new HashMap<>();
 //        Map<Shape, Integer> pixel_accumulator = new HashMap<>();
 
         for (Shape shape: parametricSpace) {
-            white_accumulator.put(shape, new ArrayList<>());
+            whiteAccumulator.put(shape, new ArrayList<>());
 //            pixel_accumulator.put(shape, 0);
         }
 
@@ -63,15 +63,15 @@ public class HoughDetector implements PictureTransformer{
         for (int i = 0; i < greyPicture.getHeight(); i++) {
             for (int j = 0; j < greyPicture.getWidth(); j++) {
                 //Check if it belongs to any of the shapes
-                for (Shape shape: white_accumulator.keySet()) {
+                for (Shape shape: whiteAccumulator.keySet()) {
                     //Check if it is a white pixel
                     if (greyPicture.getPixel(i,j) == 255.0) {
                         //If the pixel belongs to a shape
                         if (shape.belongs(i, j)) {
                             //Add one in accumulator for given shape
-                            white_accumulator.get(shape).add(new Point(i,j));
-                            if(white_accumulator.get(shape).size() > max) {
-                                max = white_accumulator.get(shape).size();
+                            whiteAccumulator.get(shape).add(new Point(i,j));
+                            if(whiteAccumulator.get(shape).size() > max) {
+                                max = whiteAccumulator.get(shape).size();
                             }
                         }
 //                            pixel_accumulator.put(shape,pixel_accumulator.get(shape)+1);
@@ -83,11 +83,11 @@ public class HoughDetector implements PictureTransformer{
 
 
 
-        System.out.println(white_accumulator.get(white_accumulator.keySet().toArray()[0]));
+        System.out.println(whiteAccumulator.get(whiteAccumulator.keySet().toArray()[0]));
 
         System.out.println(max);
 
-        Set<Shape> bestShapes = white_accumulator
+        Set<Shape> bestShapes = whiteAccumulator
                 .entrySet()
                 .stream()
                 .filter(e -> (double)e.getValue().size() / ((Rectangle)e.getKey()).getSize() * 100 >= threshold)

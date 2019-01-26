@@ -45,6 +45,6 @@ public class Rectangle implements Shape {
     }
 
     public int[] getCorners() {
-        return new int[] {cornerRow, cornerCol, cornerRow + height, (int)(cornerCol + height * ratio)};
+        return new int[] {cornerRow, cornerCol, cornerRow + height - 1, (int)(cornerCol - 1 + height * ratio)};
     }
 }

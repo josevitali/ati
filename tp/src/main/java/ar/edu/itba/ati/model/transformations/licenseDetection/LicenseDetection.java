@@ -53,11 +53,7 @@ public class LicenseDetection implements PictureTransformer {
         return bestShape;
     }
 
-  public static void main(String[] args) {
-    System.out.println(imageToString("/Users/natinavas/Documents/ITBA/ATI/ati/tp/src/main/java/ar/edu/itba/ati/model/transformations/licenseDetection/licensePlate.png"));
-  }
     private Picture drawRectangle(Picture picture, Shape shape) {
-
         ColorPicture colorPicture = ((GreyPicture) picture).toColorPicture();
 
         for (int i = 0; i < colorPicture.getHeight(); i++) {
@@ -72,7 +68,6 @@ public class LicenseDetection implements PictureTransformer {
 
     /**
      * Using OCR library read text in license plate
-     *
      * @param imageLocation
      * @return
      */
@@ -80,9 +75,15 @@ public class LicenseDetection implements PictureTransformer {
         ITesseract instance = new Tesseract();
         try {
             return instance.doOCR(new File(imageLocation));
-        } catch (TesseractException e) {
+        } catch (TesseractException e)
+        {
             e.getMessage();
             return "Error while reading image";
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(imageToString("/Users/natinavas/Documents/ITBA/ATI/ati/tp/src/main/java/ar/edu/itba/ati/model/transformations/licenseDetection/test2.png"));
+        System.out.println("hola");
     }
 }

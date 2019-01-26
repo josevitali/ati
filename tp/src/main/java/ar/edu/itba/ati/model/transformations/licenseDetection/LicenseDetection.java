@@ -1,13 +1,14 @@
 package ar.edu.itba.ati.model.transformations.licenseDetection;
 
-import ar.edu.itba.ati.model.pictures.ColorPicture;
-import ar.edu.itba.ati.model.pictures.GreyPicture;
 import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.shapes.generators.RectangleSpaceGenerator;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 import ar.edu.itba.ati.model.transformations.borderDetection.HoughDetector;
+import net.sourceforge.tess4j.ITesseract;
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 
-import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class LicenseDetection implements PictureTransformer {
 
@@ -22,4 +23,27 @@ public class LicenseDetection implements PictureTransformer {
   public <T, R> Picture<R> transform(Picture<T> picture) {
     return houghDetector.transform(picture);
   }
+
+
+  /**
+   * Using OCR library read text in license plate
+   * @param imageLocation
+   * @return
+   */
+  public static String imageToString(String imageLocation){
+    ITesseract instance = new Tesseract();
+    try {
+      String imgText = instance.doOCR(new File(imageLocation));
+      return imgText;
+    }
+    catch (TesseractException e) {
+      e.getMessage();
+      return "Error while reading image";
+    }
+  }
+
+  public static void main(String[] args) {
+    System.out.println(imageToString("licensePlate.png"));
+  }
+
 }

@@ -8,6 +8,7 @@ import ar.edu.itba.ati.io.Pictures;
 import ar.edu.itba.ati.model.pictures.Picture;
 import ar.edu.itba.ati.model.shapes.generators.CircleSpaceGenerator;
 import ar.edu.itba.ati.model.shapes.generators.LineSpaceGenerator;
+import ar.edu.itba.ati.model.shapes.generators.RectangleSpaceGenerator;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 import ar.edu.itba.ati.model.transformations.borderDetection.CannyDetector;
 import ar.edu.itba.ati.model.transformations.borderDetection.HoughDetector;
@@ -210,7 +211,7 @@ public class SideTab3Controller implements SideTabController {
 
     @FXML
     private void linearHoughTransformation(){
-        HoughDetector houghDetector = new HoughDetector(Integer.valueOf(linearHoughThresholdVal.getText()), Double.valueOf(linearHoughDeltaVal.getText()), new LineSpaceGenerator());
+        HoughDetector houghDetector = new HoughDetector(Integer.valueOf(linearHoughThresholdVal.getText()), Double.valueOf(linearHoughDeltaVal.getText()), new RectangleSpaceGenerator());
         applyTransformation(houghDetector);
     }
 

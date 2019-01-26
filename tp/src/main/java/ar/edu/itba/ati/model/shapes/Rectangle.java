@@ -15,8 +15,10 @@ public class Rectangle implements Shape {
 
     @Override
     public boolean belongs(int row, int col) {
-        return insideRectangle(row, col, cornerRow-delta-height, cornerCol-delta, cornerRow+delta, cornerCol+delta+height*ratio)
-                && !insideRectangle(row, col, cornerRow+delta-height, cornerCol+delta, cornerRow-delta, cornerCol-delta+ height*ratio);
+//        return insideRectangle(row, col, cornerRow-delta-height, cornerCol-delta, cornerRow+delta, cornerCol+delta+height*ratio)
+//                && !insideRectangle(row, col, cornerRow+delta-height, cornerCol+delta, cornerRow-delta, cornerCol-delta+ height*ratio);
+        return insideRectangle(row, col, cornerRow+delta+height, cornerCol-delta, cornerRow-delta, cornerCol+delta+height*ratio)
+                && !insideRectangle(row, col, cornerRow-delta+height, cornerCol+delta, cornerRow+delta, cornerCol-delta+ height*ratio);
     }
 
     @Override
@@ -34,7 +36,15 @@ public class Rectangle implements Shape {
         return true;
     }
 
-    private boolean insideRectangle(int row, int col, double minRow, double minCol, double maxRow, double maxCol) {
-        return row >= minRow && row <= maxRow && col >= minCol && col <=maxCol;
+    private boolean insideRectangle(int row, int col, double maxRow, double minCol, double minRow, double maxCol) {
+        return (double)row >= minRow && (double)row <= maxRow && col >= minCol && (double)col <=maxCol;
+    }
+
+    public double getSize() {
+        return this.height * 2 + this.height * this.ratio * 2;
+    }
+
+    public int[] getCorners() {
+        return new int[] {cornerRow, cornerCol, cornerRow + height, (int)(cornerCol + height * ratio)};
     }
 }

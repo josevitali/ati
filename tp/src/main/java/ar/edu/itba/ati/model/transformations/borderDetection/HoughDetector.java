@@ -3,6 +3,7 @@ package ar.edu.itba.ati.model.transformations.borderDetection;
 import ar.edu.itba.ati.model.pictures.ColorPicture;
 import ar.edu.itba.ati.model.pictures.GreyPicture;
 import ar.edu.itba.ati.model.pictures.Picture;
+import ar.edu.itba.ati.model.shapes.Rectangle;
 import ar.edu.itba.ati.model.shapes.Shape;
 import ar.edu.itba.ati.model.shapes.generators.ShapeGenerator;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
@@ -10,10 +11,7 @@ import ar.edu.itba.ati.model.transformations.PictureTransformer;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class HoughDetector implements PictureTransformer{
@@ -29,6 +27,8 @@ public class HoughDetector implements PictureTransformer{
     private Set<Shape> shapes;
 
     private int max = 0;
+
+    private final double averageLicenseColor = 12;
 
     public HoughDetector(int threshold, double delta, ShapeGenerator sg) {
         this.threshold = threshold;
@@ -49,9 +49,12 @@ public class HoughDetector implements PictureTransformer{
             System.out.println("parametric space size: " + parametricSpace.size());
         }
 
-        Map<Shape, ArrayList<Point>> accumulator = new HashMap<>();
+        Map<Shape, ArrayList<Point>> white_accumulator = new HashMap<>();
+//        Map<Shape, Integer> pixel_accumulator = new HashMap<>();
+
         for (Shape shape: parametricSpace) {
-            accumulator.put(shape, new ArrayList<>());
+            white_accumulator.put(shape, new ArrayList<>());
+//            pixel_accumulator.put(shape, 0);
         }
 
         max = 0;
@@ -59,29 +62,61 @@ public class HoughDetector implements PictureTransformer{
         //For every pixel in the image
         for (int i = 0; i < greyPicture.getHeight(); i++) {
             for (int j = 0; j < greyPicture.getWidth(); j++) {
-                //Check if it is a white pixel
-                if (greyPicture.getPixel(i,j) == 255.0) {
-                    //Check if it belongs to any of the shapes
-                    for (Shape shape: accumulator.keySet()) {
+                //Check if it belongs to any of the shapes
+                for (Shape shape: white_accumulator.keySet()) {
+                    //Check if it is a white pixel
+                    if (greyPicture.getPixel(i,j) == 255.0) {
                         //If the pixel belongs to a shape
                         if (shape.belongs(i, j)) {
                             //Add one in accumulator for given shape
-                            accumulator.get(shape).add(new Point(i, j));
-                            if(accumulator.get(shape).size() > max) {
-                                max = accumulator.get(shape).size();
+                            white_accumulator.get(shape).add(new Point(i,j));
+                            if(white_accumulator.get(shape).size() > max) {
+                                max = white_accumulator.get(shape).size();
                             }
                         }
+//                            pixel_accumulator.put(shape,pixel_accumulator.get(shape)+1);
+//                            break;
                     }
                 }
             }
         }
 
-        return accumulator
+
+
+        System.out.println(white_accumulator.get(white_accumulator.keySet().toArray()[0]));
+
+        System.out.println(max);
+
+        Set<Shape> bestShapes = white_accumulator
                 .entrySet()
                 .stream()
-                .filter(e -> e.getValue().size() > threshold)
+                .filter(e -> (double)e.getValue().size() / ((Rectangle)e.getKey()).getSize() * 100 >= threshold)
+//                .filter(e -> (double)e.getValue().size() == max)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
+
+//        return bestShapes;
+
+        double minDifference = Double.POSITIVE_INFINITY;
+        Shape bestShape = null;
+
+        for (Shape shape : bestShapes) {
+            int[] coords = ((Rectangle)shape).getCorners();
+            String averageStr = picture.getAverageColor(coords[0], coords[1], coords[2], coords[3]);
+            double average = Double.parseDouble(averageStr.split("\\s+")[1]);
+            double difference = Math.abs(average - averageLicenseColor);
+            if(difference < minDifference) {
+                minDifference = difference;
+                bestShape = shape;
+            }
+        }
+
+        Set<Shape> ret = new HashSet<>();
+        if(bestShape != null) {
+            ret.add(bestShape);
+        }
+        return ret;
+
     }
 
     @Override

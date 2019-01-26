@@ -24,7 +24,6 @@ public class LicenseDetection implements PictureTransformer {
     return houghDetector.transform(picture);
   }
 
-
   /**
    * Using OCR library read text in license plate
    * @param imageLocation
@@ -33,8 +32,7 @@ public class LicenseDetection implements PictureTransformer {
   public static String imageToString(String imageLocation){
     ITesseract instance = new Tesseract();
     try {
-      String imgText = instance.doOCR(new File(imageLocation));
-      return imgText;
+      return instance.doOCR(new File(imageLocation));
     }
     catch (TesseractException e) {
       e.getMessage();
@@ -43,7 +41,9 @@ public class LicenseDetection implements PictureTransformer {
   }
 
   public static void main(String[] args) {
-    System.out.println(imageToString("licensePlate.png"));
+    System.out.println(imageToString("/Users/natinavas/Documents/ITBA/ATI/ati/tp/src/main/java/ar/edu/itba/ati/model/transformations/licenseDetection/licensePlate.png"));
   }
+
+
 
 }

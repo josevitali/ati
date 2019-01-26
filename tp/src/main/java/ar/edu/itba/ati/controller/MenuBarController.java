@@ -13,7 +13,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.MenuBar;
 import javafx.stage.FileChooser;
 import org.apache.commons.io.FilenameUtils;
@@ -107,10 +106,10 @@ public class MenuBarController {
     @FXML
     @Subscribe
     protected void alertMessage(AlertMessageEvent alertMessageEvent){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "");
-        alert.setTitle(alertMessageEvent.getTitle());
-        alert.setHeaderText(alertMessageEvent.getMessage());
-        alert.showAndWait();
+//        Alert alert = new Alert(Alert.AlertType.INFORMATION, "");
+//        alert.setTitle(alertMessageEvent.getTitle());
+//        alert.setHeaderText(alertMessageEvent.getMessage());
+//        alert.showAndWait();
     }
 
 }

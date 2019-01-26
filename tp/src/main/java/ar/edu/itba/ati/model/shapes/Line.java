@@ -21,7 +21,7 @@ public class Line implements Shape {
 
     @Override
     public boolean belongs(int x, int y) {
-        return Math.abs(ro - x*Math.cos(Math.toRadians(teta)) - y*Math.sin(Math.toRadians(teta))) <= delta;
+        return Math.abs(ro - x * Math.cos(Math.toRadians(teta)) - y * Math.sin(Math.toRadians(teta))) <= delta;
     }
 
     @Override
@@ -39,10 +39,10 @@ public class Line implements Shape {
         return false;
     }
 
-  @Override
-  public int getPerimeter() {
-    // TODO:
-    return 0;
-  }
+    @Override
+    public boolean matches(double threshold) {
+        //TODO: implement
+        return false;
+    }
 
 }

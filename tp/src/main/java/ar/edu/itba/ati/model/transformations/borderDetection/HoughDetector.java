@@ -78,7 +78,7 @@ public class HoughDetector implements PictureTransformer{
         Set<Shape> bestShapes = whiteAccumulator
                 .entrySet()
                 .stream()
-                .filter(e -> (double)e.getValue().size() / (e.getKey()).getPerimeter() * 100 >= threshold)
+                .filter(e -> e.getKey().matches(((double)threshold)/100))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
 

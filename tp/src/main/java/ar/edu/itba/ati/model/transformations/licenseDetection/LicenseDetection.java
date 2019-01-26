@@ -12,6 +12,7 @@ import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Set;
 
@@ -34,6 +35,10 @@ public class LicenseDetection implements PictureTransformer {
             return (Picture<R>) picture;
         }
         return drawRectangle(picture, rectangle);
+//        for (Shape houghRectangle : houghRectangles) {
+//            picture = drawRectangle(picture, houghRectangle);
+//        }
+//        return (Picture<R>) picture;
     }
 
     private Rectangle getBestRectangle(Picture picture, Set<Shape> shapes) {
@@ -53,8 +58,18 @@ public class LicenseDetection implements PictureTransformer {
         return bestShape;
     }
 
+    public static void main(String[] args) {
+        System.out.println(imageToString("/Users/natinavas/Documents/ITBA/ATI/ati/tp/src/main/java/ar/edu/itba/ati/model/transformations/licenseDetection/licensePlate.png"));
+    }
+
     private Picture drawRectangle(Picture picture, Shape shape) {
-        ColorPicture colorPicture = ((GreyPicture) picture).toColorPicture();
+
+        ColorPicture colorPicture;
+        if (picture.getType() == BufferedImage.TYPE_BYTE_GRAY) {
+            colorPicture = ((GreyPicture) picture).toColorPicture();
+        } else {
+            colorPicture = (ColorPicture) picture;
+        }
 
         for (int i = 0; i < colorPicture.getHeight(); i++) {
             for (int j = 0; j < colorPicture.getWidth(); j++) {
@@ -63,6 +78,7 @@ public class LicenseDetection implements PictureTransformer {
                 }
             }
         }
+
         return colorPicture;
     }
 
@@ -80,10 +96,5 @@ public class LicenseDetection implements PictureTransformer {
             e.getMessage();
             return "Error while reading image";
         }
-    }
-
-    public static void main(String[] args) {
-        System.out.println(imageToString("/Users/natinavas/Documents/ITBA/ATI/ati/tp/src/main/java/ar/edu/itba/ati/model/transformations/licenseDetection/test2.png"));
-        System.out.println("hola");
     }
 }

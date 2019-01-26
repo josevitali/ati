@@ -3,6 +3,7 @@ package ar.edu.itba.ati.model.shapes;
 public class Circle implements Shape{
 
     private double delta, radius, centerX, centerY;
+    private int matchingPoints = 0;
 
     public Circle(double delta, double radius, double centerX, double centerY) {
         this.delta = delta;
@@ -13,7 +14,12 @@ public class Circle implements Shape{
 
     @Override
     public boolean belongs(int x, int y) {
-        return Math.abs(Math.pow(radius,2) - Math.pow(x - centerX,2) - Math.pow(y - centerY,2)) <= delta;
+        final boolean ret =
+                Math.abs(Math.pow(radius,2) - Math.pow(x - centerX,2) - Math.pow(y - centerY,2)) <= delta;
+        if(ret){
+            matchingPoints++;
+        }
+        return ret;
     }
 
     @Override
@@ -31,13 +37,14 @@ public class Circle implements Shape{
         return false;
     }
 
-  @Override
-  public int getPerimeter() {
-    return (int)(2 * Math.PI * radius);
-  }
+    @Override
+    public boolean matches(double threshold) {
+        //TODO: implement
+        return false;
+    }
 
 
-  public double getDelta() {
+    public double getDelta() {
         return delta;
     }
 

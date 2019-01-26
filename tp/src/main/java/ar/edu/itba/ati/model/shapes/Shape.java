@@ -10,6 +10,6 @@ public interface Shape {
 
     boolean isRectangle();
 
-    int getPerimeter();
+    boolean matches(double threshold);
 
 }

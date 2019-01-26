@@ -28,15 +28,13 @@ public class HoughDetector implements PictureTransformer{
 
     private int max = 0;
 
-    private final double averageLicenseColor = 12;
-
     public HoughDetector(int threshold, double delta, ShapeGenerator sg) {
         this.threshold = threshold;
         this.delta = delta;
         this.parametricSpaceGenerator = sg;
     }
 
-    private Set<Shape> findShapes(Picture picture){
+    public Set<Shape> findShapes(Picture picture){
         GreyPicture greyPicture;
         if(picture.getType() == BufferedImage.TYPE_3BYTE_BGR) {
             greyPicture = ((ColorPicture)picture).toGreyPicture();
@@ -50,11 +48,9 @@ public class HoughDetector implements PictureTransformer{
         }
 
         Map<Shape, ArrayList<Point>> whiteAccumulator = new HashMap<>();
-//        Map<Shape, Integer> pixel_accumulator = new HashMap<>();
 
         for (Shape shape: parametricSpace) {
             whiteAccumulator.put(shape, new ArrayList<>());
-//            pixel_accumulator.put(shape, 0);
         }
 
         max = 0;
@@ -74,49 +70,19 @@ public class HoughDetector implements PictureTransformer{
                                 max = whiteAccumulator.get(shape).size();
                             }
                         }
-//                            pixel_accumulator.put(shape,pixel_accumulator.get(shape)+1);
-//                            break;
                     }
                 }
             }
         }
 
-
-
-        System.out.println(whiteAccumulator.get(whiteAccumulator.keySet().toArray()[0]));
-
-        System.out.println(max);
-
         Set<Shape> bestShapes = whiteAccumulator
                 .entrySet()
                 .stream()
-                .filter(e -> (double)e.getValue().size() / ((Rectangle)e.getKey()).getSize() * 100 >= threshold)
-//                .filter(e -> (double)e.getValue().size() == max)
+                .filter(e -> (double)e.getValue().size() / (e.getKey()).getPerimeter() * 100 >= threshold)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
 
-//        return bestShapes;
-
-        double minDifference = Double.POSITIVE_INFINITY;
-        Shape bestShape = null;
-
-        for (Shape shape : bestShapes) {
-            int[] coords = ((Rectangle)shape).getCorners();
-            String averageStr = picture.getAverageColor(coords[0], coords[1], coords[2], coords[3]);
-            double average = Double.parseDouble(averageStr.split("\\s+")[1]);
-            double difference = Math.abs(average - averageLicenseColor);
-            if(difference < minDifference) {
-                minDifference = difference;
-                bestShape = shape;
-            }
-        }
-
-        Set<Shape> ret = new HashSet<>();
-        if(bestShape != null) {
-            ret.add(bestShape);
-        }
-        return ret;
-
+        return bestShapes;
     }
 
     @Override

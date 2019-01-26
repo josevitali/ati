@@ -31,8 +31,13 @@ public class Circle implements Shape{
         return false;
     }
 
+  @Override
+  public int getPerimeter() {
+    return (int)(2 * Math.PI * radius);
+  }
 
-    public double getDelta() {
+
+  public double getDelta() {
         return delta;
     }
 

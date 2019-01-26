@@ -36,12 +36,13 @@ public class Rectangle implements Shape {
         return true;
     }
 
-    private boolean insideRectangle(int row, int col, double maxRow, double minCol, double minRow, double maxCol) {
-        return (double)row >= minRow && (double)row <= maxRow && col >= minCol && (double)col <=maxCol;
-    }
+  @Override
+  public int getPerimeter() {
+    return this.height * 2 + (int)(this.height * this.ratio) * 2;
+  }
 
-    public double getSize() {
-        return this.height * 2 + this.height * this.ratio * 2;
+  private boolean insideRectangle(int row, int col, double maxRow, double minCol, double minRow, double maxCol) {
+        return (double)row >= minRow && (double)row <= maxRow && col >= minCol && (double)col <=maxCol;
     }
 
     public int[] getCorners() {

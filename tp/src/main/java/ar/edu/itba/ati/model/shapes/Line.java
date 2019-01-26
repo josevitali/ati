@@ -39,4 +39,10 @@ public class Line implements Shape {
         return false;
     }
 
+  @Override
+  public int getPerimeter() {
+    // TODO:
+    return 0;
+  }
+
 }

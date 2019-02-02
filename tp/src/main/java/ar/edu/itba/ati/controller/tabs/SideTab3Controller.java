@@ -212,9 +212,9 @@ public class SideTab3Controller implements SideTabController {
 
     @FXML
     private void linearHoughTransformation(){
-        LicenseDetection licenseDetection = new LicenseDetection(Integer.valueOf(linearHoughThresholdVal.getText()),
-                Double.valueOf(linearHoughDeltaVal.getText()), 12);
-        applyTransformation(licenseDetection);
+        HoughDetector houghDetector = new HoughDetector(Integer.valueOf(linearHoughThresholdVal.getText()),
+                Double.valueOf(linearHoughDeltaVal.getText()), new LineSpaceGenerator());
+        applyTransformation(houghDetector);
     }
 
     @FXML

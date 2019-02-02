@@ -59,7 +59,10 @@ public class LicenseDetection implements PictureTransformer {
     }
 
     public static void main(String[] args) {
-        System.out.println(imageToString("/Users/natinavas/Documents/ITBA/ATI/ati/tp/src/main/java/ar/edu/itba/ati/model/transformations/licenseDetection/licensePlate.png"));
+        String licensePlate = imageToString("/Users/natinavas/Documents/ITBA/ATI/ati/tp/src/main/java/ar/edu/itba/ati/model/transformations/licenseDetection/licensePlate.png");
+        String cleanLicensePlate = licensePlate.replaceAll("[^a-zA-Z0-9\\-]", "");
+        cleanLicensePlate = cleanLicensePlate.replaceAll("^-", "");
+        System.out.println(cleanLicensePlate);
     }
 
     private Picture drawRectangle(Picture picture, Shape shape) {

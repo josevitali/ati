@@ -8,6 +8,7 @@
 <?import ar.edu.itba.ati.views.tabs.SideTab2View?>
 <?import ar.edu.itba.ati.views.tabs.SideTab3View?>
 <?import ar.edu.itba.ati.views.tabs.SideTab4View?>
+<?import ar.edu.itba.ati.views.tabs.SideTab5View?>
 <fx:root type="SideMenuView" xmlns:fx="http://javafx.com/fxml"
          fx:controller="ar.edu.itba.ati.controller.SideMenuController"
          fx:id="sideMenu" visible="false" tabClosingPolicy="UNAVAILABLE">
@@ -30,6 +31,11 @@
         <Tab text="TP 4">
             <content>
                 <SideTab4View fx:id="sideTab4View"/>
+            </content>
+        </Tab>
+        <Tab text="TP Final">
+            <content>
+                <SideTab5View fx:id="sideTab5View"/>
             </content>
         </Tab>
     </tabs>

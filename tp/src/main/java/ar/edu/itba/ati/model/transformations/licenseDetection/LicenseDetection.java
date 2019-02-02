@@ -7,7 +7,9 @@ import ar.edu.itba.ati.model.shapes.Rectangle;
 import ar.edu.itba.ati.model.shapes.Shape;
 import ar.edu.itba.ati.model.shapes.generators.RectangleSpaceGenerator;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
+import ar.edu.itba.ati.model.transformations.borderDetection.CannyDetector;
 import ar.edu.itba.ati.model.transformations.borderDetection.HoughDetector;
+import ar.edu.itba.ati.model.transformations.smoothing.MeanSmoothing;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
@@ -20,21 +22,37 @@ public class LicenseDetection implements PictureTransformer {
 
     final HoughDetector houghDetector;
     final double averageLicenseColor;
+    final CannyDetector cannyDetector;
+    final MeanSmoothing meanSmoothing;
 
     public LicenseDetection(int houghThreshold, double houghDelta, double averageLicenseColor) {
         this.houghDetector = new HoughDetector(houghThreshold, houghDelta, new RectangleSpaceGenerator());
+        this.cannyDetector = new CannyDetector(1);
+        this.meanSmoothing = new MeanSmoothing(7);
         this.averageLicenseColor = averageLicenseColor;
     }
 
     @Override
     public <T, R> Picture<R> transform(Picture<T> picture) {
+        Picture originalPicture = picture.getClone();
+        picture = meanSmoothing.transform(picture);
+        picture = meanSmoothing.transform(picture);
+        picture = cannyDetector.transform(picture);
         Set<Shape> houghRectangles = houghDetector.findShapes(picture);
         Rectangle rectangle = getBestRectangle(picture, houghRectangles);
 
         if (rectangle == null) {
-            return (Picture<R>) picture;
+            return (Picture<R>) originalPicture;
         }
-        return drawRectangle(picture, rectangle);
+        int[] coords = rectangle.getCorners();
+        originalPicture.crop(coords[0], coords[2], coords[1], coords[3]);
+        BufferedImage image = originalPicture.toBufferedImage();
+        String cleanLicense = getCleanLicense(imageToString(image));
+        System.out.println("License: " + cleanLicense);
+        return (Picture<R>) originalPicture;
+
+//        return drawRectangle(picture, rectangle);
+
 //        for (Shape houghRectangle : houghRectangles) {
 //            picture = drawRectangle(picture, houghRectangle);
 //        }
@@ -83,6 +101,28 @@ public class LicenseDetection implements PictureTransformer {
         }
 
         return colorPicture;
+    }
+
+    private String getCleanLicense(String licensePlate) {
+        String cleanLicensePlate = licensePlate.replaceAll("[^a-zA-Z0-9\\-]", "");
+        cleanLicensePlate = cleanLicensePlate.replaceAll("^-", "");
+        return cleanLicensePlate;
+    }
+
+    /**
+     * Using OCR library read text in license plate
+     * @param image
+     * @return
+     */
+    public static String imageToString(BufferedImage image) {
+        ITesseract instance = new Tesseract();
+        try {
+            return instance.doOCR(image);
+        } catch (TesseractException e)
+        {
+            e.getMessage();
+            return "Error while reading image";
+        }
     }
 
     /**

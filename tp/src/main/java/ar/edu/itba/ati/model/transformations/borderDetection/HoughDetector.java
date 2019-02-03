@@ -55,14 +55,13 @@ public class HoughDetector implements PictureTransformer{
 
         max = 0;
 
-        //For every pixel in the image
-        for (int i = 0; i < greyPicture.getHeight(); i++) {
-            for (int j = 0; j < greyPicture.getWidth(); j++) {
-                //Check if it belongs to any of the shapes
-                for (Shape shape: whiteAccumulator.keySet()) {
+        whiteAccumulator.entrySet().parallelStream().forEach(e -> {
+            Shape shape = e.getKey();
+            for (int i = 0; i < greyPicture.getHeight(); i++) {
+                for (int j = 0; j < greyPicture.getWidth(); j++) {
                     //Check if it is a white pixel
-                    if (greyPicture.getPixel(i,j) == 255.0) {
-                        //If the pixel belongs to a shape
+                    if (greyPicture.getPixel(i, j) == 255.0) {
+                        //Check if it belongs to shape
                         if (shape.belongs(i, j)) {
                             //Add one in accumulator for given shape
                             whiteAccumulator.get(shape).add(new Point(i,j));
@@ -73,7 +72,7 @@ public class HoughDetector implements PictureTransformer{
                     }
                 }
             }
-        }
+        });
 
         Set<Shape> bestShapes = whiteAccumulator
                 .entrySet()
@@ -81,7 +80,6 @@ public class HoughDetector implements PictureTransformer{
                 .filter(e -> e.getKey().matches(((double)threshold)/100))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toSet());
-
         return bestShapes;
     }
 

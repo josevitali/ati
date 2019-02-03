@@ -38,6 +38,7 @@ public class LicenseDetection implements PictureTransformer {
         picture = meanSmoothing.transform(picture);
         picture = meanSmoothing.transform(picture);
         picture = cannyDetector.transform(picture);
+        long startTime = System.currentTimeMillis();
         Set<Shape> houghRectangles = houghDetector.findShapes(picture);
         Rectangle rectangle = getBestRectangle(picture, houghRectangles);
 
@@ -49,6 +50,9 @@ public class LicenseDetection implements PictureTransformer {
         BufferedImage image = originalPicture.toBufferedImage();
         String cleanLicense = getCleanLicense(imageToString(image));
         System.out.println("License: " + cleanLicense);
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        System.out.println("Time: " + elapsedTime);
         return (Picture<R>) originalPicture;
 
 //        return drawRectangle(picture, rectangle);

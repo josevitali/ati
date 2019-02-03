@@ -7,6 +7,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <fx:root type="SideTab5View" xmlns:fx="http://javafx.com/fxml"
          fx:controller="ar.edu.itba.ati.controller.tabs.SideTab5Controller" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
          fitToHeight="true" fitToWidth="true" prefHeight="639.0" prefWidth="241.0" fx:id="sideTabView5">
@@ -23,13 +26,23 @@
                         </Label>
                         <TextField alignment="CENTER" prefHeight="27.0" prefWidth="45.0" promptText="th" fx:id="houghThreshold"/>
                         <TextField alignment="CENTER" prefHeight="27.0" prefWidth="45.0" promptText="δ" fx:id="houghDelta"/>
-                        <TextField alignment="CENTER" prefHeight="27.0" prefWidth="45.0" promptText="avg" fx:id="licenseAvg"/>
                         <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="14.0" prefWidth="50.0"
                                 text="OK" textAlignment="CENTER" onAction="#licenseDetection">
                             <HBox.margin>
                                 <Insets right="10.0" />
                             </HBox.margin>
                         </Button>
+                    </children>
+                </HBox>
+                <HBox prefWidth="200.0" style="-fx-spacing: 5;">
+                    <children>
+                        <ChoiceBox prefWidth="150.0" value="Argentina" fx:id="licenseConstants">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Argentina" />
+                                </FXCollections>
+                            </items>
+                        </ChoiceBox>
                     </children>
                 </HBox>
             </children>

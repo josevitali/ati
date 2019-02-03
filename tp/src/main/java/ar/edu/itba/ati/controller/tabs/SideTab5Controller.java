@@ -5,9 +5,11 @@ import ar.edu.itba.ati.events.side_menu.ResetParametersEvent;
 import ar.edu.itba.ati.model.transformations.PictureTransformer;
 import ar.edu.itba.ati.model.transformations.licenseDetection.LicenseDetection;
 import ar.edu.itba.ati.services.PictureService;
+import ar.edu.itba.ati.utils.LicenseConstants;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
 public class SideTab5Controller implements SideTabController {
@@ -22,7 +24,7 @@ public class SideTab5Controller implements SideTabController {
     private TextField houghDelta;
 
     @FXML
-    private TextField licenseAvg;
+    private ChoiceBox licenseConstants;
 
     @Inject
     public SideTab5Controller(final EventBus eventBus, final PictureService pictureService) {
@@ -34,11 +36,11 @@ public class SideTab5Controller implements SideTabController {
     private void licenseDetection() {
         int rectangleThresholdVal = Integer.valueOf(houghThreshold.getText());
         double rectangleDeltaVal = Double.valueOf(houghDelta.getText());
-        double licenseAvgVal = Double.valueOf(licenseAvg.getText());
-        if(rectangleThresholdVal < 0 || rectangleThresholdVal > 100 || rectangleDeltaVal < 0 || licenseAvgVal < 0) {
+        if(rectangleThresholdVal < 0 || rectangleThresholdVal > 100 || rectangleDeltaVal < 0) {
             return;
         }
-        LicenseDetection licenseDetection = new LicenseDetection(rectangleThresholdVal, rectangleDeltaVal, licenseAvgVal);
+        LicenseDetection licenseDetection = new LicenseDetection(rectangleThresholdVal, rectangleDeltaVal,
+                LicenseConstants.valueOf(((String)licenseConstants.getValue()).toUpperCase()));
         applyTransformation(licenseDetection);
     }
 
@@ -46,7 +48,6 @@ public class SideTab5Controller implements SideTabController {
     public void reset(ResetParametersEvent event) {
         houghThreshold.setText("");
         houghDelta.setText("");
-        licenseAvg.setText("");
     }
 
     private void applyTransformation(PictureTransformer transformer){

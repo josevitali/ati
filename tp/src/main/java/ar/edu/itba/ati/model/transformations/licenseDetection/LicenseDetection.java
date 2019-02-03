@@ -10,6 +10,7 @@ import ar.edu.itba.ati.model.transformations.PictureTransformer;
 import ar.edu.itba.ati.model.transformations.borderDetection.CannyDetector;
 import ar.edu.itba.ati.model.transformations.borderDetection.HoughDetector;
 import ar.edu.itba.ati.model.transformations.smoothing.MeanSmoothing;
+import ar.edu.itba.ati.utils.LicenseConstants;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
@@ -20,47 +21,47 @@ import java.util.Set;
 
 public class LicenseDetection implements PictureTransformer {
 
-    final HoughDetector houghDetector;
-    final double averageLicenseColor;
-    final CannyDetector cannyDetector;
-    final MeanSmoothing meanSmoothing;
+    private final HoughDetector houghDetector;
+    private final double averageLicenseColor;
+    private final CannyDetector cannyDetector;
+    private final MeanSmoothing meanSmoothing;
 
-    public LicenseDetection(int houghThreshold, double houghDelta, double averageLicenseColor) {
-        this.houghDetector = new HoughDetector(houghThreshold, houghDelta, new RectangleSpaceGenerator());
+    public LicenseDetection(int houghThreshold, double houghDelta, LicenseConstants licenseConstants) {
+        this.houghDetector = new HoughDetector(houghThreshold, houghDelta, new RectangleSpaceGenerator(licenseConstants.getRatio()));
         this.cannyDetector = new CannyDetector(1);
         this.meanSmoothing = new MeanSmoothing(7);
-        this.averageLicenseColor = averageLicenseColor;
+        this.averageLicenseColor = licenseConstants.getAvgColor();
     }
 
     @Override
     public <T, R> Picture<R> transform(Picture<T> picture) {
         Picture originalPicture = picture.getClone();
-        picture = meanSmoothing.transform(picture);
-        picture = meanSmoothing.transform(picture);
+
+        for (int i = 0; i < 2; i++) {
+            picture = meanSmoothing.transform(picture);
+        }
+
         picture = cannyDetector.transform(picture);
+
         long startTime = System.currentTimeMillis();
+
         Set<Shape> houghRectangles = houghDetector.findShapes(picture);
         Rectangle rectangle = getBestRectangle(picture, houghRectangles);
 
         if (rectangle == null) {
             return (Picture<R>) originalPicture;
         }
+
         int[] coords = rectangle.getCorners();
         originalPicture.crop(coords[0], coords[2], coords[1], coords[3]);
         BufferedImage image = originalPicture.toBufferedImage();
+        
         String cleanLicense = getCleanLicense(imageToString(image));
         System.out.println("License: " + cleanLicense);
         long stopTime = System.currentTimeMillis();
         long elapsedTime = stopTime - startTime;
         System.out.println("Time: " + elapsedTime);
         return (Picture<R>) originalPicture;
-
-//        return drawRectangle(picture, rectangle);
-
-//        for (Shape houghRectangle : houghRectangles) {
-//            picture = drawRectangle(picture, houghRectangle);
-//        }
-//        return (Picture<R>) picture;
     }
 
     private Rectangle getBestRectangle(Picture picture, Set<Shape> shapes) {
@@ -77,6 +78,7 @@ public class LicenseDetection implements PictureTransformer {
                 bestShape = (Rectangle) shape;
             }
         }
+
         return bestShape;
     }
 
@@ -115,6 +117,7 @@ public class LicenseDetection implements PictureTransformer {
 
     /**
      * Using OCR library read text in license plate
+     *
      * @param image
      * @return
      */
@@ -122,8 +125,7 @@ public class LicenseDetection implements PictureTransformer {
         ITesseract instance = new Tesseract();
         try {
             return instance.doOCR(image);
-        } catch (TesseractException e)
-        {
+        } catch (TesseractException e) {
             e.getMessage();
             return "Error while reading image";
         }
@@ -131,6 +133,7 @@ public class LicenseDetection implements PictureTransformer {
 
     /**
      * Using OCR library read text in license plate
+     *
      * @param imageLocation
      * @return
      */
@@ -138,8 +141,7 @@ public class LicenseDetection implements PictureTransformer {
         ITesseract instance = new Tesseract();
         try {
             return instance.doOCR(new File(imageLocation));
-        } catch (TesseractException e)
-        {
+        } catch (TesseractException e) {
             e.getMessage();
             return "Error while reading image";
         }

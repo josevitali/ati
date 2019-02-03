@@ -17,7 +17,10 @@ import net.sourceforge.tess4j.TesseractException;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Comparator;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class LicenseDetection implements PictureTransformer {
 
@@ -25,12 +28,14 @@ public class LicenseDetection implements PictureTransformer {
     private final double averageLicenseColor;
     private final CannyDetector cannyDetector;
     private final MeanSmoothing meanSmoothing;
+    private final int licenseLength;
 
     public LicenseDetection(int houghThreshold, double houghDelta, LicenseConstants licenseConstants) {
         this.houghDetector = new HoughDetector(houghThreshold, houghDelta, new RectangleSpaceGenerator(licenseConstants.getRatio()));
         this.cannyDetector = new CannyDetector(1);
-        this.meanSmoothing = new MeanSmoothing(7);
+        this.meanSmoothing = new MeanSmoothing(3);
         this.averageLicenseColor = licenseConstants.getAvgColor();
+        this.licenseLength = licenseConstants.getLength();
     }
 
     @Override
@@ -46,40 +51,55 @@ public class LicenseDetection implements PictureTransformer {
         long startTime = System.currentTimeMillis();
 
         Set<Shape> houghRectangles = houghDetector.findShapes(picture);
-        Rectangle rectangle = getBestRectangle(picture, houghRectangles);
 
-        if (rectangle == null) {
+        if (houghRectangles.isEmpty()) {
             return (Picture<R>) originalPicture;
         }
 
-        int[] coords = rectangle.getCorners();
-        originalPicture.crop(coords[0], coords[2], coords[1], coords[3]);
-        BufferedImage image = originalPicture.toBufferedImage();
-        
-        String cleanLicense = getCleanLicense(imageToString(image));
-        System.out.println("License: " + cleanLicense);
-        long stopTime = System.currentTimeMillis();
-        long elapsedTime = stopTime - startTime;
-        System.out.println("Time: " + elapsedTime);
-        return (Picture<R>) originalPicture;
-    }
+        Set<Rectangle> bestRectangles = getBestRectangle(picture, houghRectangles);
 
-    private Rectangle getBestRectangle(Picture picture, Set<Shape> shapes) {
-        double minDifference = Double.POSITIVE_INFINITY;
-        Rectangle bestShape = null;
+        for (Rectangle rectangle : bestRectangles) {
+            int[] coords = rectangle.getCorners();
+            Picture croppedPic = originalPicture.getClone();
+            croppedPic.crop(coords[0], coords[2], coords[1], coords[3]);
+            BufferedImage image = croppedPic.toBufferedImage();
 
-        for (Shape shape : shapes) {
-            int[] coords = ((Rectangle) shape).getCorners();
-            String averageStr = picture.getAverageColor(coords[0], coords[1], coords[2], coords[3]);
-            double average = Double.parseDouble(averageStr.split("\\s+")[1]);
-            double difference = Math.abs(average - averageLicenseColor);
-            if (difference < minDifference) {
-                minDifference = difference;
-                bestShape = (Rectangle) shape;
+            String cleanLicense = getCleanLicense(imageToString(image));
+
+            if(cleanLicense.length() == licenseLength){
+                System.out.println("License: " + cleanLicense);
+                long stopTime = System.currentTimeMillis();
+                long elapsedTime = stopTime - startTime;
+                System.out.println("Time: " + elapsedTime);
+                return (Picture<R>) croppedPic;
             }
         }
 
-        return bestShape;
+
+        System.out.println("License not found");
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = stopTime - startTime;
+        System.out.println("Time: " + elapsedTime);
+        return (Picture<R>) picture;
+    }
+
+    private Set<Rectangle> getBestRectangle(Picture picture, Set<Shape> shapes) {
+        Set<Rectangle> bestRectangles = new TreeSet<>(new Comparator<Rectangle>() {
+            @Override
+            public int compare(Rectangle o1, Rectangle o2) {
+                int[] coords1 = o1.getCorners();
+                String averageStr1 = picture.getAverageColor(coords1[0], coords1[1], coords1[2], coords1[3]);
+                double average1 = Double.parseDouble(averageStr1.split("\\s+")[1]);
+                double difference1 = Math.abs(average1 - averageLicenseColor);
+                int[] coords2 = o2.getCorners();
+                String averageStr2 = picture.getAverageColor(coords2[0], coords2[1], coords2[2], coords2[3]);
+                double average2 = Double.parseDouble(averageStr2.split("\\s+")[1]);
+                double difference2 = Math.abs(average2 - averageLicenseColor);
+                return Double.compare(difference1, difference2);
+            }
+        });
+        bestRectangles.addAll(shapes.stream().map(s -> (Rectangle)s).collect(Collectors.toSet()));
+        return bestRectangles;
     }
 
     public static void main(String[] args) {

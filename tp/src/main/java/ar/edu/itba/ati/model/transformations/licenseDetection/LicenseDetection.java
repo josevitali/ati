@@ -130,7 +130,7 @@ public class LicenseDetection implements PictureTransformer {
     }
 
     private String getCleanLicense(String licensePlate) {
-        String cleanLicensePlate = licensePlate.replaceAll("[^a-zA-Z0-9\\-]", "");
+        String cleanLicensePlate = licensePlate.replaceAll("[^A-Z0-9\\-]", "");
         cleanLicensePlate = cleanLicensePlate.replaceAll("^-", "");
         return cleanLicensePlate;
     }

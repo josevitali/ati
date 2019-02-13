@@ -14,12 +14,16 @@ import ar.edu.itba.ati.utils.LicenseConstants;
 import net.sourceforge.tess4j.ITesseract;
 import net.sourceforge.tess4j.Tesseract;
 import net.sourceforge.tess4j.TesseractException;
+import org.javatuples.Triplet;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class LicenseDetection implements PictureTransformer {
@@ -29,6 +33,7 @@ public class LicenseDetection implements PictureTransformer {
     private final CannyDetector cannyDetector;
     private final MeanSmoothing meanSmoothing;
     private final int licenseLength;
+    private final Function<String, Integer> scoreFunction;
 
     public LicenseDetection(int houghThreshold, double houghDelta, LicenseConstants licenseConstants) {
         this.houghDetector = new HoughDetector(houghThreshold, houghDelta, new RectangleSpaceGenerator(licenseConstants.getRatio()));
@@ -36,6 +41,7 @@ public class LicenseDetection implements PictureTransformer {
         this.meanSmoothing = new MeanSmoothing(3);
         this.averageLicenseColor = licenseConstants.getAvgColor();
         this.licenseLength = licenseConstants.getLength();
+        this.scoreFunction = licenseConstants.getScoreFunction();
     }
 
     @Override
@@ -56,23 +62,24 @@ public class LicenseDetection implements PictureTransformer {
             return (Picture<R>) originalPicture;
         }
 
-        Set<Rectangle> bestRectangles = getBestRectangle(picture, houghRectangles);
+        System.out.println("Retangles found: " + houghRectangles.size());
 
-        for (Rectangle rectangle : bestRectangles) {
-            int[] coords = rectangle.getCorners();
+        List candidatePictures = houghRectangles.stream().map(r -> {
+            int[] coords = ((Rectangle)r).getCorners();
             Picture croppedPic = originalPicture.getClone();
-            croppedPic.crop(coords[0], coords[2], coords[1], coords[3]);
+            croppedPic.crop(coords[0]-15, coords[2]+15, coords[1]-15, coords[3]+15);
             BufferedImage image = croppedPic.toBufferedImage();
-
             String cleanLicense = getCleanLicense(imageToString(image));
+            return new Triplet(croppedPic, cleanLicense, scoreFunction.apply(cleanLicense));
+        }).sorted((o1, o2) -> (Integer) o2.getValue2() - (Integer) o1.getValue2()).collect(Collectors.toList());
 
-            if(cleanLicense.length() == licenseLength){
-                System.out.println("License: " + cleanLicense);
-                long stopTime = System.currentTimeMillis();
-                long elapsedTime = stopTime - startTime;
-                System.out.println("Time: " + elapsedTime);
-                return (Picture<R>) croppedPic;
-            }
+        if(!candidatePictures.isEmpty()){
+            Triplet<Picture, String, Integer> triplet = (Triplet<Picture, String, Integer>)candidatePictures.get(0);
+            System.out.println("License: " + triplet.getValue1());
+            long stopTime = System.currentTimeMillis();
+            long elapsedTime = stopTime - startTime;
+            System.out.println("Time: " + elapsedTime);
+            return (Picture<R>) triplet.getValue0();
         }
 
 
@@ -166,4 +173,16 @@ public class LicenseDetection implements PictureTransformer {
             return "Error while reading image";
         }
     }
+
+    public static BufferedImage scale(BufferedImage imageToScale, int dWidth, int dHeight) {
+        BufferedImage scaledImage = null;
+        if (imageToScale != null) {
+            scaledImage = new BufferedImage(dWidth, dHeight, imageToScale.getType());
+            Graphics2D graphics2D = scaledImage.createGraphics();
+            graphics2D.drawImage(imageToScale, 0, 0, dWidth, dHeight, null);
+            graphics2D.dispose();
+        }
+        return scaledImage;
+    }
+
 }

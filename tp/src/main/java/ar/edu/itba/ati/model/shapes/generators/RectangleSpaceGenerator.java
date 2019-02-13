@@ -19,7 +19,7 @@ public class RectangleSpaceGenerator implements ShapeGenerator {
         Set<Shape> parametricSpace = new HashSet<>();
 
         for (int row = 0; row < maxHeight; row += 10) {
-            for (int col = 0; col < maxWidth; col += 10) {
+            for (int col = 0; col < maxWidth; col += 5) {
                 for (int height = 20; height < Math.ceil(maxWidth / ratio); height += 20) {
                     parametricSpace.add(new Rectangle(delta, ratio, row, col, height));
                 }

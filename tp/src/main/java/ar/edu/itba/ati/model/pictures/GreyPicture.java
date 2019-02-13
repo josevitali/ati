@@ -83,16 +83,21 @@ public class GreyPicture extends Picture<Double> {
         return ret;
     }
 
-    public void crop(int x0, int x1, int y0, int y1){
-        Double[][] newpic = new Double[x1-x0+1][y1-y0+1];
-        for (int i = x0, i2 = 0; i <= x1; i++, i2++) {
-            for (int j = y0, j2 = 0; j <= y1; j++, j2++) {
+    public void crop(int row0, int row1, int col0, int col1){
+        row0 = row0 < 0 ? 0 : row0;
+        col0 = col0 < 0 ? 0 : col0;
+        row1 = row1 > height ? height : row1;
+        col1 = col1 > width ? width : col1;
+
+        Double[][] newpic = new Double[row1-row0+1][col1-col0+1];
+        for (int i = row0, i2 = 0; i <= row1; i++, i2++) {
+            for (int j = col0, j2 = 0; j <= col1; j++, j2++) {
                 newpic[i2][j2] = matrix[i][j];
             }
         }
         this.matrix = newpic;
-        this.width = y1-y0+1;
-        this.height = x1-x0+1;
+        this.width = col1-col0+1;
+        this.height = row1-row0+1;
     }
 
     @Override
